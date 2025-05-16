@@ -1,0 +1,96 @@
+Theme ref: https://themewagon.github.io/inazuma-tailwind/
+
+Multi Select for Skills & Education
+https://coreui.io/bootstrap/docs/forms/multi-select/
+
+
+candidate list page:
+Featured-badge for featured candidates
+show only 3 skills with +1 +2 count
+
+Smart Recruit Key Functions
+============
+
+support@smartrecruit.ng
+also integrate zoho-chatbot
+
+Here are the functions for each of the three SmartRecruit dashboards:
+
+
+---
+
+1. Admin Dashboard
+
+Key Functions:
+
+Manage all platform users (recruiters and candidates)
+
+Approve or suspend accounts
+
+Review and approve candidate video uploads
+
+Monitor payments and transactions (via Paystack)
+
+Feature candidate profiles manually if needed
+
+View platform analytics (logins, searches, purchases, updates)
+
+Respond to support requests and flag/report issues
+
+Configure system settings (e.g., update cycle, homepage banners)
+
+Manage subscription plans and pricing
+
+Export data reports for compliance or business analysis
+
+
+
+---
+
+2. Recruiter Dashboard
+
+Key Functions:
+
+Search candidates by skill, industry, or keyword
+
+View CVs and video interviews
+
+Purchase access to full candidate profiles
+
+Save and shortlist preferred candidates
+
+View purchase history and payment status
+
+Track interview or contact actions taken
+
+Export shortlisted candidate details
+
+Manage recruiter profile and organization info
+
+Request support or submit inquiries
+
+
+
+---
+
+3. Candidate Dashboard
+
+Key Functions:
+
+Upload and update CV and professional details
+
+Record and upload video interview
+
+Track profile visibility status (active/hidden)
+
+Update profile weekly to stay visible
+
+View profile performance stats (views, interest)
+
+Feature profile by paying ₦2,000
+
+Get notifications on profile status or updates
+
+Edit personal and contact information
+
+Access help or support center
