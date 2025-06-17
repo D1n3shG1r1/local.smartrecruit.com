@@ -1103,7 +1103,7 @@ p + p{
   display: none;
 }
 
-#call-action {
+#call-action, footer {
   background-image: radial-gradient(
       circle at top left,
       rgba(255, 255, 255, 0.1) 0%,
