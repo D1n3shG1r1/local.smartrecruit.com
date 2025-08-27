@@ -1,11 +1,26 @@
 @extends("app")
 @section("contentbox")
+@php
+
+  $resumeDataId = $cvdata->id;
+  $candidateId = $cvdata->candidateId;
+  $profSummaryArr = $cvdata->profSummary;
+  $workExperienceArr = $cvdata->workExperience;
+  $skillsArr = $cvdata->skills;
+  $languagesArr = $cvdata->languages;
+  $degreeArr = $cvdata->degree;
+  $certificationsArr = $cvdata->certifications;
+  
+  $skillsOptions = config('custom.skills');
+
+@endphp            
+
 <div class="midde_cont">
     <div class="container-fluid">
         <div class="row column_title">
         <div class="col-md-12">
             <div class="page_title">
-                <h2>My Resume</h2>
+                <h2>Candidate Resume</h2>
             </div>
         </div>
         </div>
@@ -25,29 +40,28 @@
 
                     <!-- form new -->
                     <div class="container mt-5">
-                      <form id="multiStepForm">
+                      <form id="multiStepForm" method="post" action="{{url('candidate/updateresume')}}">
+                        <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <div class="row justify-content-center">
                           <div class="col-lg-10">
 
                             <!-- Step Indicators (optional visual) -->
-                            <ul class="formbold-steps nav nav-pills mb-4 justify-content-center gap-2">
-                              <li class="formbold-step-menu1d actived nav-item"><span class="badge rounded-circle bg-primary step-indicator">1</span>Basic Information</li>
+                            <ul class="formbold-steps nav nav-pillsd mb-4 justify-content-center gap-2">
+                              <li class="formbold-step-menu1d actived nav-item"><span class="badge rounded-circle recruit_blue step-indicator">1</span>Basic Information</li>
                               <li class="formbold-step-menu2d nav-item"><span class="badge rounded-circle bg-light text-dark step-indicator">2</span>Professional Summary</li>
                               <li class="formbold-step-menu3d nav-item"><span class="badge rounded-circle bg-light text-dark step-indicator">3</span>Academic Summary</li>
-                              <li class="formbold-step-menu4d nav-item"><span class="badge rounded-circle bg-light text-dark step-indicator">4</span>Other Details</li>
-                              <li class="formbold-step-menu5d nav-item"><span class="badge rounded-circle bg-light text-dark step-indicator">5</span>Uploads</li>
                             </ul>
 
                             <!-- ✅ Step 1 -->
                             <div class="step step-1">
                               <div class="row mb-3">
                                 <div class="col-md-6">
-                                  <label class="form-label">Full Name</label>
-                                  <input type="text" class="form-control" name="fullname" id="fullname" />
+                                  <label class="form-label">Full Name<span class="required">*</span></label>
+                                  <input type="text" class="form-control" name="fullname" id="fullname" value="{{$basicProfile->fname}} {{$basicProfile->lname}}" readonly/>
                                 </div>
                                 <div class="col-md-6">
-                                  <label class="form-label">Gender</label>
-                                  <select id="gender" class="form-control">
+                                  <label class="form-label">Gender<span class="required">*</span></label>
+                                  <select id="gender" name="gender" class="form-control" readonly>
                                     <option value="0"></option>  
                                     <option value="1">Male</option>
                                     <option value="2">Female</option>
@@ -58,248 +72,126 @@
 
                               <div class="row mb-3">
                                 <div class="col-md-6">
-                                  <label class="form-label">Email Address</label>
-                                  <input type="email" class="form-control" name="email" id="email"/>
+                                  <label class="form-label">Email Address<span class="required">*</span></label>
+                                  <input type="email" class="form-control" name="email" id="email" value="{{$basicProfile->email}}" readonly/>
                                 </div>
                                 <div class="col-md-6">
-                                  <label class="form-label">Phone Number</label>
-                                  <input type="tel" class="form-control" name="phone" id="phone"/>
+                                  <label class="form-label">Phone Number<span class="required">*</span></label>
+                                  <input type="tel" class="form-control" name="phone" id="phone" value="{{$basicProfile->phone}}" readonly/>
                                 </div>
                               </div>
 
                               <div class="row mb-3">
                                 <div class="col-md-6">
-                                  <label class="form-label">Address Line 1</label>
-                                  <input type="text" class="form-control" name="address1" id="address1"/>
+                                  <label class="form-label">Address Line 1<span class="required">*</span></label>
+                                  <input type="text" class="form-control" name="address1" id="address1" value="{{$basicProfile->address_1}}" readonly/>
                                 </div>
                                 <div class="col-md-6">
                                   <label class="form-label">Address Line 2</label>
-                                  <input type="text=" class="form-control" name="address2" id="address2"/>
+                                  <input type="text=" class="form-control" name="address2" id="address2" value="{{$basicProfile->address_2}}" readonly/>
                                 </div>
                               </div>
 
                               <div class="row mb-3">
                                 <div class="col-md-6">
-                                  <label class="form-label">State</label>
-                                  <input type="text" class="form-control" name="state" id="state" />
-                                </div>
+                                  <label class="form-label">City<span class="required">*</span></label>
+                                  <input type="text=" class="form-control" name="city" id="city" value="{{$basicProfile->city}}" readonly/>
+                                </div>  
                                 <div class="col-md-6">
-                                  <label class="form-label">City</label>
-                                  <input type="text=" class="form-control" name="city" id="city" />
+                                  <label class="form-label">Country<span class="required">*</span></label>
+                                  <input type="text" class="form-control" name="country" id="country" value="{{$basicProfile->country}}" readonly/>
                                 </div>
+                                
                               </div>
                             </div>
 
                             <!-- ✅ Step 2 -->
                             <div class="step step-2 d-none">
-                              <div class="mb-3">
-                                <label class="form-label">Professional Summary</label>
-                                <textarea class="form-control" rows="3" name="summary"></textarea>
+                              <div class="row mb-3">
+                                <div class="col-md-12">    
+                                  <label class="form-label">Professional Summary</label>
+                                  <textarea class="form-control" rows="3" id="professionalsummary" name="professionalsummary">{{$profSummaryArr}}</textarea>
+                                </div>
                               </div>
-                              <div class="mt-3">
-                                <label class="form-label fw-bold">Work Experience</label>
-                                <div id="workExperienceRows"></div>
-                                <button type="button" id="addMoreBtn" class="btn btn-outline-primary mt-3"><i class="fa fa-plus"></i>Add More</button>
+                              <div class="row mt-3">
+                                <div class="col-md-12">  
+                                  <label class="form-label fw-bold">Work Experience</label>
+                                  <div id="workExperienceRows"></div>
+                                  <button type="button" id="addMoreBtn" class="btn btn-outline-primary" onclick="addWorkExpRow(-1)"><i class="fa fa-plus"></i>Add More</button>
+                                </div>
                               </div>
                             </div>
 
                             <!-- ✅ Step 3 -->
                             <div class="step step-3 d-none">
-                              <div class="row mb-3">
-                                <div class="col-md-6">
-                                  <label class="form-label">Select Core Skills</label>
-                                  <select id="skills" class="form-control" multiple>
-                                      <optgroup label="Administrative & Office Skills">
-                                          <option value="Office Administration">Office Administration</option>
-                                          <option value="Data Entry">Data Entry</option>
-                                          <option value="Calendar Management">Calendar Management</option>
-                                          <option value="Customer Service">Customer Service</option>
-                                          <option value="Receptionist Duties">Receptionist Duties</option>
-                                      </optgroup>
-                                      <optgroup label="Business & Management">
-                                          <option value="Project Management">Project Management</option>
-                                          <option value="Operations Management">Operations Management</option>
-                                          <option value="Business Development">Business Development</option>
-                                          <option value="Strategic Planning">Strategic Planning</option>
-                                          <option value="Procurement Management">Procurement Management</option>
-                                      </optgroup>
-                                      <optgroup label="Sales & Marketing">
-                                          <option value="Sales Strategy">Sales Strategy</option>
-                                          <option value="Digital Marketing">Digital Marketing</option>
-                                          <option value="SEO/SEM">SEO/SEM</option>
-                                          <option value="Social Media Management">Social Media Management</option>
-                                          <option value="Content Writing">Content Writing</option>
-                                          <option value="Telemarketing">Telemarketing</option>
-                                          <option value="Advertising">Advertising</option>
-                                      </optgroup>
-                                      <optgroup label="IT & Technology">
-                                          <option value="Web Development">Web Development</option>
-                                          <option value="Mobile App Development">Mobile App Development</option>
-                                          <option value="Database Management">Database Management</option>
-                                          <option value="IT Support">IT Support</option>
-                                          <option value="Cybersecurity">Cybersecurity</option>
-                                          <option value="Cloud Computing">Cloud Computing</option>
-                                          <option value="UI/UX Design">UI/UX Design</option>
-                                          <option value="Graphic Design">Graphic Design</option>
-                                          <option value="Software Development">Software Development</option>
-                                          <option value="Networking & Infrastructure">Networking & Infrastructure</option>
-                                      </optgroup>
-                                      <optgroup label="Finance & Accounting">
-                                          <option value="Bookkeeping">Bookkeeping</option>
-                                          <option value="Financial Analysis">Financial Analysis</option>
-                                          <option value="Payroll Management">Payroll Management</option>
-                                          <option value="Auditing">Auditing</option>
-                                          <option value="Tax Preparation">Tax Preparation</option>
-                                          <option value="Budget Management">Budget Management</option>
-                                      </optgroup>
-                                      <optgroup label="Engineering & Technical Skills (Expanded)">
-                                          <option value="Civil Engineering">Civil Engineering</option>
-                                          <option value="Mechanical Engineering">Mechanical Engineering</option>
-                                          <option value="Electrical Engineering">Electrical Engineering</option>
-                                          <option value="Structural Engineering">Structural Engineering</option>
-                                          <option value="Petroleum Engineering">Petroleum Engineering</option>
-                                          <option value="Chemical Engineering">Chemical Engineering</option>
-                                          <option value="Process Engineering">Process Engineering</option>
-                                          <option value="Pipeline Engineering">Pipeline Engineering</option>
-                                          <option value="Instrumentation and Control Engineering">Instrumentation and Control Engineering</option>
-                                          <option value="Drilling Engineering">Drilling Engineering</option>
-                                          <option value="Subsea Engineering">Subsea Engineering</option>
-                                          <option value="Reservoir Engineering">Reservoir Engineering</option>
-                                          <option value="Production Engineering">Production Engineering</option>
-                                          <option value="Facilities Engineering">Facilities Engineering</option>
-                                          <option value="Health, Safety, and Environment (HSE Management)">Health, Safety, and Environment (HSE Management)</option>
-                                          <option value="Maintenance Engineering (Oil & Gas Facilities)">Maintenance Engineering (Oil & Gas Facilities)</option>
-                                          <option value="Project Engineering">Project Engineering</option>
-                                          <option value="Offshore Operations Engineering">Offshore Operations Engineering</option>
-                                          <option value="Rig Operations and Maintenance">Rig Operations and Maintenance</option>
-                                          <option value="CAD Design (AutoCAD, SolidWorks, etc.)">CAD Design (AutoCAD, SolidWorks, etc.)</option>
-                                          <option value="Quality Assurance/Quality Control (QA/QC)">Quality Assurance/Quality Control (QA/QC)</option>
-                                          <option value="Welding and Fabrication Engineering">Welding and Fabrication Engineering</option>
-                                          <option value="Corrosion Engineering">Corrosion Engineering</option>
-                                          <option value="Environmental Engineering">Environmental Engineering</option>
-                                          <option value="Marine Engineering (for offshore oil operations)">Marine Engineering (for offshore oil operations)</option>
-                                          <option value="Rotating Equipment Engineering">Rotating Equipment Engineering</option>
-                                          <option value="Piping Engineering">Piping Engineering</option>
-                                          <option value="Materials Engineering">Materials Engineering</option>
-                                          <option value="Energy Management">Energy Management</option>
-                                      </optgroup>
-                                      <optgroup label="Healthcare & Medical">
-                                          <option value="Nursing">Nursing</option>
-                                          <option value="Medical Laboratory Technology">Medical Laboratory Technology</option>
-                                          <option value="Patient Care">Patient Care</option>
-                                          <option value="Medical Records Management">Medical Records Management</option>
-                                          <option value="Pharmacy Assistance">Pharmacy Assistance</option>
-                                      </optgroup>
-                                      <optgroup label="Education & Training">
-                                          <option value="Teaching">Teaching</option>
-                                          <option value="Curriculum Development">Curriculum Development</option>
-                                          <option value="Training Facilitation">Training Facilitation</option>
-                                          <option value="Educational Consulting">Educational Consulting</option>
-                                      </optgroup>
-                                      <optgroup label="Legal">
-                                          <option value="Legal Research">Legal Research</option>
-                                          <option value="Contract Drafting">Contract Drafting</option>
-                                          <option value="Corporate Law">Corporate Law</option>
-                                          <option value="Paralegal Services">Paralegal Services</option>
-                                      </optgroup>
-                                      <optgroup label="Creative & Media">
-                                          <option value="Photography">Photography</option>
-                                          <option value="Videography">Videography</option>
-                                          <option value="Content Creation">Content Creation</option>
-                                          <option value="Animation">Animation</option>
-                                          <option value="Creative Writing">Creative Writing</option>
-                                          <option value="Copywriting">Copywriting</option>
-                                          <option value="Branding">Branding</option>
-                                      </optgroup>
-                                      <optgroup label="Human Resources">
-                                          <option value="Recruitment">Recruitment</option>
-                                          <option value="HR Administration">HR Administration</option>
-                                          <option value="Payroll Administration">Payroll Administration</option>
-                                          <option value="Employee Relations">Employee Relations</option>
-                                          <option value="Talent Management">Talent Management</option>
-                                      </optgroup>
-                                      <optgroup label="Hospitality & Tourism">
-                                          <option value="Hotel Management">Hotel Management</option>
-                                          <option value="Food and Beverage Service">Food and Beverage Service</option>
-                                          <option value="Tour Guiding">Tour Guiding</option>
-                                          <option value="Event Planning">Event Planning</option>
-                                      </optgroup>
-                                      <optgroup label="Construction & Real Estate">
-                                          <option value="Construction Management">Construction Management</option>
-                                          <option value="Quantity Surveying">Quantity Surveying</option>
-                                          <option value="Real Estate Sales">Real Estate Sales</option>
-                                          <option value="Property Management">Property Management</option>
-                                      </optgroup>
-                                      <optgroup label="Logistics & Supply Chain">
-                                          <option value="Logistics Coordination">Logistics Coordination</option>
-                                          <option value="Warehouse Management">Warehouse Management</option>
-                                          <option value="Procurement">Procurement</option>
-                                          <option value="Fleet Management">Fleet Management</option>
-                                      </optgroup>
-                                      <optgroup label="Other Skills">
-                                          <option value="Negotiation">Negotiation</option>
-                                          <option value="Time Management">Time Management</option>
-                                          <option value="Leadership">Leadership</option>
-                                          <option value="Teamwork">Teamwork</option>
-                                          <option value="Problem Solving">Problem Solving</option>
-                                          <option value="Communication Skills">Communication Skills</option>
-                                          <option value="Critical Thinking">Critical Thinking</option>
-                                      </optgroup>
-                                  </select>
-                                  <input type="hidden" class="form-control" name="customskill" id="customskill" />
-                                </div>
+                               
+                            <div class="row mx-0 mb-3">
+                            
+                              <label class="form-label fw-bold">Skills & Language</label>
+                              <div class="skillLanguageRows">
+                                <div class="border p-3 mb-3 rounded skillLangugeRow">
+                                  <div class="row">
+                                    <div class="col-md-6" id="skillsContainer">
+                                      <label class="form-label">Select Core Skills</label>
 
-                                <div class="col-md-6">
-                                  <label class="form-label">Choose Language </label>
-                                  <div id="selectedLanguages" style="margin-top: 20px;"></div>
-                                  <select id="languageSelect" class="form-control">
-                                    <option value="">-- Select Language --</option>
-                                    <option value="English">English</option>
-                                    <option value="Spanish">Spanish</option>
-                                    <option value="French">French</option>
-                                    <option value="German">German</option>
-                                    <option value="Chinese">Chinese</option>
-                                    <option value="Japanese">Japanese</option>
-                                    <option value="Arabic">Arabic</option>
-                                    <option value="Hindi">Hindi</option>
-                                    <option value="Portuguese">Portuguese</option>
-                                    <option value="Russian">Russian</option>
-                                  </select>
+                                      <select id="skills" name="skills" class="form-control" multiple>
+                                          @foreach($skillsOptions as $optGrpKey => $optGrp)
+                                              <optgroup label="{{$optGrpKey}}">
+                                                  @foreach($optGrp as $opt)
+                                                  <option value="{{$opt}}">{{$opt}}</option>
+                                                  @endforeach        
+                                              </optgroup>
+                                          @endforeach
+                                      </select>
+                                      <input type="hidden" class="form-control" name="customskill" id="customskill" />
+                                    </div>
+
+                                    <div class="col-md-6">
+                                      <label class="form-label">Choose Language<span class="required">*</span></label>
+                                      <select id="languageSelect" name="languageSelect" class="form-control" onchange="handleLanguageChange()">
+                                        <option value="">-- Select Language --</option>
+                                        <option value="English">English</option>
+                                        <option value="Spanish">Spanish</option>
+                                        <option value="French">French</option>
+                                        <option value="German">German</option>
+                                        <option value="Chinese">Chinese</option>
+                                        <option value="Japanese">Japanese</option>
+                                        <option value="Arabic">Arabic</option>
+                                        <option value="Hindi">Hindi</option>
+                                        <option value="Portuguese">Portuguese</option>
+                                        <option value="Russian">Russian</option>
+                                      </select>
+                                      <div id="selectedLanguages" style="margin-top: 20px;"></div>
+                                    </div>
+                                  </div>
                                 </div>
-                                
-                              </div>  
-                              
-                              <div class="row mt-3">
+                              </div>
+                            </div>
+
+                              <div class="row mx-0 mt-3">
                                 <label class="form-label fw-bold">Education Background</label>
                                 <div id="educationRows"></div>
-                                <button type="button" id="addMoreEduBtn" class="btn btn-outline-primary mt-3"><i class="fa fa-plus"></i>Add More</button>
+                                <button type="button" id="addMoreEduBtn" class="btn btn-outline-primary" onclick="addEduRow(-1)"><i class="fa fa-plus"></i>Add More</button>
                               </div>
-
-                              <div class="row mt-3">
+                              
+                              <div class="row mx-0 mt-3">
                                 <label class="form-label fw-bold">Certifications</label>
                                 <div id="certificationRows"></div>
-                                <button type="button" id="addMoreCertfBtn" class="btn btn-outline-primary mt-3"><i class="fa fa-plus"></i>Add More</button>
+                                <button type="button" id="addMoreCertfBtn" class="btn btn-outline-primary" onclick="addCertfRow(-1)"><i class="fa fa-plus"></i>Add More</button>
                               </div>
-                            
-                            </div>
 
-                            <!-- ✅ Step 4 -->
-                            <div class="step step-4 d-none">
-                              <p>Step 4: Other Details (content here...)</p>
-                            </div>
-
-                            <!-- ✅ Step 5 -->
-                            <div class="step step-5 d-none">
-                              <p>Step 5: Uploads & Final Confirmation (content here...)</p>
                             </div>
 
                             <!-- ✅ Navigation Buttons -->
-                            <div class="d-flex justify-content-between mt-4">
-                              <button type="button" id="backBtn" class="btn btn-outline-secondary d-none">Back</button>
-                              <button type="button" id="nextBtn" class="btn btn-primary">Next Step</button>
-                              <button type="button" id="submitBtn" class="btn btn-success d-none">Submit</button>
-                            </div>
+                            <div class="d-flex-dk justify-content-between-dk mt-4">
+                              
+                              <input type="hidden" id="submitVal" name="submitVal" value="{{$cvdata->submit}}">
 
+                              <button type="button" id="backBtn" class="backBtn btn btn-outline-secondary d-none">Back</button>
+                              <button type="button" id="nextBtn" class="nextBtn btn btn-primary" data-txt="Next" data-loadingtxt="Next...">Next</button>
+                              <button type="button" id="submitBtn" class="submitBtn btn btn-success d-none" data-txt="Save" data-loadingtxt="Submit..." onclick="submitForm(this);">Submit</button>
+                            </div>
+                            
                           </div>
                         </div>
                       </form>
@@ -315,15 +207,6 @@
 </div>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  body {
-    font-family: "Inter", sans-serif;
-  }
   .formbold-main-wrapper {
     display: flex;
     align-items: center;
@@ -353,11 +236,12 @@
   .formbold-steps li {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 3px;
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
     color: #536387;
+    padding: 0px 5px 0px 5px;
   }
   .formbold-steps li span {
     display: flex;
@@ -486,19 +370,7 @@
   .formbold-back-btn.active {
     display: block;
   }
-  .formbold-btn {
-    /*display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 16px;
-    border-radius: 5px;
-    padding: 10px 25px;
-    border: none;
-    font-weight: 500;
-    background-color: #6A64F1;
-    color: white;
-    cursor: pointer;*/
-  }
+  
   .formbold-btn:hover {
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
   }
@@ -529,7 +401,7 @@
   }
 
   .language-label {
-    font-weight: bold;
+    /*font-weight: bold;*/
     margin-right: 10px;
   }
 
@@ -546,11 +418,14 @@
     width: 60px;
   }
 
-  .iconButton{
+  .iconButton {
     border: none;
     padding: 0;
     background: none;
-    cursor:pointer;
+    cursor: pointer;
+    position: absolute;
+    right: 30px;
+    z-index: 1;
   }
 
   .iconButton i.danger{
@@ -560,13 +435,51 @@
   .btn i{
     color:inherit;
   }
+
+  textarea{
+    resize: none;
+  }
+
+  .selection{
+    width: 100%;
+  }
+
+  .select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: solid #ced4da 1px !important;
+    outline: 0;
+  }
+
+  .skillLanguageRows{
+    width: 100%;
+  }
+
+  .backBtn{
+    float: left;
+  }
+  
+  .nextBtn, .submitBtn{
+    float: right;
+  }
 </style>
 @endsection
 @push("js")
 <script>
   
+  const resumeDataId = '<?php echo $resumeDataId; ?>';
+  const candidateId = '<?php echo $candidateId; ?>';
+  const profSummaryArr = '<?php echo $profSummaryArr; ?>';
+  const workExperienceArr = JSON.parse('<?php echo $workExperienceArr; ?>');
+  const skillsArr = JSON.parse('<?php echo $skillsArr; ?>');
+  const languagesArr = JSON.parse('<?php echo $languagesArr; ?>');
+  const degreeArr = JSON.parse('<?php echo $degreeArr; ?>');
+  const certificationsArr = JSON.parse('<?php echo $certificationsArr; ?>');
+  
+  let workExperienceIndex = 1;
+  let educationIndex = 1;
+  let CertificationIndex = 1;
+
   let currentStep = 1;
-  const totalSteps = 5;
+  const totalSteps = 3;
 
   const steps = document.querySelectorAll('.step');
   const indicators = document.querySelectorAll('.step-indicator');
@@ -575,18 +488,162 @@
   const nextBtn = document.getElementById('nextBtn');
   const submitBtn = document.getElementById('submitBtn');
 
+  var setSelectedSkills = [];
+  $(document).ready(function() {
+    
+    $("#gender").val("{{$basicProfile->gender}}");
+
+    $('#skills').select2({
+      placeholder: "Select skills",
+      allowClear: true,
+      multiple: true,
+      width: '100%',
+      dropdownParent: $('#skillsContainer'),
+      tokenSeparators: [','],
+    });
+    $('#skills').val(skillsArr).trigger('change'); // Set the preselected values
+    setSelectedSkills = skillsArr;
+    $('#skills').on('change', function () {
+        const selectedValues = $(this).val();
+        setSelectedSkills = selectedValues;
+    });
+
+    //add previous values
+    
+    if(workExperienceArr.length > 0){
+      //work experience row
+      $.each(workExperienceArr, function(i, v){
+        
+        var tmp_jobtitle = v.jobtitle;
+        var tmp_companyname = v.companyname;
+        var tmp_startdate = v.startdate;
+        var tmp_enddate = v.enddate;
+        var tmp_responsibilities = v.responsibilities;
+        var tmp_achievements = v.achievements;
+        
+        const workExperienceValues = {
+          "jobtitle" : tmp_jobtitle,
+          "companyname" : tmp_companyname,
+          "startdate" : tmp_startdate,
+          "enddate": tmp_enddate,
+          "responsibilities" : tmp_responsibilities,
+          "achievements":tmp_achievements
+        };
+        
+        workExperienceIndex++;
+        addWorkExpRow(workExperienceIndex, workExperienceValues);
+      });
+
+    }else{
+      // Add initial row
+      const workExperienceValues = {
+        "jobtitle":"",
+        "companyname":"",
+        "startdate":"",
+        "enddate":"",
+        "responsibilities":"",
+        "achievements":""
+      };
+
+      addWorkExpRow(workExperienceIndex, workExperienceValues);
+    }
+
+
+    if(degreeArr.length > 0){
+      //degree row
+      $.each(degreeArr, function(i, v){
+        
+        var tmp_degree = v.degree;
+        var tmp_schoolinstitution = v.schoolinstitution;
+        var tmp_startdate = v.startdate;
+        var tmp_enddate = v.enddate;
+        var tmp_fieldofstudy = v.fieldofstudy;
+        
+        const educationValues = {
+          "degree":tmp_degree,
+          "schoolinstitution":tmp_schoolinstitution,
+          "startdate":tmp_startdate,
+          "enddate":tmp_enddate,
+          "fieldofstudy":tmp_fieldofstudy,
+        };
+        
+        educationIndex++;
+        addEduRow(educationIndex, educationValues);
+      });
+
+    }else{
+      // Add initial row
+      const educationValues = {
+        "degree":"",
+        "schoolinstitution":"",
+        "startdate":"",
+        "enddate":"",
+        "fieldofstudy":"",
+      };
+
+      addEduRow(educationIndex, workExperienceValues);
+    }
+
+    if(certificationsArr.length > 0){
+      //certificate row
+      $.each(certificationsArr, function(i, v){
+        
+        var tmp_title = v.title;
+        var tmp_organization = v.organization;
+        var tmp_date = v.date;
+        
+        const certificationValues = {
+          "title":tmp_title,
+          "organization":tmp_organization,
+          "date":tmp_date
+        };
+        
+        CertificationIndex++;
+        addCertfRow(CertificationIndex, certificationValues);
+      });
+
+    }else{
+      // Add initial row
+      const certificationValues = {
+        "title":"",
+        "organization":"",
+        "date":""
+      };
+
+      addCertfRow(CertificationIndex, certificationValues);
+    }
+
+    
+    if(languagesArr.length > 0){
+      //language row
+      $.each(languagesArr, function(i, v){
+        var tmp_language = v.language;
+        $("#languageSelect").val(tmp_language).trigger('change');
+      });
+    }else{
+
+    }
+  });
+
+
   function updateStepDisplay() {
     steps.forEach((step, index) => {
       step.classList.toggle('d-none', index !== currentStep - 1);
     });
 
     indicators.forEach((ind, index) => {
-      ind.classList.remove('bg-primary', 'text-white');
-      if (index === currentStep - 1) {
-        ind.classList.add('bg-primary', 'text-white');
-      } else {
-        //ind.classList.add('bg-light', 'text-dark');
+      var prevStep = currentStep - 1;
+      
+      ind.classList.remove('recruit_blue', 'text-white');
+      ind.classList.add('bg-light', 'text-dark');
+      ind.parentElement.classList.remove('active');
+      if (index === prevStep) {
+
+        ind.parentElement.classList.add('active');
+        ind.classList.add('recruit_blue', 'text-white');
+        ind.classList.remove('bg-light', 'text-dark');  
       }
+
     });
 
     backBtn.classList.toggle('d-none', currentStep === 1);
@@ -596,8 +653,10 @@
 
   nextBtn.addEventListener('click', () => {
     if (currentStep < totalSteps) {
-      currentStep++;
-      updateStepDisplay();
+      if (validateForm()) {
+        currentStep++;
+        updateStepDisplay();
+      }
     }
   });
 
@@ -608,172 +667,238 @@
     }
   });
 
-  submitBtn.addEventListener('click', () => {
-    alert('Form submitted successfully!');
-    // Optionally: document.getElementById('multiStepForm').submit();
-  });
-
   // Initialize
   updateStepDisplay();
 
-  // ✅ Work Experience Logic
-  let workExperienceIndex = 1;
+  //Work Experience Logic
+  
+  function createWorkExperienceRow(index, dataValues) {
+    
+    var deleteButton = '';
+    if(index > 1){
+      deleteButton = `<button type="button" class="cur-p iconButton deleteRowBtn" onclick="deleteWorkExpRow(`+index+`)"><i class="danger fa fa-trash-o"></i></button>`;
+    }
 
-  function createWorkExperienceRow(index) {
     return `
-      <div class="border p-3 mb-3 rounded workExperienceRow">
-        <button type="button" class="cur-p iconButton deleteRowBtn"><i class="danger fa fa-trash-o"></i></button>
-        <div class="row">
+      <div id="workExperienceRow-`+index+`" class="border p-3 mb-3 rounded workExperienceRow">`+deleteButton+`<div class="row">
           <div class="col-md-6 mb-3">
             <label class="form-label">Job Title</label>
-            <input type="text" class="form-control" name="jobtitle-${index}">
+            <input type="text" class="form-control" name="jobtitle[]" value="`+dataValues.jobtitle+`">
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Company Name</label>
-            <input type="text" class="form-control" name="company-${index}">
+            <input type="text" class="form-control" name="jobcompany[]" value="`+dataValues.companyname+`">
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Start Date</label>
-            <input type="date" class="form-control" name="startdate-${index}">
+            <input type="date" class="form-control" name="jobstartdate[]" value="`+dataValues.startdate+`">
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">End Date</label>
-            <input type="date" class="form-control" name="enddate-${index}">
+            <input type="date" class="form-control" name="jobenddate[]" value="`+dataValues.enddate+`">
           </div>
-          <div class="col-12 mb-3">
+          <div class="col-6 mb-3">
             <label class="form-label">Responsibilities</label>
-            <input type="text" class="form-control" name="responsibilities-${index}">
+            <textarea class="form-control" rows="3" name="jobresponsibilities[]">`+dataValues.responsibilities+`</textarea>
           </div>
-          <div class="col-12 mb-3">
+          <div class="col-6 mb-3">
             <label class="form-label">Achievements (optional)</label>
-            <input type="text" class="form-control" name="achievements-${index}">
+            <textarea type="text" rows="3" class="form-control" name="jobachievements[]">`+dataValues.achievements+`</textarea>
           </div>
         </div>
       </div>
     `;
   }
 
-  document.getElementById('addMoreBtn').addEventListener('click', () => {
-    workExperienceIndex++;
-    document.getElementById('workExperienceRows')
-      .insertAdjacentHTML('beforeend', createWorkExperienceRow(workExperienceIndex));
-  });
-
-  document.getElementById('workExperienceRows').addEventListener('click', (e) => {
-    if (e.target.classList.contains('deleteRowBtn')) {
-      e.target.closest('.workExperienceRow').remove();
+  function addWorkExpRow(index, dataValues){
+    if(parseInt(index) < 0){
+      var index = workExperienceIndex;
+      index++;
     }
-  });
 
-  // Add initial row
-  document.getElementById('workExperienceRows').innerHTML = createWorkExperienceRow(workExperienceIndex);
+    if(!isRealValue(dataValues)){
+      var dataValues = {
+        "jobtitle":"",
+        "companyname":"",
+        "startdate":"",
+        "enddate":"",
+        "responsibilities":"",
+        "achievements":""
+      };
+    }
+    if(index == 0){
+      // Add initial row
+      document.getElementById('workExperienceRows').innerHTML = createWorkExperienceRow(index,dataValues);
+    }else{
+      //Add further rows
+      document.getElementById('workExperienceRows')
+      .insertAdjacentHTML('beforeend', createWorkExperienceRow(index,dataValues));
+    }
+  }
 
+  function deleteWorkExpRow(index){
+    document.getElementById("workExperienceRow-"+index).remove();
+  }
 
+  
   //Education Rows Logic
-  let educationIndex = 1;
-
-  function createEducationRow(index) {
+  function createEducationRow(index, dataValues) {
+    var deleteButton = '';
+    if(index > 1){
+      deleteButton = `<button type="button" class="cur-p iconButton deleteEduRowBtn" onclick="deleteEduRow(`+index+`)"><i class="danger fa fa-trash-o"></i></button>`;
+    }
+    
     return `
-      <div class="border p-3 mb-3 rounded educationRow">
-        <button type="button" class="cur-p iconButton deleteEduRowBtn"><i class="danger fa fa-trash-o"></i></button>
-        <div class="row">
+      <div id="educationRow-`+index+`" class="border p-3 mb-3 rounded educationRow">`+deleteButton +`<div class="row">
           <div class="col-md-6 mb-3">
             <label class="form-label">Degree/Certificate</label>
-            <input type="text" class="form-control" name="degree-certificate-${index}">
+            <input type="text" class="form-control" name="degree-certificate[]" value=`+dataValues.degree+`>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">School/Institution</label>
-            <input type="text" class="form-control" name="school-institution-${index}">
+            <input type="text" class="form-control" name="school-institution[]" value="`+dataValues.schoolinstitution+`">
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Start Date</label>
-            <input type="date" class="form-control" name="edustartdate-${index}">
+            <input type="date" class="form-control" name="edustartdate[]" value="`+dataValues.startdate+`">
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">End Date</label>
-            <input type="date" class="form-control" name="eduenddate-${index}">
+            <input type="date" class="form-control" name="eduenddate[]" value="`+dataValues.enddate+`">
           </div>
           <div class="col-12 mb-3">
             <label class="form-label">Field of Study</label>
-            <input type="text" class="form-control" name="field-of-study-${index}">
+            <input type="text" class="form-control" name="field-of-study[]" value="`+dataValues.fieldofstudy+`">
           </div>
         </div>
       </div>
     `;
   }
 
-  
-  document.getElementById('addMoreEduBtn').addEventListener('click', () => {
-    educationIndex++;
-    document.getElementById('educationRows')
-      .insertAdjacentHTML('beforeend', createEducationRow(educationIndex));
-  });
+  function addEduRow(index, dataValues){
 
-  document.getElementById('educationRows').addEventListener('click', (e) => {
-    if (e.target.classList.contains('deleteEduRowBtn')) {
-      e.target.closest('.educationRow').remove();
+    if(parseInt(index) < 0){
+      var index = educationIndex;
+      index++;
     }
-  });
 
-  // Add initial row
-  document.getElementById('educationRows').innerHTML = createEducationRow(educationIndex);
+    if(!isRealValue(dataValues)){
+      var dataValues = {
+        "degree":"",
+        "schoolinstitution":"",
+        "startdate":"",
+        "enddate":"",
+        "fieldofstudy":"",
+      };
+    }
 
+    if(index == 0){
+      // Add initial row
+      document.getElementById('educationRows').innerHTML = createEducationRow(index,dataValues);
+    }else{
+      //Add further rows
+      document.getElementById('educationRows')
+      .insertAdjacentHTML('beforeend', createEducationRow(index,dataValues));
+    }
 
+  }
+  
+  function deleteEduRow(index){
+    document.getElementById("educationRow-"+index).remove();
+  }
+ 
   //Certification Rows Logic
-  let CertificationIndex = 1;
-
-  function createCertificationRow(index) {
+  function createCertificationRow(index, dataValues) {
+    var deleteButton = '';
+    if(index > 1){
+      deleteButton = `<button type="button" class="cur-p iconButton deleteCertfRowBtn" onclick="deleteCertfRow(`+index+`)"><i class="danger fa fa-trash-o"></i></button>`;
+    }
+    
     return `
-      <div class="border p-3 mb-3 rounded certificationRow">
-        <button type="button" class="cur-p iconButton deleteCertfRowBtn"><i class="danger fa fa-trash-o"></i></button>
-        <div class="row">
+      <div id="certificationRow-`+index+`" class="border p-3 mb-3 rounded certificationRow">`+deleteButton+`<div class="row">
           <div class="col-md-4 mb-3">
             <label class="form-label">Title</label>
-            <input type="text" class="form-control" name="certification-title-${index}">
+            <input type="text" class="form-control" name="certification-title[]" value="`+dataValues.title+`">
           </div>
           <div class="col-md-4 mb-3">
             <label class="form-label">organization</label>
-            <input type="text" class="form-control" name="certification-organization-${index}">
+            <input type="text" class="form-control" name="certification-organization[]" value="`+dataValues.organization+`">
           </div>
           <div class="col-md-4 mb-3">
             <label class="form-label">Date</label>
-            <input type="date" class="form-control" name="certification-date-${index}">
+            <input type="date" class="form-control" name="certification-date[]" value="`+dataValues.date+`">
           </div>
         </div>
       </div>
     `;
   }
+  
+  function addCertfRow(index, dataValues){
+    if(parseInt(index) < 0){
+      var index = educationIndex;
+      index++;
+    }
+
+    if(!isRealValue(dataValues)){
+      var dataValues = {
+        "title":"",
+        "organization":"",
+        "date":""
+      };
+    }
+
+    if(index == 0){
+      // Add initial row
+      document.getElementById('certificationRows').innerHTML = createCertificationRow(index,dataValues);
+      
+    }else{
+      //Add further rows
+      document.getElementById('certificationRows')
+      .insertAdjacentHTML('beforeend', createCertificationRow(index,dataValues));
+    }
+  }
+
+  function deleteCertfRow(index){
+    document.getElementById("certificationRow-"+index).remove();
+  }
 
   
-  document.getElementById('addMoreCertfBtn').addEventListener('click', () => {
-    CertificationIndex++;
-    document.getElementById('certificationRows')
-      .insertAdjacentHTML('beforeend', createCertificationRow(CertificationIndex));
-  });
-
-  document.getElementById('certificationRows').addEventListener('click', (e) => {
-    if (e.target.classList.contains('deleteCertfRowBtn')) {
-      e.target.closest('.certificationRow').remove();
-    }
-  });
-
-  // Add initial row
-  document.getElementById('certificationRows').innerHTML = createCertificationRow(CertificationIndex);
-
-
   //Select Language logic
   const languageSelect = document.getElementById('languageSelect');
-    const selectedLanguagesDiv = document.getElementById('selectedLanguages');
-
-    function createProficiencyInput() {
-      const input = document.createElement('input');
-      input.type = 'number';
-      input.min = 1;
-      input.max = 10;
-      input.value = 1;
-      input.className = 'proficiency-input form-control';
-      return input;
+  const selectedLanguagesDiv = document.getElementById('selectedLanguages');
+    
+  function createProficiencyInput(lang) {
+    var profVal = 1;
+    //selectedLanguage
+    if(languagesArr.length > 0){
+    
+      $.each(languagesArr, function(i, v){
+        var tmp_language = v.language;
+        var tmp_proficiency = v.proficiency;
+        if(tmp_language.toLowerCase() == lang.toLowerCase()){
+          profVal = tmp_proficiency;
+        }
+      });
+    
     }
+
+    const input = document.createElement('select');
+    input.name = 'languageProficiency[]';
+    input.className = 'proficiency-input form-control col-md-4xx';
+    input.style.setProperty("width", "auto");
+    input.innerHTML = `<option value="0">--Select Proficiency--</option><option value="1">Beginner</option><option value="2">Intermediate</option><option value="3">Advanced</option>`;
+    input.value = profVal;
+    return input;
+    
+    /*const input = document.createElement('input');
+    input.type = 'number';
+    input.name = 'languageProficiency[]';
+    input.min = 1;
+    input.max = 10;
+    input.value = profVal;
+    input.className = 'proficiency-input form-control col-md-4';
+    return input;*/
+  }
 
     function restoreLanguageToDropdown(language) {
       const option = document.createElement('option');
@@ -789,34 +914,302 @@
       options.forEach(opt => languageSelect.appendChild(opt));
     }
 
-    languageSelect.addEventListener('change', function () {
-      const selectedLanguage = this.value;
+    function handleLanguageChange() {
+      const selectedLanguage = $('#languageSelect').val();
       if (!selectedLanguage) return;
 
-      const row = document.createElement('div');
-      row.className = 'row';
+      const row = $('<div>', { class: 'row mb-2' });
 
-      const label = document.createElement('span');
-      label.className = 'language-label';
-      label.textContent = selectedLanguage;
+      const label = $('<span>', { 
+          class: 'language-label col-md-3',
+          text: selectedLanguage
+      });
 
-      const proficiencyInput = createProficiencyInput();
+      const input = $('<input>', {
+          type: 'hidden',
+          name: 'language[]',
+          value: selectedLanguage
+      });
 
-      const removeBtn = document.createElement('button');
-      removeBtn.className = 'cur-p iconButton ml-3';
-      removeBtn.innerHTML = '<i class="danger fa fa-trash-o"></i>';
-      removeBtn.onclick = () => {
-        selectedLanguagesDiv.removeChild(row);
-        restoreLanguageToDropdown(selectedLanguage);
+      const proficiencyInput = createProficiencyInput(selectedLanguage); // Assuming this function is defined elsewhere
+
+      const removeBtn = $('<button>', {
+          class: 'cur-p iconButton ml-3',
+          html: '<i class="danger fa fa-trash-o"></i>',
+          click: function() {
+              row.remove();
+              restoreLanguageToDropdown(selectedLanguage); // Assuming this function is defined elsewhere
+          }
+      });
+
+      row.append(label, input, proficiencyInput, removeBtn);
+
+      // Make sure selectedLanguagesDiv is selected as a jQuery object
+      const selectedLanguagesDiv = $('#selectedLanguages'); // Assuming this is the ID of the container div
+      selectedLanguagesDiv.append(row); // Append row properly
+
+      // Remove the selected language from the dropdown
+      $('#languageSelect option[value="' + selectedLanguage + '"]').remove();
+      
+      // Clear the select box value
+      $('#languageSelect').val('');
+    }
+
+
+    //validate form
+    // Function to validate step 1 fields
+    function validateStep1() {
+      const fullname = document.getElementById("fullname").value;
+      const gender = document.getElementById("gender").value; 
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const address1 = document.getElementById("address1").value;
+      const city = document.getElementById("city").value;
+      const country = document.getElementById("country").value;
+      
+      if(!isRealValue(fullname)) {
+        var err = 1;
+        var msg = "Full Name is required.";
+        showToast(err,msg);
+        return false; 
+      }else if(!isRealValue(gender) || parseInt(gender) == 0){
+        var err = 1;
+        var msg = "Gender is required.";
+        showToast(err,msg);
+        return false;
+      }else if(!isRealValue(email)){
+        var err = 1;
+        var msg = "Email is required.";
+        showToast(err,msg);
+        return false;
+      }else if(!isRealValue(phone)){
+        var err = 1;
+        var msg = "Phone is required.";
+        showToast(err,msg);
+        return false;
+      }else if(!isRealValue(address1)){
+        var err = 1;
+        var msg = "Address Line 1 is required.";
+        showToast(err,msg);
+        return false;
+      }else if(!isRealValue(city)){
+        var err = 1;
+        var msg = "City is required.";
+        showToast(err,msg);
+        return false;
+      }else if(!isRealValue(country)){
+        var err = 1;
+        var msg = "Country is required.";
+        showToast(err,msg);
+        return false;
+      }else{
+        return true;
+      }
+
+      /*if (!fullname || !email || !phone || !gender) {
+        alert("Please fill in all required fields in Step 1.");
+        return false;
+      }
+      
+      // Simple email validation
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
+        alert("Please enter a valid email.");
+        return false;
+      }
+      
+      // Simple phone number validation (basic)
+      const phoneRegex = /^\d{10}$/;
+      if (!phoneRegex.test(phone)) {
+        alert("Please enter a valid phone number.");
+        return false;
+      }
+      
+      return true;*/
+    }
+
+    // Function to validate step 2 fields
+    function validateStep2() {
+
+      const professionalsummary = document.getElementById("professionalsummary").value;
+      
+      if(!isRealValue(professionalsummary)) {
+        var err = 1;
+        var msg = "Professional summary is required.";
+        showToast(err,msg);
+        return false; 
+      }
+
+      // Check work experience fields (at least one row should have data)
+      const workExperienceRows = document.querySelectorAll(".workExperienceRow");
+      let validWorkExp = false;
+      workExperienceRows.forEach(row => {
+        const jobtitle = row.querySelector("input[name='jobtitle[]']").value;
+        const jobcompany = row.querySelector("input[name='jobcompany[]']").value;
+        const jobstartdate = row.querySelector("input[name='jobstartdate[]']").value;
+        const jobenddate = row.querySelector("input[name='jobenddate[]']").value;
+
+        if (jobtitle && jobcompany && jobstartdate && jobenddate) {
+          validWorkExp = true;
+        }
+      });
+      
+      if (!validWorkExp) {
+        var err = 1;
+        var msg = "Please provide at least one work experience.";
+        showToast(err,msg);
+        return false; 
+      }
+      
+      var submit = $("submitVal").val();
+      
+      var requrl = "candidate/updateresume";
+      var postdata = {
+        "formData" : $("#multiStepForm").serialize(),
+        "skills":setSelectedSkills,
+        "submit":submit
       };
+      
+      callajax(requrl, postdata, function(resp){});  
 
-      row.appendChild(label);
-      row.appendChild(proficiencyInput);
-      row.appendChild(removeBtn);
-      selectedLanguagesDiv.appendChild(row);
+      return true;
 
-      this.querySelector(`option[value="${selectedLanguage}"]`).remove();
-      this.value = '';
-    });
+    }
+
+    // Function to validate step 3 fields
+    function validateStep3() {
+      const skills = document.getElementById("skills").value;
+      const languageSelect = document.getElementById("languageSelect").value;
+      
+      if(setSelectedSkills.length == 0){
+        var err = 1;
+        var msg = "Please select at least one skill.";
+        showToast(err,msg);
+        return false;
+      }
+
+      const languageLabel = document.querySelectorAll(".language-label");
+      if(languageLabel.length == 0){
+        var err = 1;
+        var msg = "Please select at least one language.";
+        showToast(err,msg);
+        return false;
+      }
+
+
+      // Validate proficiency inputs
+      const proficiencyInputs = document.querySelectorAll(".proficiency-input");
+      let validProficiency = true;
+      proficiencyInputs.forEach(input => {
+        const proficiency = input.value;
+        if (!proficiency || proficiency < 1 || proficiency > 10) {
+          validProficiency = false;
+        }
+      });
+      
+      if (!validProficiency) {
+        var err = 1;
+        var msg = "Please select a proficiency for each language.";
+        showToast(err,msg);
+        return false;
+      }
+      
+      // Check education fields (at least one row should have data)
+      const educationRows = document.querySelectorAll(".educationRow");
+      let validEducationRow = false;
+      educationRows.forEach(row => {
+        const certificate = row.querySelector("input[name='degree-certificate[]']").value;
+        const institution = row.querySelector("input[name='school-institution[]']").value;
+        const edustartdate = row.querySelector("input[name='edustartdate[]']").value;
+        const jobenddate = row.querySelector("input[name='eduenddate[]']").value;
+        const fieldOfStudy = row.querySelector("input[name='field-of-study[]']").value;
+        
+        if (certificate && institution && edustartdate && jobenddate && fieldOfStudy) {
+          validEducationRow = true;
+        }
+      });
+      
+      if (!validEducationRow) {
+        var err = 1;
+        var msg = "Please provide at least one education.";
+        showToast(err,msg);
+        return false; 
+      }
+
+
+      // Check certification fields (at least one row should have data)
+      const certificationRows = document.querySelectorAll(".certificationRow");
+      let validCertificationRow = false;
+      certificationRows.forEach(row => {
+        const certificationTitle = row.querySelector("input[name='certification-title[]']").value;
+        const certificationOrganization = row.querySelector("input[name='certification-organization[]']").value;
+        const certificationDate = row.querySelector("input[name='certification-date[]']").value;
+        
+        if (certificationTitle && certificationOrganization && certificationDate) {
+          validCertificationRow = true;
+        }
+      });
+      
+      if (!validCertificationRow) {
+        var err = 1;
+        var msg = "Please provide at least one Certification.";
+        showToast(err,msg);
+        return false; 
+      }
+
+      return true;
+    }
+
+    // Function to validate the entire form before submission
+    function validateForm() {
+      if (currentStep === 1 && !validateStep1()) return false;
+      if (currentStep === 2 && !validateStep2()) return false;
+      if (currentStep === 3 && !validateStep3()) return false;
+      return true;
+    }
+
+    function submitForm(elm){
+
+      if (!validateForm()) return;
+
+      var elmId = $(elm).attr("id");
+      
+      if(elmId == "submitBtn"){
+        var submit = 1;
+      }else{
+        var submit = 0;
+      }
+
+      $("submitVal").val(submit);
+
+      $(elm).attr("disabled",true);
+      
+      var orgTxt = $(elm).attr("data-txt");
+      var loadingTxt = $(elm).attr("data-loadingtxt");
+      
+      showLoader(elmId,loadingTxt);
+
+      var requrl = "candidate/updateresume";
+      
+      var postdata = {
+        "formData" : $("#multiStepForm").serialize(),
+        "skills":setSelectedSkills,
+        "submit":submit
+      };
+      
+      callajax(requrl, postdata, function(resp){
+          $(elm).removeAttr("disabled");
+          hideLoader(elmId,orgTxt);
+          
+          var err = 1;
+          if(resp.C == 100){
+              err = 0;
+          }
+          
+          var msg = resp.M;
+          showToast(err,msg);
+          
+      });   
+    }
 </script>
 @endpush

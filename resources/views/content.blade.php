@@ -36,7 +36,7 @@
                   <li>
                     <a
                       href="javascript:boid(0)"
-                      class="video-popup flex items-center gap-4 rounded-md bg-primary-color/[0.15] px-5 py-3 text-base font-medium text-primary-color hover:bg-primary-color hover:text-primary md:px-7 md:py-[14px]"
+                      class="video-popup-dk flex items-center gap-4 rounded-md bg-primary-color/[0.15] px-5 py-3 text-base font-medium text-primary-color hover:bg-primary-color hover:text-primary md:px-7 md:py-[14px]"
                       role="button"
                       ><i class="lni lni-play text-lg/none"></i> Watch How to Use Video</a
                     >
@@ -180,7 +180,7 @@
                   <p>
                     For candidates, we provide a platform to showcase your skills and professionalism directly to employers, increasing your chances of landing your dream job. We are passionate about building trust, transparency, and opportunity. Our system ensures that only active and ready-to-work candidates are visible, saving recruiters valuable time and effort.
                   </p>
-                  
+                  <p><a href="http://smarttechnology.ng/" target="_blank">Read about Smart Technology Board of Directors</a></p>
                 </div>
 
                 <div
@@ -211,6 +211,60 @@
           </div>
         </div>
       </section>
+
+      <!-- advertisement swiper -->
+      <section id="advertisement" class="section-area">
+        <div class="container">
+          <div class="swiper advertisement-carousel common-carousel scroll-revealed">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div
+                  class="rounded-xl-dk bg-body-light-1 dark:bg-body-dark-12/10 px-5-dk py-8-dk shadow-card-2 sm:px-8-dk"
+                >
+                  <figure class="flex-dk items-center gap-4">
+                    <div class="h-[500px] w-[700px] overflow-hidden">
+                      <img
+                        src="{{url('images/advertisement/ad-1.jpg')}}"
+                        alt=""
+                        class="h-full w-full rounded-full-dk object-cover-dk"
+                      />
+                    </div>
+                  </figure>
+                </div>
+              </div>
+
+              <div class="swiper-slide">
+                <div
+                  class="rounded-xl-dk bg-body-light-1 dark:bg-body-dark-12/10 px-5-dk py-8-dk shadow-card-2 sm:px-8-dk"
+                >
+                  <figure class="flex-dk items-center gap-4">
+                    <div class="h-[500px] w-[700px] overflow-hidden">
+                      <img
+                        src="{{url('images/advertisement/ad-2.jpg')}}"
+                        alt=""
+                        class="h-full w-full rounded-full-dk object-cover-dk"
+                      />
+                    </div>
+                  </figure>
+                </div>
+              </div>
+            </div>
+
+            <!--
+            <div class="mt-[60px] flex items-center justify-center gap-1">
+              <div class="swiper-button-prev">
+                <i class="lni lni-arrow-left"></i>
+              </div>
+              <div class="swiper-button-next">
+                <i class="lni lni-arrow-right"></i>
+              </div>
+            </div>
+            -->
+          </div>
+        </div>
+      </section>
+      <!-- advertisement section -->
+
 
       <!-- how to use section -->
       <section id="howtouse" class="section-area">
@@ -369,7 +423,7 @@
             />
             <a
               href="javascript:void(0)"
-              class="video-popup w-[80px] h-[80px] rounded-full inline-flex items-center justify-center bg-primary text-primary-color text-[1.875rem] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-md hover:bg-primary-color hover:text-primary hover:shadow-xl focus:bg-primary-color focus:text-primary focus:shadow-xl"
+              class="video-popup-dk w-[80px] h-[80px] rounded-full inline-flex items-center justify-center bg-primary text-primary-color text-[1.875rem] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-md hover:bg-primary-color hover:text-primary hover:shadow-xl focus:bg-primary-color focus:text-primary focus:shadow-xl"
             >
               <i class="lni lni-play"></i>
             </a>
@@ -2049,5 +2103,34 @@
 
 @endsection
 @push("js")
-<script></script>
+
+<script>
+  // Advertisement
+  const AdvertisementSwiper = new Swiper(".advertisement-carousel", {
+        slidesPerView: 1,
+        spaceBetween: 30,
+
+        /*navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },*/
+
+        breakpoints: {
+          640: {
+            slidesPerView: 1,
+            spaceBetween: 30,
+          },
+          1024: {
+            slidesPerView: 1,
+            spaceBetween: 30,
+          },
+          1280: {
+            slidesPerView: 1,
+            spaceBetween: 30,
+          },
+        },
+
+        autoplay:true,
+      });
+</script>
 @endpush

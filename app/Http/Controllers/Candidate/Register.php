@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\Users_model;
+use App\Models\CandidateResumeData_model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\EmailHelper;
 
 class Register extends Controller
 {
@@ -25,7 +27,7 @@ class Register extends Controller
         $password = $request->input("password");
         $password = md5($password);
 
-        $userObj = Users_model::where('email', $email)->where('password', $password)->first();
+        $userObj = Users_model::where('email', $email)->where('password', $password)->where('role', 1)->first();
             
         if (!empty($userObj)){
             $userId = $userObj["id"];
@@ -35,12 +37,14 @@ class Register extends Controller
                 $lname = $userObj["lname"];
                 $email = $userObj["email"];
                 $role = $userObj["role"];
-                
+                $referral_code =  $userObj["referral_code"];
+
                 $this->setSession('fname', $fname);
                 $this->setSession('lname', $lname);
                 $this->setSession('email', $email);
                 $this->setSession('id', $userId);
                 $this->setSession('role', $role);
+                $this->setSession('referral_code', $referral_code);
                 $this->setSession('systemAdmin', 0);
                 
                 $response = array("C" => 100, "R" => array(), "M" => "Login successful! Redirecting...");
@@ -87,12 +91,15 @@ class Register extends Controller
 
         }else{
             
+            $referralCode = generateModelUniqueCode(Users_model::class, 'referral_code');
+
             $id = db_randnumber();
             $createdDateTime = date("Y-m-d H:i:s");
             $updatedDateTime = date("Y-m-d H:i:s");
 
             $UserObj = new Users_model();
             $UserObj->id = $id;
+            $UserObj->referral_code = $referralCode;
             $UserObj->fname = $fname;  
             $UserObj->lname = $lname;
             $UserObj->email = $email;
@@ -111,6 +118,33 @@ class Register extends Controller
             $UserObj->updatedDateTime = $updatedDateTime;
             $saved = $UserObj->save();
             
+            if($saved){
+                $resumeDataObj = new CandidateResumeData_model();
+                $resumeDataObj->id = $id;
+                $resumeDataObj->candidateId = $id;
+                $resumeDataObj->profSummary = '';
+                $resumeDataObj->workExperience = '';
+                $resumeDataObj->skills = '';
+                $resumeDataObj->languages = '';
+                $resumeDataObj->degree = '';
+                $resumeDataObj->certifications = '';
+                $resumeDataObj->createdDateTime = $createdDateTime;
+                $resumeDataObj->updatedDateTime = $updatedDateTime;
+
+                
+                // send welcome email email
+                $param = [
+                    "firstName" => $fname,
+                    "lastName" => $lname,
+                    "email" => $email,
+                    "purpose" => "candidatewelcome"
+                ];
+
+                EmailHelper::sendEmail($param);
+                
+            }
+
+
             $postBackData = array();
             $postBackData["fname"] = $fname;
             $postBackData["lname"] = $lname;
@@ -137,5 +171,19 @@ class Register extends Controller
             Log::error('Database error in emailExist: ' . $e->getMessage());
             return 0;
         }
+    }
+
+    function logout(Request $request){
+        
+        $this->removeSession('fname');
+        $this->removeSession('lname');
+        $this->removeSession('email');
+        $this->removeSession('id');
+        $this->removeSession('role');
+        $this->removeSession('referral_code');
+        $this->removeSession('systemAdmin');
+
+        //redirect to login
+        return Redirect::to(url('/'));
     }
 }

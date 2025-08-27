@@ -1,5 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 
    if(!function_exists("db_randnumber")){
         function db_randnumber(){
@@ -202,6 +204,12 @@ use Illuminate\Support\Facades\Auth;
         }
     }
 
+    if(!function_exists('adImagesPath')){
+        function adImagesPath(){
+            return 'adImages/';
+        }
+    }
+
     if(!function_exists('userImagesPath')){
         function userImagesPath($adminId){
             return 'users/' . $adminId . '/assets/images/';
@@ -373,6 +381,54 @@ use Illuminate\Support\Facades\Auth;
             
             // Format the date into the desired format
             return $date->format('d F, Y h:i a');
+        }
+    }
+
+
+    if(!function_exists('calculateAge')){
+        function calculateAge($dob) {
+            // Create DateTime objects
+            $birthDate = new DateTime($dob);
+            $today = new DateTime();
+        
+            // Calculate the difference
+            $age = $today->diff($birthDate);
+        
+            // Return the age in years
+            return $age->y;
+        }
+    }
+
+    if(!function_exists('formatRevenue')){
+        function formatRevenue($amount) {
+            if ($amount >= 1_000_000_000) {
+                return number_format($amount / 1_000_000_000, 0) . 'B'; // Billions
+            } elseif ($amount >= 1_000_000) {
+                return number_format($amount / 1_000_000, 0) . 'M'; // Millions
+            } elseif ($amount >= 1_000) {
+                return number_format($amount / 1_000, 0) . 'K'; // Thousands
+            } else {
+                return number_format($amount, 0); // No suffix for values under 1000
+            }
+        }
+    }
+    
+    if (!function_exists('generateModelUniqueCode')) {
+        /**
+         * Generate a unique alphanumeric code for a given Eloquent model's column.
+         *
+         * @param string $modelClass Fully qualified model class (e.g., App\Models\User)
+         * @param string $column Column to ensure uniqueness on (e.g., 'referral_code')
+         * @param int $length Length of the generated code (default: 6)
+         * @return string
+         */
+        function generateModelUniqueCode(string $modelClass, string $column, int $length = 6): string
+        {
+            do {
+                $code = Str::random($length);
+            } while ($modelClass::where($column, $code)->exists());
+
+            return $code;
         }
     }
 

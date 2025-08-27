@@ -41,8 +41,8 @@
                 >
                   <li class="group relative">
                     <a
-                      href="#aboutus"
-                      class="ic-page-scroll mx-8 flex py-2 text-base font-medium text-body-light-12 group-hover:text-primary dark:text-body-dark-12 lg:mx-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-primary-color lg:dark:text-primary-color lg:group-hover:text-primary-color lg:group-hover:opacity-70 active"
+                      href="{{url('/aboutus')}}"
+                      class="ic-page-scroll mx-8 flex py-2 text-base font-medium text-body-light-12 group-hover:text-primary dark:text-body-dark-12 lg:mx-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-primary-color lg:dark:text-primary-color lg:group-hover:text-primary-color lg:group-hover:opacity-70 actived"
                       role="menuitem"
                       >About Us</a
                     >
@@ -50,7 +50,7 @@
 
                   <li class="group relative">
                     <a
-                      href="#howtouse"
+                      href="{{url('/howtouse')}}"
                       class="ic-page-scroll mx-8 flex py-2 text-base font-medium text-body-light-12 group-hover:text-primary dark:text-body-dark-12 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-primary-color lg:dark:text-primary-color lg:group-hover:text-primary-color lg:group-hover:opacity-70"
                       role="menuitem"
                       >How to Use</a
@@ -64,7 +64,7 @@
                       role="menuitem"
                       >Portfolio</a
                     >
-                  </li>-->
+                  </li>
 
                   <li class="group relative">
                     <a
@@ -73,7 +73,7 @@
                       role="menuitem"
                       >Pricing</a
                     >
-                  </li>
+                  </li>-->
                   <!--
                   <li class="group relative">
                     <a
@@ -104,12 +104,9 @@
                 data-web-trigger="web-theme"
               ></button>
               <div class="hidden sm:flex">
-                <a
-                  href="javascript:void(0)" onclick="getStarted();"
+                <a href="javascript:void(0)" onclick="getStarted();"
                   class="btn-navbar ml-5 px-6 py-3 rounded-md bg-primary-color bg-opacity-20 text-base font-medium text-primary-color hover:bg-opacity-100 hover:text-primary"
-                  role="button"
-                  >Get Started</a
-                >
+                  role="button">Get Started</a>
               </div>
             </div>
           </div>

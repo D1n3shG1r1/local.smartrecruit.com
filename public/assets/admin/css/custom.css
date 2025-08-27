@@ -4,6 +4,34 @@
 
 /** ADD YOUR AWESOME CODES HERE **/
 
+.recruit_blue{
+    background:#155ed2 !important;
+}
+
+.recruit_blue_text{
+    color:#155ed2 !important;
+}
+
+.btn-primary{
+    background-color:#155ed2 !important;
+    border-color:#155ed2 !important;
+ }
+
+ .btn-outline-primary{
+    color:#155ed2;
+    border-color:#155ed2 !important;
+ }
+
+ .btn-outline-primary:hover {
+    color: #fff;
+    background-color: #155ed2;
+    border-color: #155ed2;
+}
+
+.icon_info span.badge {
+    background: #155ed2;
+}
+
 .logoblack{height: 42px;}
 
 .hideMe{display:none;}
@@ -32,6 +60,7 @@
     position: fixed;
     right: 10px;
     bottom: 10px;
+    z-index: 1050;
 }
 
 .profilePhotoCamera{
@@ -452,4 +481,84 @@ a, a:hover{
 .spinner-grow-sm {
     width: 1.5rem;
     height: 1.5rem;
+}
+
+.counter_section_padding{
+    padding: 30px 13px;
+}
+
+/* toggle switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 65px;
+    height: 30px;
+  }
+  
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+    font-family: sans-serif;
+    font-size: 14px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding-left: 30px;
+  }
+  
+  input:checked + .toggle-slider {
+    background-color: #155ed2;
+    justify-content: right;
+    padding-right: 30px;
+  }
+  
+  .toggle-slider:before {
+    content: "";
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+  }
+  
+  input:checked + .toggle-slider:before {
+    transform: translateX(36px);
+  }
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    background-color: #000;
+    display: none;
+}
+
+.modal-backdrop.show {
+    opacity: .5;
+    display: block;
+}
+
+.fade.show {
+    opacity: 1;
+    display: block;
 }

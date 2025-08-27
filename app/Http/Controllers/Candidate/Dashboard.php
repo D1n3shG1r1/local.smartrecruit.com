@@ -5,6 +5,14 @@ namespace App\Http\Controllers\Candidate;
 use App\Http\Controllers\Candidate\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\Users_model;
+use App\Models\shortlistCandidates_model;
+use App\Models\purchasedCandidates_model;
+use App\Models\Notification_model;
+//use App\Models\Package_model;
+use App\Models\FeaturedCandidate_model;
+use Carbon\Carbon;
+
 class Dashboard extends Controller
 {
     var $USERID = 0;
@@ -17,8 +25,108 @@ class Dashboard extends Controller
     function dashboard(Request $request){
         if($this->USERID > 0){
             
+            $userId = $this->USERID;
+            
+            
+            //bookmarks graph
+            // Get the current date
+            $currentDate = Carbon::now();
+
+            // Define the start and end of the current week (Sunday to Saturday)
+            $startOfWeek = $currentDate->copy()->startOfWeek(); // Sunday
+            $endOfWeek = $currentDate->copy()->endOfWeek();     // Saturday
+
+            // Get all bookmarks for the current week for the recruiter
+            $bookmarksChartDataObj = shortlistCandidates_model::where("candidateId", $userId)
+            ->whereBetween('created_at', [$startOfWeek, $endOfWeek])
+            ->get();
+
+            // Initialize array for weekly counts by day
+            $bookmarkByDay = [
+                'Sunday' => 0,
+                'Monday' => 0,
+                'Tuesday' => 0,
+                'Wednesday' => 0,
+                'Thursday' => 0,
+                'Friday' => 0,
+                'Saturday' => 0,
+            ];
+
+            // Loop through each bookmark and increment count based on day of the week
+            foreach ($bookmarksChartDataObj as $bkmrk) {
+                $dayOfWeek = Carbon::parse($bkmrk->created_at)->format('l'); // e.g., "Monday"
+                if (isset($bookmarkByDay[$dayOfWeek])) {
+                    $bookmarkByDay[$dayOfWeek]++;
+                }
+            }
+
+            // Final chart data for frontend (labels & values)
+            $bookmarksChartData = [
+                'labels' => array_keys($bookmarkByDay),
+                'values' => array_values($bookmarkByDay),
+            ];
+
+
+            //purchased graph
+            // Get the current date
+            $currentDate = Carbon::now();
+
+            // Define the start and end of the current week (Sunday to Saturday)
+            $startOfWeek = $currentDate->copy()->startOfWeek(); // Sunday
+            $endOfWeek = $currentDate->copy()->endOfWeek();     // Saturday
+
+            // Get all bookmarks for the current week for the recruiter
+            $purchasedChartDataObj = purchasedCandidates_model::where("candidateId", $userId)
+            ->whereBetween('created_at', [$startOfWeek, $endOfWeek])
+            ->get();
+
+            // Initialize array for weekly counts by day
+            $purchasedByDay = [
+                'Sunday' => 0,
+                'Monday' => 0,
+                'Tuesday' => 0,
+                'Wednesday' => 0,
+                'Thursday' => 0,
+                'Friday' => 0,
+                'Saturday' => 0,
+            ];
+
+            // Loop through each bookmark and increment count based on day of the week
+            foreach ($purchasedChartDataObj as $prchsd) {
+                $dayOfWeek = Carbon::parse($prchsd->created_at)->format('l'); // e.g., "Monday"
+                if (isset($purchasedByDay[$dayOfWeek])) {
+                    $purchasedByDay[$dayOfWeek]++;
+                }
+            }
+
+            // Final chart data for frontend (labels & values)
+            $purchasedChartData = [
+                'labels' => array_keys($purchasedByDay),
+                'values' => array_values($purchasedByDay),
+            ];
+
+
+            //notification count 
+            $notificationsCount = Notification_model::where('receiver', $userId)
+            ->where('isRead', 0)
+            ->count();
+
+            //current package
+            $currentPlan = FeaturedCandidate_model::where("userId", $userId)->first();
+            
+            //purchased/bookmarks count
+            $bookmarksCount = shortlistCandidates_model::where("candidateId", $userId)->count();
+            
+            $purchaseCount = purchasedCandidates_model::where("candidateId", $userId)->count();
+            
             $data = array();
             $data["pageTitle"] = "Dashboard";
+            $data["purchaseCount"] = $purchaseCount;
+            $data["bookmarksCount"] = $bookmarksCount;
+            $data["currentPlan"] = $currentPlan;
+            $data["notificationsCount"] = $notificationsCount;
+            $data["bookmarksChartData"] = $bookmarksChartData;
+            $data["purchasedChartData"] = $purchasedChartData;
             
             return View("candidate.dashboard",$data);
 

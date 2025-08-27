@@ -74,6 +74,7 @@ webTheme.addEventListener("click", function () {
   html.dataset.webTheme = theme;
 });
 
+/*
 // Scrollspy
 function scrollspy(event) {
   var links = document.querySelectorAll(".ic-page-scroll"),
@@ -104,6 +105,7 @@ function scrollspy(event) {
 
 window.document.addEventListener("scroll", scrollspy);
 
+
 // Menu scroll
 const pageLink = document.querySelectorAll(".ic-page-scroll");
 
@@ -125,7 +127,7 @@ pageLink.forEach((link) => {
       : '<i class="lni lni-menu"></i>';
   });
 });
-
+*/
 // Tabs
 const tabs = document.querySelectorAll(".tabs");
 

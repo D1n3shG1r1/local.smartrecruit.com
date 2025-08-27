@@ -1,6 +1,6 @@
 <!-- Footer -->
 <!--<footer class="bg-primary-dark-2 text-white">-->
-<footer style="padding-bottom:unset;" class="section-area !bg-primary !text-primary-color">
+<footer style="padding-bottom: unset; padding-top: 1rem;" class="section-area !bg-primary !text-primary-color">
       <div class="container dk-py-20 dk-lg:py-[100px]">
         <div class="row">
           <div class="col-12 order-first lg:col-12">
@@ -8,8 +8,10 @@
               <a href="." class="inline-block mb-5">
                 <img class="w-full fill-current" style="width: 220px;" id="NavbarBrand" data-name="NavbarBrand" src="{{url('images/logo.png')}}" alt="Smart Recruit"/>
               </a>
+              <a href="javascript:void(0);" style="float: right;" onclick="adminStarted();"><img src="{{url('images/NDPC.png')}}" class="image wp-image-21834  attachment-full size-full" alt="" style="max-width: 100%;height: auto;width: 200px;" decoding="async"></a>
+
               <div class="w-full">
-              <p class="mb-8 text-body-dark-1 sm:col-6">
+              <p class="text-body-dark-1 sm:col-6">
                 We redefine the hiring and job-seeking experience with a secure, efficient, and modern approach.
               </p>
               <p class="mb-8 text-body-dark-1 sm:col-6">
@@ -52,17 +54,17 @@
         </div>
       </div>
       <div class="w-full border-t border-solid border-alpha-dark"></div>
-      <div class="container py-8">
+      <div class="container py-2">
         <div class="flex flex-wrap">
           <div class="w-full md:w-1/2">
             <div class="my-1">
               <div class="flex flex-wrap justify-center gap-x-3 md:justify-start">
 
-                <a href="#faq" role="menuitem" class="ic-page-scroll text-body-dark-1 hover:dtext-body-dark-12">FAQ</a>
+                <a href="{{url('/faq')}}" role="menuitem" class="ic-page-scroll text-body-dark-1 hover:text-body-dark-12 text-white">FAQ</a>
 
-                <a href="#privacypolicy" role="menuitem" class="ic-page-scroll text-body-dark-1 hover:dtext-body-dark-12">Privacy Policy</a>
+                <a href="{{url('/privacypolicy')}}" role="menuitem" class="ic-page-scroll text-body-dark-1 hover:text-body-dark-12 text-white">Privacy Policy</a>
                 
-                <a href="#termsandcondition" role="menuitem" class="ic-page-scroll text-body-dark-1 hover:dtext-body-dark-12">Terms and Conditions</a>
+                <a href="{{url('/pricing')}}" role="menuitem" class="ic-page-scroll text-body-dark-1 hover:text-body-dark-12 text-white">Pricing</a>
               </div>
             </div>
           </div>
@@ -70,7 +72,7 @@
           <div class="w-full md:w-1/2">
             <div class="my-1 flex justify-center md:justify-end">
               <p class="text-body-dark-1">
-                &#169; {{date("Y")}} SMART RECRUIT. All rights reserved.
+                &#169; {{date("Y")}} Smart Technology Services Ltd. All rights reserved.
               </p>
             </div>
           </div>
@@ -290,6 +292,13 @@
     margin-top: unset;
   }
 
+
+  .forgotPasswordBtn{
+    float: left;
+    padding-left: 23px;
+    font-size: 13px;
+  }
+
 /* Responsive Adjustments */
 @media (max-width: 576px) {
   .modal-dialog {
@@ -383,7 +392,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title fs-5" id="staticBackdropLabel">Get Started</h4>
+        <h4 class="modal-title fs-5" id="staticBackdropLabel">Are you a Recruiter or Candidate?</h4>
         <button type="button" class="btn-close" onclick="closeGetStartedModal();" aria-label="Close"><i class="bi bi-x"></i></button>
       </div>
       <div class="modal-body">
@@ -398,6 +407,44 @@
     </div>
   </div>
 </div>
+
+<!--- Forgot password --->
+<div class="modal fade" id="forgotpasswordModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title fs-5" id="staticBackdropLabel">Forgot Password</h4>
+        <button type="button" class="btn-close" onclick="closeforgotpasswordModal();" aria-label="Close"><i class="bi bi-x"></i></button>
+      </div>
+      <div class="modal-body pt-0">
+        <div class="row"> 
+          <div id="forgotPasswordSection" class="forgotPasswordSection text-body-dark-1 sm:col-12 mt-unset">
+            <div class="text-center max-w-[550px] mx-auto hide">
+                  <h6 class="block text-lg font-normal text-primary">Forgot Password</h6>
+            </div>
+            <form class="flex flex-col gap-6">
+                
+                  <div class="col-12 md:col-12 mb-3">
+                    <input id="user_email" type="email" name="user_email" class="block w-full px-5 py-3 rounded-md border border-solid border-alpha-light dark:border-alpha-dark text-inherit text-base focus:border-primary" placeholder="Email" required="">
+                  </div>
+                  
+                  <div class="col-12 md:col-12" style="text-align: left;">  
+                    <!--A link to change your password has been sent to your registered email address.-->
+                    <span style="font-size: 12px;margin-top: 24px;float: left;">A link to change your password will be sent to your registered email address.</span>
+                    
+                    <button id="forgotPasswordLikBtn" type="button" class="inline-block px-5 py-3 rounded-md text-base bg-primary text-primary-color hover:bg-primary-light-10 dark:hover:bg-primary-dark-10 focus:bg-primary-light-10 dark:focus:bg-primary-dark-10" data-txt="Send" data-loadingtxt="Sending..." onclick="forgotpassword(this)" style="float: right;">Send</button>
+                    
+                  </div>
+                
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--- / - Forgot password --->
+
 
 <div class="modal fade" id="candidateModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -421,12 +468,14 @@
                   <div class="col-12 md:col-12">
                     <input id="loginpassword" type="password" name="loginpassword" class="block w-full px-5 py-3 rounded-md border border-solid border-alpha-light dark:border-alpha-dark text-inherit text-base focus:border-primary" placeholder="Password" required="">
                     <i toggle="loginpassword" class="passwordIcon bi bi-eye-slash"></i>
+                    <a href="javascript:void(0);" class="forgotPasswordBtn" onclick="openforgotpasswordModal()">Forgot password?</a>
+                    
                   </div>
                 
                   <div class="col-12 md:col-6">
-                  Not have an account? <a href="javascript:void(0);" onclick="notHaveAccountCandidate();">Register here</a>
+                  New to Smart Recruit? <a href="javascript:void(0);" onclick="notHaveAccountCandidate();">Join Now</a>
                   </div>
-                  <div class="col-12 md:col-6 text-right">
+                  <div class="col-6 md:col-6 text-right">
                     <button id="candidateLoginBtn" type="button" class="inline-block px-5 py-3 rounded-md text-base bg-primary text-primary-color hover:bg-primary-light-10 dark:hover:bg-primary-dark-10 focus:bg-primary-light-10 dark:focus:bg-primary-dark-10" data-txt="Login" data-loadingtxt="Logging In..." data-type="candidate" onclick="login(this)">
                       Login
                     </button>
@@ -512,10 +561,11 @@
                   <div class="col-12 md:col-12">
                     <input id="loginpasswordEmp" type="password" name="loginpasswordEmp" class="block w-full px-5 py-3 rounded-md border border-solid border-alpha-light dark:border-alpha-dark text-inherit text-base focus:border-primary" placeholder="Password" required="">
                     <i toggle="loginpasswordEmp" class="passwordIcon bi bi-eye-slash"></i>
+                    <a href="javascript:void(0);" class="forgotPasswordBtn" onclick="openforgotpasswordModal()">Forgot password?</a>
                   </div>
                 
                   <div class="col-12 md:col-6">
-                  Not have an account? <a href="javascript:void(0);" onclick="notHaveAccountEmployer();">Register here</a>
+                  New to Smart Recruit? <a href="javascript:void(0);" onclick="notHaveAccountEmployer();">Join Now</a>
                   </div>
                   <div class="col-12 md:col-6 text-right">
                     <button id="employerLoginBtn" type="button" class="inline-block px-5 py-3 rounded-md text-base bg-primary text-primary-color hover:bg-primary-light-10 dark:hover:bg-primary-dark-10 focus:bg-primary-light-10 dark:focus:bg-primary-dark-10" data-txt="Login" data-loadingtxt="Logging In..." data-type="employer" onclick="login(this)">
@@ -582,10 +632,74 @@
 </div>
 
 
+<div class="modal fade" id="adminStartedModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title fs-5" id="staticBackdropLabel">Admin</h4>
+        <button type="button" class="btn-close" onclick="closeAdminStartedModal();" aria-label="Close"><i class="bi bi-x"></i></button>
+      </div>
+      <div class="modal-body pt-0">
+        <div class="row"> 
+          <div id="adminLoginSection" class="loginSection text-body-dark-1 sm:col-12 mt-unset">
+            <div class="text-center max-w-[550px] mx-auto">
+                  <h6 class="block text-lg font-normal text-primary">LogIn</h6>
+            </div>
+            <form class="flex flex-col gap-6">
+                <div class="row">
+                  <div class="col-12 md:col-12">
+                    <input id="adm_login_email" type="email" name="adm_login_email" class="block w-full px-5 py-3 rounded-md border border-solid border-alpha-light dark:border-alpha-dark text-inherit text-base focus:border-primary" placeholder="Email" required="">
+                  </div>
+                
+                  <div class="col-12 md:col-12">
+                    <input id="loginpasswordAdm" type="password" name="loginpasswordAdm" class="block w-full px-5 py-3 rounded-md border border-solid border-alpha-light dark:border-alpha-dark text-inherit text-base focus:border-primary" placeholder="Password" required="">
+                    <i toggle="loginpasswordAdm" class="passwordIcon bi bi-eye-slash"></i>
+                  </div>
+                
+                  <div class="col-12 md:col-6">
+                  <!--You are logged in as an admin. <a href="javascript:void(0);" onclick="closeAdminStartedModal();">Go Back</a>-->
+                  </div>
+
+                  <div class="col-12 md:col-6 text-right">
+                    <button id="adminLoginBtn" type="button" class="inline-block px-5 py-3 rounded-md text-base bg-primary text-primary-color hover:bg-primary-light-10 dark:hover:bg-primary-dark-10 focus:bg-primary-light-10 dark:focus:bg-primary-dark-10" data-txt="Login" data-loadingtxt="Logging In..." data-type="admin" onclick="adminLogin(this)">
+                      Login
+                    </button>
+                  </div>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+      -->
+    </div>
+  </div>
+</div>
+
+
 <div class="modal-backdrop"></div>
+
+<!-- Zoho SalesIQ Live Chat Script -->
+<style>
+   .chat-iframe-wrap.zsiq-medium-size.chat-iframe-open{
+      bottom:115px !important;
+      height: 480px !important;
+   }
+   .zsiq-float{
+      bottom:60px !important;
+   }
+</style>
+<script>window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}</script><script id="zsiqscript" src="https://salesiq.zohopublic.com/widget?wc=siq2f563662f6b8f6926b0f7eb892d700d5169cedcfcc2bdf839cdedb97f5c3c4e4" defer></script>
+<!-- Zoho SalesIQ Live Chat Script -->
+
 <script>
 
 document.addEventListener("DOMContentLoaded", function () {
+
     document.querySelectorAll(".passwordIcon").forEach(function (toggle) {
         toggle.addEventListener("click", function () {
             this.classList.toggle("bi-eye");
@@ -602,8 +716,100 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+
+    document.querySelectorAll(".ChangePasswordIcon").forEach(function (toggle) {
+        toggle.addEventListener("click", function () {
+            this.classList.toggle("bi-eye");
+            this.classList.toggle("bi-eye-slash");
+
+            const selector = this.getAttribute("toggle");
+            const input = document.getElementById(selector);
+            if (input) {
+                if (input.type === "password") {
+                    input.type = "text";
+                } else {
+                    input.type = "password";
+                }
+            }
+        });
+    });
+    
 });
 
+
+function adminStarted(){
+  // Show the Get Started modal
+  document.getElementById("adminStartedModal").classList.add("show");
+  document.querySelector(".modal-backdrop").classList.add("show");
+}
+
+function closeAdminStartedModal() {
+    // Close the Get Started modal
+    document.getElementById("adminStartedModal").classList.remove("show");
+    document.querySelector(".modal-backdrop").classList.remove("show");
+}
+
+function adminLogin(elm){
+  var type = $(elm).attr("data-type");
+    var txt = $(elm).attr("data-txt");
+    var loadingtxt = $(elm).attr("data-loadingtxt");
+    
+    var email = $("#adm_login_email").val();
+    var password = $("#loginpasswordAdm").val();
+    var requrl = 'admin/login';
+  
+    
+    if (!isRealValue(email)) {
+      var err = 1;
+      var msg = 'Please enter your email.';
+      showToast(err,msg);
+      return false;
+    } else if (isRealValue(email) && !validateEmail(email)) {
+      var err = 1;
+      var msg = 'Please enter a valid email.';
+      showToast(err,msg);
+      return false;
+    } else if (!isRealValue(password)) {
+      var err = 1;
+      var msg = 'Please enter the password.';
+      showToast(err,msg);
+      return false;
+    }else{
+
+      var elmId = $(elm).attr("id");
+      $(elm).attr("disabled",true);
+      var orgTxt = $(elm).attr("data-txt");
+      var loadingTxt = $(elm).attr("data-loadingtxt");
+      showLoader(elmId,loadingTxt); 
+
+      var postData = {
+        "_token":CSRFTOKEN,
+        "type":type,
+        "email":email,
+        "password":password
+      };
+      
+      callajax(requrl, postData, function(resp){
+          
+          $(elm).removeAttr("disabled");
+          hideLoader(elmId,orgTxt);
+          var err = 0;
+          var msg = resp.M;
+
+          if(resp.C == 100){
+            err = 0;
+            setTimeout(function(){
+              
+              window.location.href = 'admin/dashboard';
+            }, 1000);
+          }else{
+            err = 1;
+          }
+          showToast(err,msg);
+      });
+
+    }
+}
 
 function getStarted() {
     // Show the Get Started modal
@@ -681,7 +887,7 @@ function login(elm){
     var type = $(elm).attr("data-type");
     var txt = $(elm).attr("data-txt");
     var loadingtxt = $(elm).attr("data-loadingtxt");
-
+    
     if(type == "candidate"){
       var email = $("#can_login_email").val();
       var password = $("#loginpassword").val();
@@ -691,7 +897,7 @@ function login(elm){
     if(type == "employer"){
       var email = $("#emp_login_email").val();
       var password = $("#loginpasswordEmp").val();
-      var requrl = 'employer/login';
+      var requrl = 'recruiter/login';
     }
   
     
@@ -741,7 +947,7 @@ function login(elm){
               }
               
               if(type == "employer"){
-                window.location.href = 'employer/dashboard';
+                window.location.href = 'recruiter/dashboard';
               }
               
             }, 1000);
@@ -778,9 +984,9 @@ function register(elm){
       var password = $("#regpasswordEmp").val();
       var confirmPassword = $("#confirmpasswordEmp").val();
       var agreeTerm = $("#emp_agree_term").is(":checked");
-      var requrl = 'employer/register';
+      var requrl = 'recruiter/register';
     }
-
+    
     var fnameObj = validateName(fname);
     var lnameObj = validateName(lname);
     var psswdValidObj = validatePassword(password);
@@ -900,4 +1106,70 @@ function register(elm){
     }
 
 }
+
+function openforgotpasswordModal(){
+  closecandidateModal();
+  closeemployerModal();
+  
+  document.getElementById("forgotpasswordModal").classList.add("show");
+  document.querySelector(".modal-backdrop").classList.add("show");
+}
+
+function closeforgotpasswordModal(){
+  // Close the Forgot Password modal
+  document.getElementById("forgotpasswordModal").classList.remove("show");
+  document.querySelector(".modal-backdrop").classList.remove("show");
+}
+
+function forgotpassword(elm){
+  var type = $(elm).attr("data-type");
+  var txt = $(elm).attr("data-txt");
+  var loadingtxt = $(elm).attr("data-loadingtxt");
+  var requrl = 'forgotpassword';
+  var email = $("#user_email").val();
+
+  if (!isRealValue(email)) {
+    var err = 1;
+    var msg = 'Please enter your email.';
+    showToast(err,msg);
+    return false;
+  } else if (isRealValue(email) && !validateEmail(email)) {
+    var err = 1;
+    var msg = 'Please enter a valid email.';
+    showToast(err,msg);
+    return false;
+  }else {
+    var elmId = $(elm).attr("id");
+    $(elm).attr("disabled",true);
+    var orgTxt = $(elm).attr("data-txt");
+    var loadingTxt = $(elm).attr("data-loadingtxt");
+    showLoader(elmId,loadingTxt); 
+
+    var postData = {
+      "_token":CSRFTOKEN,
+      "email":email
+    };
+    
+    callajax(requrl, postData, function(resp){
+        
+        
+        $(elm).removeAttr("disabled");
+        hideLoader(elmId,orgTxt);
+        var err = 0;
+        var msg = resp.M;
+
+        if(resp.C == 100){
+          err = 0;
+          
+        }else{
+          err = 1;
+        }
+        showToast(err,msg);
+        
+    });
+  }
+
+}
 </script>
+
+

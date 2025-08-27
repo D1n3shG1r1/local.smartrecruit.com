@@ -3,6 +3,10 @@ Theme ref: https://themewagon.github.io/inazuma-tailwind/
 Multi Select for Skills & Education
 https://coreui.io/bootstrap/docs/forms/multi-select/
 
+image sliders
+1. https://codepen.io/simranthapa/pen/eYmjYYw
+2. https://codepen.io/syahrizaldev/pen/xxxmdzw
+
 
 candidate list page:
 Featured-badge for featured candidates

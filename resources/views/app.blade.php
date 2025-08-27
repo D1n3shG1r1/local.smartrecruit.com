@@ -50,17 +50,18 @@
     <!--<link rel="canonical" href="https://ranyeh24.github.io/inazuma-tailwind" />-->
 
     <!-- Favicon -->
-    <link
+    <!--<link
       rel="apple-touch-icon"
       sizes="180x180"
       href="./assets/favicon/apple-touch-icon.png"
-    />
+    />-->
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="./assets/favicon/favicon-32x32.png"
+      href="./assets/favicon/favicon-32.png"
     />
+    <!--
     <link
       rel="icon"
       type="image/png"
@@ -85,6 +86,7 @@
       href="./assets/favicon/safari-pinned-tab.svg"
       color="#3d63dd"
     />
+    -->
 
     <!-- CSS Plugins -->
     <link
@@ -99,12 +101,12 @@
     <link rel="stylesheet" href="https://icons.getbootstrap.com/assets/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" />
   
-    @if(request()->is('employer/*') || request()->is('candidate/*') || request()->is('admin/*'))
+    @if(request()->is('recruiter/*') || request()->is('candidate/*') || request()->is('admin/*'))
     <link rel="stylesheet" href="{{ url('assets/admin/css/bootstrap.min.css'); }}">
     <link rel="stylesheet" href="{{ url('assets/admin/css/bootstrap-icons.css'); }}"></link>
     <link rel="stylesheet" href="{{ url('assets/admin/css/style.css'); }}">
     <link rel="stylesheet" href="{{ url('assets/admin/css/responsive.css'); }}">
-    <!--<link rel="stylesheet" href="{{ url('assets/admin/css/color_2.css'); }}">-->
+    <link rel="stylesheet" href="{{ url('assets/admin/css/color_2.css'); }}">
     <link rel="stylesheet" href="{{ url('assets/admin/css/bootstrap-select.css'); }}">
     <link rel="stylesheet" href="{{ url('assets/admin/css/perfect-scrollbar.css'); }}">
     <link rel="stylesheet" href="{{ url('assets/admin/css/custom.css'); }}">
@@ -139,7 +141,7 @@
 
     
 <!-- header -->
-@if(request()->is('employer/*'))
+@if(request()->is('recruiter/*'))
 @include("employer.header")
 @elseif(request()->is('candidate/*'))
 @include("candidate.header")
@@ -156,8 +158,9 @@
 
 <div id="toastMessage" class="toastMessage alert alert-danger" role="alert">This is a danger alert—check it out!</div>
 
-@if(!request()->is('employer/*') && !request()->is('candidate/*') && !request()->is('admin/*'))
-    <button
+@if(!request()->is('recruiter/*') && !request()->is('candidate/*') && !request()->is('admin/*'))
+<!--
+<button
       type="button"
       class="inline-flex w-12 h-12 rounded-md items-center justify-center text-lg/none bg-primary text-primary-color hover:bg-primary-light-10 dark:hover:bg-primary-dark-10 focus:bg-primary-light-10 dark:focus:bg-primary-dark-10 fixed bottom-[117px] right-[20px] hover:-translate-y-1 opacity-100 visible z-50 is-hided"
       data-web-trigger="scroll-top"
@@ -165,6 +168,7 @@
     >
       <i class="lni lni-chevron-up"></i>
     </button>
+-->
 @endif
 
     <script>
@@ -176,7 +180,7 @@
     <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
     <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
     
-    @if(request()->is('employer/*') || request()->is('candidate/*') || request()->is('admin/*'))
+    @if(request()->is('recruiter/*') || request()->is('candidate/*') || request()->is('admin/*'))
     <script src="{{ url('/assets/admin/js/popper.min.js') }}"></script>
     <script src="{{ url('/assets/admin/js/bootstrap.min.js') }}"></script>
     <!-- wow animation -->
@@ -215,7 +219,7 @@
     @endif
 
     <!-- footer -->
-    @if(request()->is('employer/*'))
+    @if(request()->is('recruiter/*'))
     @include("employer.footer")
     @elseif(request()->is('candidate/*'))
     @include("candidate.footer")
@@ -226,6 +230,11 @@
     @endif
     <!-- / footer -->
     
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script>
       // Scroll Reveal
       const sr = ScrollReveal({
@@ -240,7 +249,7 @@
       });
 
       // GLightBox
-      GLightbox({
+      /*GLightbox({
         selector: ".video-popup",
         href: "https://youtu.be/27tUOrx-o2w",
         type: "video",
@@ -253,10 +262,11 @@
         selector: ".portfolio-box",
         type: "image",
         width: 900,
-      });
+      });*/
 
       // Testimonial
-      const testimonialSwiper = new Swiper(".testimonial-carousel", {
+      //const testimonialSwiper = new Swiper(".testimonial-carousel", {
+      const testimonialSwiper = new Swiper(".advertisement-carousel", {
         slidesPerView: 1,
         spaceBetween: 30,
 
@@ -265,17 +275,26 @@
           prevEl: ".swiper-button-prev",
         },
 
+        autoplay: {
+          delay: 3000, // Slide change delay in milliseconds (3 seconds)
+          disableOnInteraction: false, // Keep autoplay running after user interaction
+        },
+
+        effect: 'slide',  // Slide effect (default)
+        speed: 600,  // Speed of slide transition in ms
+        slideToClickedSlide: true, // Allow clicking on a slide to navigate to it
+        
         breakpoints: {
           640: {
-            slidesPerView: 2,
+            slidesPerView: 1,
             spaceBetween: 30,
           },
           1024: {
-            slidesPerView: 3,
+            slidesPerView: 1,
             spaceBetween: 30,
           },
           1280: {
-            slidesPerView: 3,
+            slidesPerView: 1,
             spaceBetween: 30,
           },
         },
