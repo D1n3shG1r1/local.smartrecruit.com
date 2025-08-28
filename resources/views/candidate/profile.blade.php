@@ -113,9 +113,35 @@ $serviceCurrencySymbol = $featureprofile["symbol"];
                                     <div class="col-md-6">
                                         <label for="activeCheckDefault" class="form-label">Feature Profile<span class="required"></span></label>
 
-                                        <button type="button" class="btn cur-p btn-outline-primary" onclick="openPaymentPopup();"><i class="bi bi-shield-check recruit_blue_text"></i>Activate</button>
+                                    @php
+                                        $isActive = !empty($featureProfile) && $featureProfile->active == 1;
+                                        $isExpired = !empty($featureProfile) && $featureProfile->expired == 0;
+                                    @endphp
 
-                                        <label class="text-danger" style="font-size: 12px;">Feature Profile: Highlight your profile at the top by activating the feature-profile option.</label>
+                                    @if($isActive)
+                                        <button type="button" class="btn cur-p btn-outline-primary" disabled>
+                                            <i class="bi bi-shield-check recruit_blue_text"></i> Activated
+                                        </button>
+                                        <label class="text-danger" style="font-size: 12px;">
+                                            Feature Profile: Highlight your profile at the top by activating the feature-profile option.
+                                        </label>
+                                    @elseif($isExpired)
+                                        <button type="button" class="btn cur-p btn-outline-primary" onclick="openPaymentPopup();">
+                                            <i class="bi bi-shield-check recruit_blue_text"></i> Activate
+                                        </button>
+                                        <label class="text-danger" style="font-size: 12px;">
+                                            Feature Profile: Highlight your profile at the top by activating the feature-profile option. 
+                                            It seems your plan has expired.
+                                        </label>
+                                    @else
+                                        <button type="button" class="btn cur-p btn-outline-primary" onclick="openPaymentPopup();">
+                                            <i class="bi bi-shield-check recruit_blue_text"></i> Activate
+                                        </button>
+                                        <label class="text-danger" style="font-size: 12px;">
+                                            Feature Profile: Highlight your profile at the top by activating the feature-profile option.
+                                        </label>
+                                    @endif
+                                        
 
                                     </div>
                                 </div>

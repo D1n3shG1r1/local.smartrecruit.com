@@ -18,8 +18,9 @@
                         onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user.png') }}';"/>
                      </div>
                         <div class="user_info">
-                        <h6>{{$LOGINUSER["fname"]." ".$LOGINUSER["lname"]}}</h6>
+                        <h6>{{ucwords($LOGINUSER["fname"]." ".$LOGINUSER["lname"])}}</h6>
                            <p><span class="online_animation"></span> Online</p>
+                           <p style="color:#222;">Ref:{{strtoupper($LOGINUSER["referralCode"])}}</p>
                         </div>
                      </div>
                   </div> 

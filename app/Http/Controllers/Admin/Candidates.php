@@ -102,10 +102,13 @@ class Candidates extends Controller
             ->where("id", $id)
             ->where("role", 1)
             ->first();
+
+            $featureProfile = FeaturedCandidate_model::select("userId", "active", "starton", "expireon", "expired", "createDateTime", "updateDateTime")->where("userId", $id)->first();
             
             $data = array();
             $data["pageTitle"] = "Candidate Profile";
             $data["user"] = $user;
+            $data["featureProfile"] = $featureProfile;
             return View("admin.candidateProfile",$data);
         }else{
             //redirect to login

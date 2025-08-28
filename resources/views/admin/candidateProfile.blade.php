@@ -112,11 +112,24 @@ $serviceCurrencySymbol = $featureprofile["symbol"];
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label for="activeCheckDefault" class="form-label">Feature Profile<span class="required"></span></label>
+                                    <label for="activeCheckDefault" class="form-label">Feature Profile<span class="required"></span></label>
+                                    @php
+                                        $isActive = !empty($featureProfile) && $featureProfile->active == 1;
+                                        $isExpired = !empty($featureProfile) && $featureProfile->expired == 0;
+                                    @endphp
+                                    @if($isActive)
+                                        <button type="button" class="btn cur-p btn-outline-primary" disabled>
+                                            <i class="bi bi-shield-check recruit_blue_text"></i> Activated
+                                        </button>
+                                    @else
+                                        <button type="button" class="btn cur-p btn-outline-primary" disabled>
+                                            <i class="bi bi-shield-check recruit_blue_text"></i> In-Active
+                                        </button>
 
-                                        <button type="button" class="btn cur-p btn-outline-primary" onclick="openPaymentPopup();"><i class="bi bi-shield-check recruit_blue_text"></i>Activate</button>
+                                    @endif
+                                        <!--<button type="button" class="btn cur-p btn-outline-primary"><i class="bi bi-shield-check recruit_blue_text"></i>Activate</button>
 
-                                        <label class="text-danger" style="font-size: 12px;">Feature Profile: Highlight your profile at the top by activating the feature-profile option.</label>
+                                        <label class="text-danger" style="font-size: 12px;">Feature Profile: Highlight your profile at the top by activating the feature-profile option.</label>-->
 
                                     </div>
                                 </div>

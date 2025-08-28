@@ -17,8 +17,9 @@
                         <img class="profilephotoimg img-responsive" src="{{ route('private.image', ['userId' => $LOGINUSER['userId'], 'filename' => 'pp-' . $LOGINUSER['userId'] . '.jpg']) }}"
                         onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user.png') }}';"/></div>
                         <div class="user_info">
-                        <h6>{{$LOGINUSER["fname"]}}</h6>
+                        <h6>{{ucwords($LOGINUSER["fname"])}}</h6>
                            <p><span class="online_animation"></span> Online</p>
+                           <p style="color:#222;">Ref:{{strtoupper($LOGINUSER["referralCode"])}}</p>
                         </div>
                      </div>
                   </div> 

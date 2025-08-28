@@ -41,6 +41,11 @@
               <p>You’re just one step away from having your profile go live.</p>
               <p>Please complete your short video interview by clicking the link below:</p>
               <p>click the link: <a href="{{$link}}">{{$link}}</a></p>
+
+              <p><b>Important:</b> This interview website is password-protected.
+              <br>
+              <b>Use the password:</b> interview</p>
+              
               <p>Don’t forget to include your reference number <b>{{strtoupper($referalCode)}}</b> during the interview.</p>
                 <p></p>
                 <p><b>Note:</b></p>

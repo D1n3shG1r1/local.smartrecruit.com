@@ -21,7 +21,7 @@
           <tr>
             <td bgcolor="#ffffff" style="padding:20px;">
               <h2 style="color:#3d63dd; font-size:20px; margin:0 0 20px 0;">Your Plan is Now Active!</h2>
-              <p style="font-size:16px; color:#333333; margin:0 0 10px 0;">Hi [Candidate First Name],</p>
+              <p style="font-size:16px; color:#333333; margin:0 0 10px 0;">Hi {{$customerName}},</p>
               <p style="font-size:16px; color:#333333; margin:0 0 20px 0;">
                 Thank you for subscribing to <strong>SMART-Recruit</strong>. Your candidate plan has been successfully activated.
                 Here are the details of your subscription:
@@ -31,27 +31,29 @@
               <table width="100%" cellpadding="8" cellspacing="0" border="0" style="border-collapse:collapse; font-size:15px;">
                 <tr style="background-color:#f5f5f5;">
                   <td style="border:1px solid #ddd;"><strong>Plan Name</strong></td>
-                  <td style="border:1px solid #ddd;">[Plan Name]</td>
+                  <td style="border:1px solid #ddd;">{{$PlanName}}</td>
                 </tr>
                 <tr>
                   <td style="border:1px solid #ddd;"><strong>Price</strong></td>
-                  <td style="border:1px solid #ddd;">[Plan Price]</td>
+                  <td style="border:1px solid #ddd;">{{$PlanPrice}}</td>
                 </tr>
                 <tr style="background-color:#f5f5f5;">
-                  <td style="border:1px solid #ddd;"><strong>Validity</strong></td>
-                  <td style="border:1px solid #ddd;">[Validity Period]</td>
+                  <td style="border:1px solid #ddd;"><strong>Expires on</strong></td>
+                  <td style="border:1px solid #ddd;">{{$ValidityPeriod}}</td>
                 </tr>
                 <tr>
                   <td style="border:1px solid #ddd;"><strong>Transaction ID</strong></td>
-                  <td style="border:1px solid #ddd;">[Transaction ID]</td>
+                  <td style="border:1px solid #ddd;">{{$TransactionID}}</td>
                 </tr>
+                <!--
                 <tr style="background-color:#f5f5f5;">
                   <td style="border:1px solid #ddd;"><strong>Payment Method</strong></td>
                   <td style="border:1px solid #ddd;">[Payment Method]</td>
                 </tr>
+                -->
                 <tr>
                   <td style="border:1px solid #ddd;"><strong>Transaction Date</strong></td>
-                  <td style="border:1px solid #ddd;">[Transaction Date]</td>
+                  <td style="border:1px solid #ddd;">{{$TransactionDate}}</td>
                 </tr>
               </table>
 
