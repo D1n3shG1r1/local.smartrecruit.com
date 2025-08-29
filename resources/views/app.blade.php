@@ -26,7 +26,7 @@
     -->
 
     <meta property="og:title" content="Smart Recruit - Premier Recruitment Platform in Nigeria" />
-    <meta property="og:description" content="Smart Recruit connects top companies with top talent in Nigeria. With a secure, efficient, and modern approach to hiring and job-seeking, we offer curated databases of verified candidates and a platform to showcase your skills to employers." />
+    <meta property="og:description" content="SmartRecruit is a modern recruitment platform where candidates upload their CVs and pre-recorded video interviews, allowing recruiters to search by specific skills, review profiles, and make faster, informed hiring decisions." />
     <meta property="og:url" content="https://www.smartrecruit.ng" />
 
 
@@ -267,7 +267,7 @@
       // Testimonial
       //const testimonialSwiper = new Swiper(".testimonial-carousel", {
       const testimonialSwiper = new Swiper(".advertisement-carousel", {
-        slidesPerView: 1,
+        slidesPerView: 3,
         spaceBetween: 30,
 
         navigation: {
@@ -286,15 +286,15 @@
         
         breakpoints: {
           640: {
-            slidesPerView: 1,
+            slidesPerView: 3,
             spaceBetween: 30,
           },
           1024: {
-            slidesPerView: 1,
+            slidesPerView: 3,
             spaceBetween: 30,
           },
           1280: {
-            slidesPerView: 1,
+            slidesPerView: 3,
             spaceBetween: 30,
           },
         },
