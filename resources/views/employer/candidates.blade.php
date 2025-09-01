@@ -363,12 +363,13 @@ $(function(){
     var setSelectedSkills = [];
 
     $('#skills').select2({
-      placeholder: "Select skills",
-      allowClear: true,
-      multiple: true,
-      width: '100%',
-      dropdownParent: $('#skillsContainer'),
-      tokenSeparators: [','],
+        tags: true, // Enable custom values
+        placeholder: "Select or type skills",
+        allowClear: true,
+        multiple: true,
+        width: '100%',
+        dropdownParent: $('#skillsContainer'),
+        tokenSeparators: [','],
     });
     
     $('#skills').on('change', function () {

@@ -107,6 +107,9 @@ $serviceCurrencySymbol = $featureprofile["symbol"];
                                         </label>
 
                                         <label class="text-danger" style="font-size: 12px;">Toggling this option will make your profile visible or hidden to recruiters.</label>
+                                        <label class="text-danger" style="font-size: 12px;">
+                                        If you do not check and update your resume every seven days, your profile visibility will be automatically turned off, making your profile hidden from recruiters.
+                                        </label>
 
                                     </div>
 

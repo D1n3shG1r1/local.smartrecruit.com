@@ -1323,11 +1323,13 @@
 
             img.onload = function () {
                 // Check if image dimensions are valid
-                if (img.width < 1280 || img.height < 768) {
+                //if (img.width < 1280 || img.height < 768) {
+                if (img.width < 650 || img.height < 1000) {
                     // Clear input and show error message
                     $("#adFile").val('');
                     var err = 1;
-                    var msg = "Image must be at least 1280x768 pixels.";
+                    //var msg = "Image must be at least 1280x768 pixels.";
+                    var msg = "Image must be at least 650x1000 pixels.";
                     showToast(err, msg);
                     return;
                 } else {
@@ -1337,8 +1339,10 @@
                     // Create a canvas element for resizing
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    const width = 1280;
-                    const height = 768;
+                    //const width = 1280;
+                    //const height = 768;
+                    const width = 650;
+                    const height = 1000;
 
                     // Resize the image and draw it on the canvas
                     canvas.width = width;

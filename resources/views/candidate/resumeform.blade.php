@@ -21,6 +21,7 @@
         <div class="col-md-12">
             <div class="page_title">
                 <h2>Candidate Resume</h2>
+                <p style="color: #721c24;">To stay visible to recruiters, please check and update your resume at least once every seven days. Otherwise, your profile will be automatically hidden.</p>
             </div>
         </div>
         </div>

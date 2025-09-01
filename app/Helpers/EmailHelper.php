@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\SuperAdmin_model;
+use App\Models\Message_model;
 use App\Traits\SmtpConfigTrait;
 use Exception;
 
@@ -19,7 +20,9 @@ class EmailHelper
         $lastName = $param["lastName"];
         $email = $param["email"];
         $purpose = $param["purpose"];
-
+        $receiver = $param["receiver"];
+        $sender = $param["sender"];
+        
         $toName = ucwords($firstName . " " . $lastName);
         $toEmail = $email;
         $recipient = ['name' => $toName, 'email' => $toEmail];
@@ -28,7 +31,9 @@ class EmailHelper
             'customerName' => $toName,
             'customerEmail' => $toEmail,
         ];
-
+        
+        $subject = '';
+        
         // Choose email template and subject based on purpose
         switch ($purpose) {
             case 'resetpassword':
@@ -88,6 +93,41 @@ class EmailHelper
                 $templateBlade = "emails.candidate_videolink";
                 break;
 
+            case 'recruitercustomplan':
+                //$customerName $link $referalCode
+                $bladeData['adminName'] = $param["adminName"];
+                $bladeData['customerName'] = $param["customerName"];
+                $bladeData['customerEmail'] = $param["customerEmail"];
+                $bladeData["adminName"] = $param["adminName"];
+                $bladeData["customerName"] = $param["customerName"];
+                $bladeData["customerEmail"] = $param["customerEmail"];
+                $bladeData["packageName"] = $param["packageName"];
+                $bladeData["additionalMessage"] = $param["additionalMessage"];
+                $bladeData['referalCode'] = $param["referalCode"];
+                $subject = "Complete Your Interview to Go Live!";
+                $templateBlade = "emails.custom_packagerequest";
+                break;
+                
+            case 'contactadmin':
+                $bladeData['adminName'] = $param["adminName"];
+                $bladeData['customerName'] = $param["customerName"];
+                $bladeData['customerEmail'] = $param["customerEmail"];
+                $bladeData['referalCode'] = $param["referalCode"];
+                $bladeData['candidateId'] = $sender;
+                $bladeData['additionalMessage'] = $param["additionalMessage"];
+                $bladeData['role'] = $param["role"];
+                if($param["role"] == 1){
+                    $subject = "New Message from Candidate!";
+                }else if($param["role"] == 2){
+                    $subject = "New Message from Recruiter!";
+                }else{
+                    $subject = "New Message!";
+                }
+                
+                
+                $templateBlade = "emails.contact_admin";
+                break;
+                
             case 'testemail':
                 $bladeData['adminName'] = $param["adminName"];
                 $subject = "SmartRecruit SMTP Test Email!";
@@ -98,7 +138,32 @@ class EmailHelper
             throw new Exception("Invalid email purpose provided: " . $purpose);
         }
 
+        $messageHtml = view($templateBlade, $bladeData)->render();
+        $messageParam = array(
+            "subject" => $subject,
+            "message" => $messageHtml,
+            "receiver" => $receiver,
+            "sender" => $sender,
+        );
+        
+        self::saveMessage($messageParam);
+        
         // Now use the MYSMTP function to send the email (assuming it’s still part of your trait)
         return self::MYSMTP($smtpDetails, $recipient, $subject, $templateBlade, $bladeData);
+
+    }
+
+    public static function saveMessage($messageParam){
+        //id subject message receiver sender isRead dateTime
+        $messageObj = new Message_model();
+        
+        $messageObj->id = db_randnumber();
+        $messageObj->subject = $messageParam["subject"];
+        $messageObj->message = $messageParam["message"];
+        $messageObj->receiver = $messageParam["receiver"];
+        $messageObj->sender = $messageParam["sender"];
+        $messageObj->isRead = 0;
+        $messageObj->dateTime = date("Y-m-d H:i:s");
+        $messageObj->save();
     }
 }

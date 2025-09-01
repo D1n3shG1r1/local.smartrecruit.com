@@ -18,7 +18,7 @@
                   class="mb-10 flex flex-wrap items-center justify-center gap-4 md:gap-5"
                 >
                   <li>
-                    <a href="javascript:void(0)" class="inline-flex items-center justify-center rounded-md bg-primary-color text-primary px-5 py-3 text-center text-base font-medium shadow-md hover:bg-primary-light-5 md:px-7 md:py-[14px]" role="button" onclick="getStarted();">Get Started</a>
+                    <a href="javascript:void(0)" class="inline-flex items-center justify-center rounded-md bg-primary-color text-primary px-5 py-3 text-center text-base font-medium shadow-md hover:bg-primary-light-5 md:px-7 md:py-[14px]" role="button" onclick="openAuthModal('employer');">Find Candidate</a>
                   </li>
 
                   <li>
@@ -71,17 +71,62 @@
           <div class="grid grid-cols-1 gap-14 lg:grid-cols-2">
             <div class="w-full">
               <figure class="scroll-revealed max-w-[480px] mx-auto">
-                <!--<img
-                  src="./assets/img/about-img.jpg"
-                  alt="About image"
-                  class="rounded-xl"
-                />-->
                 <img
                   src="./assets/img/image-10.jpg"
                   alt="About image"
                   class="rounded-xl"
                 />
               </figure>
+
+              @php 
+              if($ad["adActive"] > 0){
+              @endphp
+              
+              <!-- advertisement swiper -->
+              <section id="advertisement" class="section-area advertisement scroll-revealed max-w-[480px] mx-auto">
+                <div class="container">
+                  <div class="swiper advertisement-carousel common-carousel scroll-revealed">
+                    <div class="swiper-wrapper">
+                    @php
+                    foreach($ad["adImages"] as $imageName){
+                    $imagePath = route('private.adimage', ['filename' => $imageName]);
+                    @endphp
+                      <div class="swiper-slide">
+                        <div style="background: transparent;" class="bg-body-light-1 dark:bg-body-dark-12/10 shadow-card-2 sm:px-8-dk"
+                        >
+                          <figure class="flex-dk items-center gap-4">
+                            <div class="dk-h-[500px] dk-w-[700px] overflow-hidden">
+                              <img
+                                src="{{$imagePath}}"
+                                alt=""
+                                class="h-full w-full rounded-xl rounded-full-dk object-cover-dk"
+                              />
+                            </div>
+                          </figure>
+                        </div>
+                      </div>
+                      @php
+                    }
+                    @endphp
+                    </div>
+
+                    <!--
+                    <div class="mt-[60px] flex items-center justify-center gap-1">
+                      <div class="swiper-button-prev">
+                        <i class="lni lni-arrow-left"></i>
+                      </div>
+                      <div class="swiper-button-next">
+                        <i class="lni lni-arrow-right"></i>
+                      </div>
+                    </div>
+                    -->
+                  </div>
+                </div>
+            </section>
+            <!-- advertisement section -->
+            @php        
+            }
+            @endphp
             </div>
 
             <div class="w-full">
@@ -187,91 +232,5 @@
           </div>
         </div>
       </section>
-
-      @php 
-      if($ad["adActive"] > 0){
-      @endphp
-      
-      <!-- advertisement swiper -->
-      <section id="advertisement" class="section-area advertisement">
-        <div class="container">
-          <div class="swiper advertisement-carousel common-carousel scroll-revealed">
-            <div class="swiper-wrapper">
-            @php
-            foreach($ad["adImages"] as $imageName){
-            $imagePath = route('private.adimage', ['filename' => $imageName]);
-            @endphp
-              <div class="swiper-slide">
-                <div
-                  class="rounded-xl-dk bg-body-light-1 dark:bg-body-dark-12/10 px-5-dk py-8-dk shadow-card-2 sm:px-8-dk"
-                >
-                  <figure class="flex-dk items-center gap-4">
-                    <div class="h-[500px] w-[700px] overflow-hidden">
-                      <img
-                        src="{{$imagePath}}"
-                        alt=""
-                        class="h-full w-full rounded-full-dk object-cover-dk"
-                      />
-                    </div>
-                  </figure>
-                </div>
-              </div>
-              @php
-            }
-            @endphp
-              
-
-              <!--
-              <div class="swiper-slide">
-                <div
-                  class="rounded-xl-dk bg-body-light-1 dark:bg-body-dark-12/10 px-5-dk py-8-dk shadow-card-2 sm:px-8-dk"
-                >
-                  <figure class="flex-dk items-center gap-4">
-                    <div class="h-[500px] w-[700px] overflow-hidden">
-                      <img
-                        src="{{url('images/advertisement/ad-1.jpg')}}"
-                        alt=""
-                        class="h-full w-full rounded-full-dk object-cover-dk"
-                      />
-                    </div>
-                  </figure>
-                </div>
-              </div>
-
-              <div class="swiper-slide">
-                <div
-                  class="rounded-xl-dk bg-body-light-1 dark:bg-body-dark-12/10 px-5-dk py-8-dk shadow-card-2 sm:px-8-dk"
-                >
-                  <figure class="flex-dk items-center gap-4">
-                    <div class="h-[500px] w-[700px] overflow-hidden">
-                      <img
-                        src="{{url('images/advertisement/ad-2.jpg')}}"
-                        alt=""
-                        class="h-full w-full rounded-full-dk object-cover-dk"
-                      />
-                    </div>
-                  </figure>
-                </div>
-              </div>
-              -->
-            </div>
-
-            <!--
-            <div class="mt-[60px] flex items-center justify-center gap-1">
-              <div class="swiper-button-prev">
-                <i class="lni lni-arrow-left"></i>
-              </div>
-              <div class="swiper-button-next">
-                <i class="lni lni-arrow-right"></i>
-              </div>
-            </div>
-            -->
-          </div>
-        </div>
-    </section>
-    <!-- advertisement section -->
-    @php        
-    }
-    @endphp
 @endsection
 @push("js")

@@ -11,6 +11,7 @@ use App\Models\CandidateResumeData_model;
 use App\Models\Notification_model;
 use App\Models\shortlistCandidates_model;
 use App\Models\purchasedCandidates_model;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\Helpers\EmailHelper;
@@ -286,6 +287,39 @@ class Resume extends Controller
                 $data["cvdata"] = $cvdata;
                 
                 return View("candidate.myresume",$data);
+            }else{
+                //redirect to create resume
+                return Redirect::to(url('/candidate/createresume'));
+            }
+           
+        }else{
+            //redirect to login
+            return Redirect::to(url('/'));
+        }
+    }
+
+
+    function downloadResume(Request $request){
+        
+        if($this->USERID > 0){
+            //https://bootstrapmade.com/demo/Kelly/
+            $userId = $this->USERID; 
+
+            $basicProfileData = Users_model::select("id", "email", "fname", "lname", "gender", "phone", "city", "state", "country", "zipcode", "address_1", "address_2")
+            ->where("id", $userId)
+            ->first();
+
+            $cvdata = CandidateResumeData_model::where("candidateId", $userId)
+            ->first();
+
+            if($cvdata->submit > 0){
+                $data = array();
+                $data["pageTitle"] = "My Resume";
+                $data["basicProfile"] = $basicProfileData;
+                $data["cvdata"] = $cvdata;
+                
+                $pdf = Pdf::loadView('pdf.resume', $data);
+                //return View("candidate.myresume",$data);
             }else{
                 //redirect to create resume
                 return Redirect::to(url('/candidate/createresume'));

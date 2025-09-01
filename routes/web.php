@@ -94,7 +94,9 @@ Route::prefix('recruiter')->name('recruiter.')->group(function () {
     Route::get('/logout',[EmployerRegister::class, 'logout']);
     Route::post('/register',[EmployerRegister::class, 'register']); 
     
-    Route::get('/dashboard',[EmployerDashboard::class, 'dashboard']);  
+    Route::get('/dashboard',[EmployerDashboard::class, 'dashboard']); 
+    Route::post('/sendmessage',[EmployerDashboard::class, 'sendmessage']); 
+    
     Route::get('/myprofile',[EmployerProfile::class, 'myprofile']);  
     Route::post('/saveprofile',[EmployerProfile::class, 'saveprofile']);  
     Route::post('/saveprofilephoto',[EmployerProfile::class, 'saveprofilephoto']);  
@@ -128,6 +130,7 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
     Route::post('/forgotpassword',[CandidateRegister::class, 'forgotpassword']); 
 
     Route::get('/dashboard',[CandidateDashboard::class, 'dashboard']);  
+    Route::post('/sendmessage',[CandidateDashboard::class, 'sendmessage']); 
     Route::get('/myprofile',[CandidateProfile::class, 'myprofile']);  
     Route::post('/saveprofile',[CandidateProfile::class, 'saveprofile']);  
     Route::post('/saveprofilephoto',[CandidateProfile::class, 'saveprofilephoto']);  
@@ -135,6 +138,8 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
     Route::get('/myresume',[CandidateResume::class, 'myresume']); 
     Route::get('/createresume',[CandidateResume::class, 'resumeform']); 
     Route::post('/updateresume',[CandidateResume::class, 'updateresume']);  
+    Route::get('/downloadResume',[CandidateResume::class, 'downloadResume']); 
+    
 
     Route::get('/planactivate/{plan}',[CandidateProfile::class, 'activateFeatureProfile']);
     Route::get('/payment/callback',[CandidateProfile::class, 'payment']);

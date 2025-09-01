@@ -433,7 +433,7 @@ ol, ul, menu {
                   @php
                   }else{
                   @endphp    
-                      <a href="{{url('recruiter/planactivate/custompackage')}}" class="inline-block font-medium px-6 py-3 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-color focus:bg-primary focus:text-primary-color">Activate</a>
+                      <a href="javascript:void(0)" class="inline-block font-medium px-6 py-3 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-color focus:bg-primary focus:text-primary-color" data-toggle="modal" data-target="#QuoteModal">Activate</a>
                   @php
                   }
                   @endphp
@@ -467,11 +467,102 @@ ol, ul, menu {
     </div>
 </div>
 
+
+<div class="modal fade" id="QuoteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Request a Quote</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <textarea id="messageInput" maxlength="320" rows="10" class="form-control" style="resize: none;" placeholder="Enter your message" oninput="updateCharacterCount()"></textarea>
+                <p class="text-align-right">Remaining characters: <span id="remainingChars">320</span></p>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" id="sendQtBtn" class="btn btn-primary" data-txt="Request" data-loadingtxt="Requesting..." onclick="sendQuote(this);">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push("js")
 <script>
   function activate(package){
     window.location.href = "{{url('recruiter/planactivate/')}}"+package;
   }
+
+  function updateCharacterCount() {
+    var textarea = document.getElementById("messageInput");
+    var remainingChars = document.getElementById("remainingChars");
+    var maxLength = textarea.getAttribute("maxlength");
+    var currentLength = textarea.value.length;
+
+    var charsLeft = maxLength - currentLength;
+    remainingChars.textContent = charsLeft;
+
+    if (charsLeft <= 0) {
+        remainingChars.style.color = "red";
+    } else {
+        remainingChars.style.color = "black";
+    }
+  }
+
+  function sendQuote(elm){
+    //send email
+    var myModal = new bootstrap.Modal(document.getElementById('QuoteModal'));
+
+    var message = $("#messageInput").val();
+    
+    if(!isRealValue(message)){
+        var err = 1;
+        var msg = "Please type your message.";
+        showToast(err,msg);
+        return false;
+    }
+    
+    if(message.length > 320){
+        var err = 1;
+        var msg = "Your message cannot exceed 320 characters.";
+        showToast(err,msg);
+        return false;
+    }
+
+    var elmId = $(elm).attr("id");
+    $(elm).attr("disabled",true);
+    var orgTxt = $(elm).attr("data-txt");
+    var loadingTxt = $(elm).attr("data-loadingtxt");
+    showLoader(elmId,loadingTxt); 
+
+    var requrl = "recruiter/savequote";
+    var jsondata = {
+        "message":message
+    };
+    
+    callajax(requrl, jsondata, function(resp){
+        $(elm).removeAttr("disabled");
+        hideLoader(elmId,orgTxt);
+        
+        $("#messageInput").val("");
+        myModal.hide();
+
+        if(resp.C == 100){
+            var err = 0;
+            var msg = "Your request has been submitted. We will contact you shortly.";
+            showToast(err,msg);  
+
+            
+            $('#QuoteModal').modal('hide');
+
+        }else{
+            var err = 1;
+            var msg = "Your session has expired. Please log in again to continue.";
+            showToast(err,msg);    
+        }
+    });
+}
 </script>
 @endpush

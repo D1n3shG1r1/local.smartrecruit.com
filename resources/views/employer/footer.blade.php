@@ -48,11 +48,32 @@
   </div>
 </div>
 
+<div class="modal fade" id="contactModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Have a Question or Issue? Let Us Know</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <textarea id="contact_messageInput" maxlength="320" rows="10" class="form-control" style="resize: none;" placeholder="Write your message to us" oninput="updateMessageCharacterCount()"></textarea>
+                <p class="text-align-right">Remaining characters: <span id="msgRemainingChars">320</span></p>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" id="sendQtBtn" class="btn btn-primary" data-txt="Send Message" data-loadingtxt="Sending..." onclick="sendMessage(this);">Send Message</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @php
 $incompleteProfile = $LOGINUSER["incompleteProfile"];
 @endphp 
 <script>
+    
 $(function(){
     
     var incompleteProfile = '{{ $incompleteProfile }}';
@@ -67,6 +88,23 @@ $(function(){
         myModal.show();
 
     }
+
+    var header_setSelectedSkills = [];
+
+    $('#header-skills').select2({
+        tags: true, // Enable custom values
+        placeholder: "Select or type skills",
+        allowClear: true,
+        multiple: true,
+        width: '100%',
+        dropdownParent: $('#header-skillsContainer'),
+        tokenSeparators: [','],
+    });
+    
+    $('#header-skills').on('change', function () {
+        const tmpSelectedValues = $(this).val();
+        header_setSelectedSkills = tmpSelectedValues;
+    });
 });
 
 function editProfilePhoto(elm){
@@ -153,5 +191,75 @@ function ppDailog(){
       });
 
   };
+}
+
+function updateMessageCharacterCount() {
+    var textarea = document.getElementById("contact_messageInput");
+    var remainingChars = document.getElementById("msgRemainingChars");
+    var maxLength = textarea.getAttribute("maxlength");
+    var currentLength = textarea.value.length;
+
+    var charsLeft = maxLength - currentLength;
+    remainingChars.textContent = charsLeft;
+
+    if (charsLeft <= 0) {
+        remainingChars.style.color = "red";
+    } else {
+        remainingChars.style.color = "black";
+    }
+  }
+
+function sendMessage(elm){
+    //send email
+    var myModal = new bootstrap.Modal(document.getElementById('contactModal'));
+
+    var message = $("#contact_messageInput").val();
+    
+    if(!isRealValue(message)){
+        var err = 1;
+        var msg = "Please type your message.";
+        showToast(err,msg);
+        return false;
+    }
+    
+    if(message.length > 320){
+        var err = 1;
+        var msg = "Your message cannot exceed 320 characters.";
+        showToast(err,msg);
+        return false;
+    }
+
+    var elmId = $(elm).attr("id");
+    $(elm).attr("disabled",true);
+    var orgTxt = $(elm).attr("data-txt");
+    var loadingTxt = $(elm).attr("data-loadingtxt");
+    showLoader(elmId,loadingTxt); 
+
+    var requrl = "recruiter/sendmessage";
+    var jsondata = {
+        "message":message
+    };
+    
+    callajax(requrl, jsondata, function(resp){
+        $(elm).removeAttr("disabled");
+        hideLoader(elmId,orgTxt);
+        
+        $("#contact_messageInput").val("");
+        myModal.hide();
+
+        if(resp.C == 100){
+            var err = 0;
+            var msg = "Your message has been submitted. We will contact you shortly.";
+            showToast(err,msg);  
+
+            
+            $('#contactModal').modal('hide');
+
+        }else{
+            var err = 1;
+            var msg = "Your session has expired. Please log in again to continue.";
+            showToast(err,msg);    
+        }
+    });
 }
 </script>

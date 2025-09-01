@@ -139,7 +139,114 @@ class Candidates extends Controller
     }
 
 
-    public function candidates(Request $request){
+    public function candidates(Request $request)
+    {
+        if ($this->USERID <= 0) {
+            return Redirect::to(url('/'));
+        }
+
+        $userId = $this->USERID;
+
+        $page = $request->input('page', 1);
+        $skills = $request->input('skills', []); // optional filter from form
+        
+        if (is_string($skills)) {
+            $skills = array_filter(array_map('trim', explode(',', $skills)));
+        }
+
+        
+        // 1. Fetch 6 random active & non-expired featured candidates
+        $featuredCandidates = CandidateResumeData_model::select(
+                'customers.id as profile_id',
+                'customers.fname',
+                'customers.lname',
+                'candidateResumeData.id as resume_id',
+                'candidateResumeData.candidateId',
+                'candidateResumeData.profSummary',
+                'candidateResumeData.skills'
+            )
+            ->join('customers', 'candidateResumeData.candidateId', '=', 'customers.id')
+            ->join('featuredcandidate', 'candidateResumeData.candidateId', '=', 'featuredcandidate.userId')
+            ->where('candidateResumeData.submit', 1)
+            ->where('featuredcandidate.active', 1)
+            ->where('featuredcandidate.expired', 0)
+            ->where('customers.active', 1)
+            ->where('customers.verified', 1)
+            ->inRandomOrder()
+            ->limit(6)
+            ->get();
+
+        // Add status flags to featured candidates
+        $featuredCandidates->transform(function ($candidate) use ($userId) {
+            $candidate->is_featured = 1;
+
+            $candidate->shortlist = shortlistCandidates_model::where("recruiterId", $userId)
+                ->where("candidateId", $candidate->candidateId)
+                ->exists() ? 1 : 0;
+
+            $candidate->purchased = purchasedCandidates_model::where("recruiterId", $userId)
+                ->where("candidateId", $candidate->candidateId)
+                ->exists() ? 1 : 0;
+
+            return $candidate;
+        });
+
+        // 2. Fetch paginated non-featured candidates
+        $nonFeaturedQuery = CandidateResumeData_model::select(
+                'customers.id as profile_id',
+                'customers.fname',
+                'customers.lname',
+                'candidateResumeData.id as resume_id',
+                'candidateResumeData.candidateId',
+                'candidateResumeData.profSummary',
+                'candidateResumeData.skills'
+            )
+            ->join('customers', 'candidateResumeData.candidateId', '=', 'customers.id')
+            ->where('candidateResumeData.submit', 1)
+            ->where('customers.active', 1)
+            ->where('customers.verified', 1);
+
+        // Exclude featured candidate IDs
+        if ($featuredCandidates->isNotEmpty()) {
+            $nonFeaturedQuery->whereNotIn('candidateResumeData.candidateId', $featuredCandidates->pluck('candidateId'));
+        }
+
+        // Filter by skills if provided
+        if (!empty($skills)) {
+            $nonFeaturedQuery->where(function ($query) use ($skills) {
+                foreach ($skills as $skill) {
+                    $query->orWhere('candidateResumeData.skills', 'LIKE', '%' . $skill . '%');
+                }
+            });
+        }
+
+        $candidates = $nonFeaturedQuery->paginate(10, ['*'], 'page', $page);
+
+        // Add status flags to paginated candidates
+        $candidates->getCollection()->transform(function ($candidate) use ($userId) {
+            $candidate->is_featured = 0;
+
+            $candidate->shortlist = shortlistCandidates_model::where("recruiterId", $userId)
+                ->where("candidateId", $candidate->candidateId)
+                ->exists() ? 1 : 0;
+
+            $candidate->purchased = purchasedCandidates_model::where("recruiterId", $userId)
+                ->where("candidateId", $candidate->candidateId)
+                ->exists() ? 1 : 0;
+
+            return $candidate;
+        });
+
+        // 3. Return view with data
+        return view("employer.candidates", [
+            'pageTitle' => 'Candidates',
+            'candidates' => $candidates,
+            'featured_candidates' => $featuredCandidates
+        ]);
+    }
+
+
+    public function candidates_1sep2025(Request $request){
         if($this->USERID > 0){
             $userId = $this->USERID;
     

@@ -13,6 +13,8 @@ use App\Models\shortlistCandidates_model;
 use App\Models\purchasedCandidates_model;
 use App\Models\Notification_model;
 use App\Models\Package_model;
+use App\Models\SuperAdmin_model;
+use App\Helpers\EmailHelper;
 use Carbon\Carbon;
 
 class Dashboard extends Controller
@@ -205,5 +207,70 @@ class Dashboard extends Controller
             //redirect to login
             return Redirect::to(url('/'));
         }
+    }
+
+    function sendmessage(Request $request){
+        // save quote pending
+        if($this->USERID > 0){
+            
+            $message = $request->input("message");
+            
+            $tmpUserId = $this->getSession('id');
+            $fname = $this->getSession('fname');
+            $lname = $this->getSession('lname');
+            $email = $this->getSession('email');
+            $role = $this->getSession('role');
+            $referral_code = $this->getSession('referral_code');
+            $customerName = ucwords($fname);
+            $customerEmail = $email;
+            $additionalMessage = $message;
+
+            $sysAdmId = 1;
+            $sysAdm = SuperAdmin_model::where("id", $sysAdmId)->first();
+            
+            //Email
+            $toEmail = $sysAdm["email"];
+            $toName = ucwords($sysAdm["fname"] ." ". $sysAdm["lname"]);
+            $adminName = $toName;
+            
+            $param = [
+                "firstName" => $sysAdm["fname"],
+                "lastName" => $sysAdm["lname"],
+                "email" => $toEmail,
+                "role" => $role,
+                "adminName" => $adminName,
+                "customerName" => $customerName,
+                "customerEmail" => $customerEmail,
+                "referalCode" => $referral_code,
+                "additionalMessage" => $additionalMessage,
+                "receiver" => 1,
+                "sender" => $tmpUserId,
+                "purpose" => "contactadmin"
+            ];
+            
+            EmailHelper::sendEmail($param);
+            
+
+            $postBackData = array();
+            $postBackData["success"] = 1;
+            
+            $response = array(
+                "C" => 100,
+                "R" => $postBackData,
+                "M" => "Your request has been submitted. We will contact you shortly."
+            );
+            
+        }else{
+            $postBackData = array();
+            $postBackData["success"] = 0;
+            $response = array(
+                "C" => 1004,
+                "R" => $postBackData,
+                "M" => "session expired."
+            );
+        }
+
+        return response()->json($response); die;       
+        
     }
 }

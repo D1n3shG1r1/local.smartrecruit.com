@@ -69,18 +69,22 @@
                         </div>
                         <div class="right_topbar">
                            <div class="icon_info">
-                              <ul>
+                              <ul class="icon-ul">
                                  
-                                 <li>
+                                 <li class="icon-li">
                                     <a href="{{url('admin/notifications');}}"><i class="fa fa-bell-o"></i>
                                    
                                     @php $bellClass = 'online_animation'; @endphp
                                     <span class="badge {{$bellClass}}">0</span>
                                     </a>
                                  </li>
+
+                                 <li class="icon-li">
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#contactModal"><i class="fa fa-question-circle"></i></a>
+                                 </li>
+                                 
                                  <!--
-                                 <li><a href="#"><i class="fa fa-question-circle"></i></a></li>
-                                 <li><a href="#"><i class="fa fa-envelope-o"></i><span class="badge">3</span></a></li>
+                                 <li class="icon-li"><a href="#"><i class="fa fa-envelope-o"></i><span class="badge">3</span></a></li>
                                  -->
                               </ul>
                               <ul class="user_profile_dd">

@@ -139,8 +139,6 @@ class Pricing extends Controller
     }
 
     function payment(Request $request){
-        //http://local.smartrecruit.com/recruiter/payment/callback?trxref=1739081877345892&reference=1739081877345892
-        //http://local.smartrecruit.com/recruiter/payment/callback?trxref=1739376484319659&reference=1739376484319659
         
         $trxref = $request->input("trxref");
         $reference = $request->input("reference");
@@ -150,8 +148,6 @@ class Pricing extends Controller
             
             $this->removeSession('transactionRef');
             
-            //$SECRET_KEY = config('custom.paystack.secretkey');
-            //$SECRET_KEY = "sk_test_48f9c1d23041e406b620438391c682afbe66cfbb";
             $sysAdmId = 1;
             $sysAdm = SuperAdmin_model::where("id", $sysAdmId)->first();
 
@@ -162,8 +158,6 @@ class Pricing extends Controller
 
             $endpoint = config('custom.paystack.transVerify') . $reference;
         
-            //$endpoint = "https://api.paystack.co/transaction/verify/1739081877345892";
-            
             //verify transaction
             $method = 'GET';
             
@@ -288,6 +282,8 @@ class Pricing extends Controller
                             "TransactionID" => $transactionId,
                             "PaymentMethod" => '',
                             "TransactionDate" => $paidAt,
+                            "receiver" => $tmpUserId,
+                            "sender" => 1,
                             "purpose" => "recruiterplan"
                         ];
         
@@ -361,61 +357,46 @@ class Pricing extends Controller
         // save quote pending
         if($this->USERID > 0){
             
+            $package = "custompackage";
+            $packageName = config('custom.pricing.'.$package.'.name');
+            
             $message = $request->input("message");
             
-            $adminId = $this->USERID;
-            $adminEmail = $this->getSession('adminEmail');
-            $adminFName = $this->getSession('adminFName');
-            $adminLName = $this->getSession('adminLName');
-            $fullName = $adminFName.' '.$adminLName;
-            
+            $tmpUserId = $this->getSession('id');
+            $fname = $this->getSession('fname');
+            $lname = $this->getSession('lname');
+            $email = $this->getSession('email');
+            $referral_code = $this->getSession('referral_code');
+            $customerName = ucwords($fname);
+            $customerEmail = $email;
+            $additionalMessage = $message;
+
             $sysAdmId = 1;
             $sysAdm = SuperAdmin_model::where("id", $sysAdmId)->first();
-
-            $smtp = json_decode($sysAdm["smtp"], true);
             
-            $host = $smtp["host"];
-            $port = $smtp["port"];
-            $username = $smtp["username"];
-            $password = $smtp["password"];
-            $encryption = $smtp["encryption"];
-            $from_email = $smtp["from_email"];
-            $from_name = $smtp["from_name"];
-            $replyTo_email = $smtp["replyTo_email"];
-            $replyTo_name = $smtp["replyTo_name"];
-
-            
-            $smtpDetails = array();
-            $smtpDetails['host'] = $host;
-            $smtpDetails['port'] = $port;
-            $smtpDetails['username'] = $username;
-            $smtpDetails['password'] = $password;
-            $smtpDetails['encryption'] = "";
-            $smtpDetails['from_email'] = $from_email;
-            $smtpDetails['from_name'] = $from_name;
-            $smtpDetails['replyTo_email'] = $replyTo_email;
-            $smtpDetails['replyTo_name'] = $replyTo_name;
-        
             //Email
             $toEmail = $sysAdm["email"]; //"support@smartverify.com.ng";
-            $toName = ucwords($sysAdm["fname"] ." ". $sysAdm["lname"]);//"Can Namho"; //;
-            $subject = "Enterprise Plan - Quotation Request";
-            $templateBlade = "emails.enterpriseplanrequest";
-
-            $recipient = ['name' => $toName, 'email' => $toEmail];
+            $toName = ucwords($sysAdm["fname"] ." ". $sysAdm["lname"]);
+            $adminName = $toName;
             
-            $bladeData = [
-                'name' => $toName,
-                'customerName' => $fullName,
-                'customerEmail' => $adminEmail,
-                'packageName' => 'Enterprise Plan',
-                'additionalMessage' => $message 
+            $param = [
+                "firstName" => $sysAdm["fname"],
+                "lastName" => $sysAdm["lname"],
+                "email" => $toEmail,
+                "adminName" => $adminName,
+                "customerName" => $customerName,
+                "customerEmail" => $customerEmail,
+                "referalCode" => $referral_code,
+                "packageName" => $packageName,
+                "additionalMessage" => $additionalMessage,
+                "receiver" => $tmpUserId,
+                "sender" => 1,
+                "purpose" => "recruitercustomplan"
             ];
-            
-            $result = $this->MYSMTP($smtpDetails, $recipient, $subject, $templateBlade, $bladeData);
 
-            //dd($result);
+            EmailHelper::sendEmail($param);
             
+
             $postBackData = array();
             $postBackData["success"] = 1;
             
@@ -438,4 +419,5 @@ class Pricing extends Controller
         return response()->json($response); die;       
         
     }
+
 }

@@ -107,7 +107,7 @@ class Profile extends Controller
 
         return response()->json($response); die;
     }
-
+    
     function saveprofilephoto(Request $request){
         if($this->USERID > 0){
             $userId = $this->USERID; 
@@ -396,6 +396,8 @@ class Profile extends Controller
                             "TransactionID" => $transactionId,
                             "PaymentMethod" => '',
                             "TransactionDate" => $paidAt,
+                            "receiver" => $tmpUserId,
+                            "sender" => 1,
                             "purpose" => "candidateplan"
                         ];
                         
@@ -465,25 +467,4 @@ class Profile extends Controller
         return View("candidate.paymentfail",$data);
     }
 
-    /*function profilevisibility(Request $request){
-        if($this->USERID > 0){
-            $userId = $this->USERID; 
-            $user = Users_model::select("id", "email", "fname", "lname", "gender", "phone", "city", "state", "country", "zipcode", "address_1", "address_2")
-            ->where("id", $userId)
-            ->first();
-            
-            $data = array();
-            $data["pageTitle"] = "My Profile";
-            $data["user"] = $user;
-            $data["visibileOption"] = 1;
-            return View("candidate.profile",$data);
-        }else{
-            //redirect to login
-            return Redirect::to(url('/'));
-        }
-    }
-
-    function featureprofile(Request $request){
-
-    }*/
 }

@@ -651,6 +651,24 @@ a:focus {
     width: 100%;
 }
 
+.icon_info .icon-ul {
+    float: left;
+    width: auto;
+    list-style: none;
+    margin: 0;
+}
+
+.icon_info .icon-ul .icon-li {
+    float: left;
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    text-align: center;
+    line-height: 35px;
+    position: relative;
+    margin: 15px 0 0 5px;
+}
+/*
 .icon_info ul {
     float: left;
     width: auto;
@@ -668,7 +686,7 @@ a:focus {
     position: relative;
     margin: 15px 0 0 5px;
 }
-
+*/
 .icon_info ul li .fa-question-circle {
     font-size: 21px;
     position: relative;
@@ -687,6 +705,17 @@ a:focus {
 
 .icon_info ul.user_profile_dd li {
     width: auto;
+    /*d*/
+    float: left;
+    text-align: center;
+    line-height: 35px;
+    position: relative;
+}
+
+.icon_info ul.user_profile_dd li a {
+    color: #fff;
+    font-size: 18px;
+    font-weight: normal;
 }
 
 .icon_info ul.user_profile_dd>li span {
@@ -710,6 +739,9 @@ a:focus {
 }
 
 .icon_info ul.user_profile_dd {
+    width: auto;
+    list-style: none;
+    padding: 0px;
     float: left;
     margin: 0 0 0 25px;
 }

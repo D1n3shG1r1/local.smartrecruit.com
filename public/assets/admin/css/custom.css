@@ -562,3 +562,8 @@ a, a:hover{
     opacity: 1;
     display: block;
 }
+
+.active-nav {
+    border-bottom: 2px solid;
+    border-color: #1ed085;
+}
