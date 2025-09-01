@@ -212,6 +212,8 @@ class Register extends Controller
                     "lastName" => $lastName,
                     "email" => $email,
                     "resetLink" => $link,
+                    "receiver" => $customerId,
+                    "sender" => 1,
                     "purpose" => "resetpassword"
                 ];
 

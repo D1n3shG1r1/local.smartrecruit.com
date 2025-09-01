@@ -249,6 +249,8 @@ class Settings extends Controller
                 "lastName" => ucfirst($settings["lname"]),
                 "adminName" => $toName,
                 "email" => $toEmail,
+                "receiver" => 1,
+                "sender" => 1,
                 "purpose" => "testemail"
             ];
             //SmartRecruit test email.
