@@ -79,7 +79,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/settings',[AdminSettings::class, 'settings']);
     Route::post('/generateaccesskey',[AdminSettings::class, 'generateaccesskey']);
     Route::get('/savepaymentsettings',[AdminSettings::class, 'savePaymentSettings']);
-    Route::get('/saveemailsettings',[AdminSettings::class, 'saveemailsettings']);
+    Route::post('/saveemailsettings',[AdminSettings::class, 'saveemailsettings']);
     Route::post('/sendTestEmail',[AdminSettings::class, 'sendTestEmail']);
     Route::post('/createuser',[AdminSettings::class, 'createuser']);
     Route::post('/deleteuser',[AdminSettings::class, 'deleteuser']);
