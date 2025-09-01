@@ -137,6 +137,8 @@ class Register extends Controller
                     "firstName" => $fname,
                     "lastName" => $lname,
                     "email" => $email,
+                    "receiver" => $id,
+                    "sender" => 1,
                     "purpose" => "candidatewelcome"
                 ];
 
