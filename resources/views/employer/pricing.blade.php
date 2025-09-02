@@ -22,6 +22,7 @@ $custompackage = $pricing["custompackage"]; //name price candidatelimit
 if($package == ''){
     $package = '-';
     $packageName = '-';
+    $expireon = '-';
 }else{
     $packageName = $pricing[$package]["name"];
 }
