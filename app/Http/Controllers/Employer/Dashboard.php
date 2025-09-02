@@ -49,6 +49,25 @@ class Dashboard extends Controller
             ->limit(5)
             ->get();
 
+            if(empty($featuredCandidates)){
+                // normal candidates
+                $featuredCandidates = FeaturedCandidate_model::select(
+                    'customers.id as profile_id',
+                    'customers.fname',
+                    'customers.lname',
+                    'candidateResumeData.id as resume_id',
+                    'candidateResumeData.candidateId',
+                    'candidateResumeData.profSummary',
+                    'candidateResumeData.skills'
+                )
+                ->join('candidateResumeData', 'candidateResumeData.candidateId', '=', 'customers.id')
+                ->where('candidateResumeData.submit', 1)
+                ->inRandomOrder() // shuffle records randomly
+                ->limit(5)
+                ->get();
+            }
+
+
             // bookmarks
             $bookmarkResult = shortlistCandidates_model::where("recruiterId", $userId)
             ->orderBy('created_at', 'desc')

@@ -36,6 +36,16 @@ if($package == ''){
     overflow: hidden;
 }
 
+.dashboard-dummy-bookmarks{
+    color: #fff;
+}
+
+.dashboard-dummy-bookmarks p{
+    color: #fff;
+    font-size: 21px;
+    padding: 18px 0px;
+}
+
 #fc_slider.carousel, #bc_slider.carousel {
     width: 86%;
     margin: 35px 7% 35px;
@@ -309,38 +319,46 @@ if($package == ''){
                     <div class="full graph_revenue">
                         <div class="row">
                         <div class="col-md-12">
+                       
+                        @if($bookmarkCandidates->count() > 0)
                             <div class="content testimonial">
                                 <div id="bc_slider" class="bc-carousel carousel slide" data-ride="carousel">
                                     <!-- Wrapper for carousel items -->
                                     <div class="carousel-inner">
-                                    
-                                    @if($bookmarkCandidates->count() > 0)
-                                    @foreach($bookmarkCandidates as $indexx => $bC)
-                                    
-                                    <div class="item carousel-item {{ $indexx === 0 ? 'active' : '' }}">
-                                        <div class="img-box"><img src="{{ route('private.image', ['userId' => $bC->candidateId, 'filename' => 'pp-' . $bC->candidateId . '.jpg']) }}" alt=""></div>
-                                        <p class="testimonial truncate">{{ Str::limit(ucwords($bC->profSummary), 90, '...') }}</p>
-                                        
-                                        <p class="overview">
-                                            <a href="{{url('recruiter/candidate/'.$bC->candidateId)}}">
-                                                <b>{{ucwords($bC->fname)}} {{ucwords($bC->lname)}}</b>
-                                            </a>
-                                        </p>
-                                    </div>
-                                        
-                                    @endforeach
-                                    @endif
-                                        
+                                        @foreach($bookmarkCandidates as $indexx => $bC)
+                                            <div class="item carousel-item {{ $indexx === 0 ? 'active' : '' }}">
+                                                <div class="img-box">
+                                                    <img src="{{ route('private.image', ['userId' => $bC->candidateId, 'filename' => 'pp-' . $bC->candidateId . '.jpg']) }}" alt="">
+                                                </div>
+                                                <p class="testimonial truncate">
+                                                    {{ Str::limit(ucwords($bC->profSummary), 90, '...') }}
+                                                </p>
+                                                <p class="overview">
+                                                    <a href="{{ url('recruiter/candidate/'.$bC->candidateId) }}">
+                                                        <b>{{ ucwords($bC->fname) }} {{ ucwords($bC->lname) }}</b>
+                                                    </a>
+                                                </p>
+                                            </div>
+                                        @endforeach
                                     </div>
                                     <!-- Carousel controls -->
                                     <a class="carousel-control left carousel-control-prev" href="#bc_slider" data-slide="prev">
-                                    <i class="fa fa-angle-left"></i>
+                                        <i class="fa fa-angle-left"></i>
                                     </a>
                                     <a class="carousel-control right carousel-control-next" href="#bc_slider" data-slide="next">
-                                    <i class="fa fa-angle-right"></i>
+                                        <i class="fa fa-angle-right"></i>
                                     </a>
                                 </div>
                             </div>
+                        @else
+                        
+                            <div class="dashboard-dummy-bookmarks text-center py-5 px-5 mb-0">
+                                <i class="bi bi-bookmark-star white_color" style="font-size: 100px;"></i>
+                                <p>No bookmarks found</p>
+                            </div>
+                        @endif
+
+                            
                         </div>
                         </div>
                     </div>
