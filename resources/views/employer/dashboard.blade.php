@@ -21,6 +21,7 @@ $recruiterspackage = $pricing["recruiterspackage"]; //name price candidatelimit
 $custompackage = $pricing["custompackage"]; //name price candidatelimit
 if($package == ''){
     $package = 'No package selected';
+    $packageName = 'No package selected';
 }else{
     $packageName = $pricing[$package]["name"];
 }
