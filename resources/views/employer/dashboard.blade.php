@@ -4,6 +4,7 @@
 @php
 $userId = $currentPlan->userId;
 $package = $currentPlan->package;
+/*
 $active = $currentPlan->active;
 $starton = $currentPlan->starton;
 $expireon = $currentPlan->expireon;
@@ -12,14 +13,18 @@ $candidatePurchaseLimit = $currentPlan->candidatePurchaseLimit;
 $candidatePurchased = $currentPlan->candidatePurchased;
 $createDateTime = $currentPlan->createDateTime;
 $updateDateTime = $currentPlan->updateDateTime;
-
+*/
 $pricing = config('custom.pricing');
 $payasyougo = $pricing["payasyougo"]; //name price candidatelimit
 $basicaccess = $pricing["basicaccess"]; //name price candidatelimit
 $recruiterspackage = $pricing["recruiterspackage"]; //name price candidatelimit
 $custompackage = $pricing["custompackage"]; //name price candidatelimit
+if($package == ''){
+    $package = 'No package selected'
+}else{
+    $packageName = $pricing[$package]["name"];
+}
 
-$packageName = $pricing[$package]["name"];
 @endphp
 
 <style>
