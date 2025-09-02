@@ -130,6 +130,7 @@ class Register extends Controller
                 $resumeDataObj->certifications = '';
                 $resumeDataObj->createdDateTime = $createdDateTime;
                 $resumeDataObj->updatedDateTime = $updatedDateTime;
+                $resumeDataObj->save();
 
                 
                 // send welcome email email
