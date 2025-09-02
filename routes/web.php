@@ -23,6 +23,7 @@ use App\Http\Controllers\Candidate\Register as CandidateRegister;
 use App\Http\Controllers\Candidate\Dashboard as CandidateDashboard;
 use App\Http\Controllers\Candidate\Profile as CandidateProfile;
 use App\Http\Controllers\Candidate\Resume as CandidateResume;
+use App\Http\Controllers\Candidate\Notifications as CandidateNotifications;
 
 //recruiter
 use App\Http\Controllers\Employer\Register as EmployerRegister;
@@ -144,4 +145,7 @@ Route::prefix('candidate')->name('candidate.')->group(function () {
     Route::get('/planactivate/{plan}',[CandidateProfile::class, 'activateFeatureProfile']);
     Route::get('/payment/callback',[CandidateProfile::class, 'payment']);
     Route::get('/payment/cancel',[CandidateProfile::class, 'cancel']);
+
+    Route::get('/notifications',[CandidateNotifications::class, 'notifications']);
+    Route::get('/notifications/loadmore', [CandidateNotifications::class, 'loadMore']);
 });

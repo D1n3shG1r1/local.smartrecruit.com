@@ -72,7 +72,7 @@
                               <ul class="icon-ul">
                                  
                                  <li class="icon-li">
-                                    <a href="{{url('admin/notifications');}}"><i class="fa fa-bell-o"></i>
+                                    <a href="{{url('candidate/notifications');}}"><i class="fa fa-bell-o"></i>
                                    
                                     @php $bellClass = 'online_animation'; @endphp
                                     <span class="badge {{$bellClass}}">0</span>
