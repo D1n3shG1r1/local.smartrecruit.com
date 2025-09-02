@@ -90,6 +90,9 @@
                     <div class="msg_list_main">
                         <ul id="notificationsContainer" class="msg_list">
 
+
+                        @if($notifications->count() > 0)
+
                         @foreach($notifications as $notification)
                         <li style="border-left-color: #ff9800;">
                             <span><img src="{{ route('private.image', ['userId' => $notification->sender, 'filename' => 'pp-' . $notification->sender . '.jpg']) }}"
@@ -104,6 +107,10 @@
                             </span>
                         </li>
                         @endforeach
+                        
+                        @else
+                        <li class="text-center" style="text-align: center !important; display: inline-block;"><i class="fa fa-bell-o" style="font-size: 100px;"></i><p style="font-size: 21px; margin-top: 20px;">It seems that you have no new notifications.</p></li>
+                        @endif
                         </ul>
                     </div>
                 </div>
