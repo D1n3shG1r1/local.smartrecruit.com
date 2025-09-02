@@ -31,6 +31,13 @@
                   <h4>Candidate</h4>
                   <ul class="list-unstyled components">
                      <li><a href="{{url('/candidate/dashboard')}}"><i class="fa fa-dashboard yellow_color"></i> <span>Dashboard</span></a></li>
+
+                     <li>
+                        <a href="{{ url('/candidate/notifications') }}">
+                           <i class="fa fa-bell-o yellow_color"></i>
+                           <span class="{{ request()->is('candidate/notifications*') ? 'active-nav' : '' }}">Notifications</span>
+                        </a>
+                     </li>
                      
                      <li><a href="{{url('/candidate/myprofile')}}"><i class="bi bi-person-vcard yellow_color"></i> <span>My Profile</span></a></li>
                      
