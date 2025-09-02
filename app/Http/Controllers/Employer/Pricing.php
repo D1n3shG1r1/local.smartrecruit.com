@@ -32,7 +32,20 @@ class Pricing extends Controller
             $userId = $this->USERID;
 
             $currentPlan = Package_model::where("userId", $userId)->first();
-
+            if (empty($currentPlan)) {
+                $currentPlan = new Package_model(); // Create a new instance
+                $currentPlan->userId = $userId;
+                $currentPlan->package = '';
+                $currentPlan->active = 0;
+                $currentPlan->starton = null;
+                $currentPlan->expireon = null;
+                $currentPlan->expired = 1;
+                $currentPlan->candidatePurchaseLimit = 0;
+                $currentPlan->candidatePurchased = 0;
+                $currentPlan->createDateTime = now(); // You can use '' if required, but now() is typical
+                $currentPlan->updateDateTime = now();
+            }
+            
             $data = array();
             $data["pageTitle"] = "Pricing";
             $data["currentPlan"] = $currentPlan;
