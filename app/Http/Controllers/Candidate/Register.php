@@ -123,16 +123,15 @@ class Register extends Controller
                 $resumeDataObj->id = $id;
                 $resumeDataObj->candidateId = $id;
                 $resumeDataObj->profSummary = '';
-                $resumeDataObj->workExperience = '';
-                $resumeDataObj->skills = '';
-                $resumeDataObj->languages = '';
-                $resumeDataObj->degree = '';
-                $resumeDataObj->certifications = '';
+                $resumeDataObj->workExperience = json_encode(array());
+                $resumeDataObj->skills = json_encode(array());
+                $resumeDataObj->languages = json_encode(array());
+                $resumeDataObj->degree = json_encode(array());
+                $resumeDataObj->certifications = json_encode(array());
                 $resumeDataObj->createdDateTime = $createdDateTime;
                 $resumeDataObj->updatedDateTime = $updatedDateTime;
                 $resumeDataObj->save();
 
-                
                 // send welcome email email
                 $param = [
                     "firstName" => $fname,
