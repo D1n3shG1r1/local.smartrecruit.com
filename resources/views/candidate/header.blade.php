@@ -39,12 +39,19 @@
                         </a>
                      </li>
                      
-                     <li><a href="{{url('/candidate/myprofile')}}"><i class="bi bi-person-vcard yellow_color"></i> <span>My Profile</span></a></li>
+                     <li>
+                        <a href="{{url('/candidate/myprofile')}}">
+                           <i class="bi bi-person-vcard yellow_color"></i>
+                           <span class="{{ request()->is('candidate/myprofile*') ? 'active-nav' : '' }}">My Profile</span></a>
+                     </li>
                      
-                     <li><a href="{{url('/candidate/createresume')}}"><i class="bi bi-file-earmark-person yellow_color"></i> <span>Create Resume</span></a></li>
+                     <li>
+                        <a href="{{url('/candidate/createresume')}}">
+                           <i class="bi bi-file-earmark-person yellow_color"></i> <span class="{{ request()->is('candidate/createresume*') ? 'active-nav' : '' }}">Create Resume</span></a>
+                     </li>
                      
                      @if($LOGINUSER["resumeSubmit"] == 1)
-                     <li><a href="{{url('/candidate/myresume')}}"><i class="bi bi-file-person yellow_color"></i> <span>View Resume</span></a></li>
+                     <li><a href="{{url('/candidate/myresume')}}"><i class="bi bi-file-person yellow_color"></i> <span class="{{ request()->is('candidate/myresume*') ? 'active-nav' : '' }}">View Resume</span></a></li>
                      @endif
 
                      <!--<li>
