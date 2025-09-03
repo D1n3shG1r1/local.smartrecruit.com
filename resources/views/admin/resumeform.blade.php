@@ -638,7 +638,7 @@
         "fieldofstudy":"",
       };
 
-      addEduRow(educationIndex, workExperienceValues);
+      addEduRow(educationIndex, educationValues);
     }
 
     if(certificationsArr.length > 0){
