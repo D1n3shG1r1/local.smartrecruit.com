@@ -73,7 +73,7 @@
 $incompleteProfile = $LOGINUSER["incompleteProfile"];
 @endphp 
 <script>
-    <?php if(request()->is('candidate/myprofile*')){ ?>
+    <?php if(!request()->is('candidate/myprofile*')){ ?>
 $(function(){
     
     var incompleteProfile = '{{ $incompleteProfile }}';
