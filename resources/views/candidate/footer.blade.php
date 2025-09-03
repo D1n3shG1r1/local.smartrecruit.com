@@ -73,6 +73,7 @@
 $incompleteProfile = $LOGINUSER["incompleteProfile"];
 @endphp 
 <script>
+    <?php if(request()->is('candidate/myprofile*')){ ?>
 $(function(){
     
     var incompleteProfile = '{{ $incompleteProfile }}';
@@ -88,6 +89,7 @@ $(function(){
 
     }
 });
+<?php } ?>
 
 function editProfilePhoto(elm){
   const fileInputId = $(elm).attr("data-fileelm");
