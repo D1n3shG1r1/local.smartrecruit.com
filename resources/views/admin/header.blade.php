@@ -28,22 +28,22 @@
                <div class="sidebar_blog_2">
                   <h4>Administrator</h4>
                   <ul class="list-unstyled components">
-                     <li><a href="{{url('/admin/dashboard')}}"><i class="fa fa-dashboard yellow_color"></i> <span>Dashboard</span></a></li>
+                     <li><a href="{{url('/admin/dashboard')}}"><i class="fa fa-dashboard yellow_color"></i> <span class="{{ request()->is('admin/dashboard*') ? 'active-nav' : '' }}">Dashboard</span></a></li>
 
-                     <!--<li><a href="{{url('/admin/myprofile')}}"><i class="bi bi-person-gear yellow_color"></i> <span>My Profile</span></a></li>-->
+                     <!--<li><a href="{{url('/admin/myprofile')}}"><i class="bi bi-person-gear yellow_color"></i> <span class="{{ request()->is('admin/myprofile*') ? 'active-nav' : '' }}">My Profile</span></a></li>-->
 
-                     <li><a href="{{url('/admin/candidates')}}"><i class="bi bi-person-vcard yellow_color"></i> <span>All Candidates</span></a></li>
+                     <li><a href="{{url('/admin/candidates')}}"><i class="bi bi-person-vcard yellow_color"></i> <span class="{{ request()->is('admin/candidates*') ? 'active-nav' : '' }}">All Candidates</span></a></li>
 
-                     <li><a href="{{url('/admin/recruiters')}}"><i class="fa fa-briefcase yellow_color"></i> <span>All Recruiters</span></a></li>
+                     <li><a href="{{url('/admin/recruiters')}}"><i class="fa fa-briefcase yellow_color"></i> <span class="{{ request()->is('admin/recruiters*') ? 'active-nav' : '' }}">All Recruiters</span></a></li>
 
-                     <li><a href="{{url('/admin/notifications')}}"><i class="fa fa-bell-o yellow_color"></i> <span>All Notifications</span></a></li>
+                     <li><a href="{{url('/admin/notifications')}}"><i class="fa fa-bell-o yellow_color"></i> <span class="{{ request()->is('admin/notifications*') ? 'active-nav' : '' }}">All Notifications</span></a></li>
                      <!--
-                     <li><a href="{{url('/admin/messages')}}"><i class="fa fa-envelope-o yellow_color"></i> <span>All Messages</span></a></li>
+                     <li><a href="{{url('/admin/messages')}}"><i class="fa fa-envelope-o yellow_color"></i> <span class="{{ request()->is('admin/messages*') ? 'active-nav' : '' }}">All Messages</span></a></li>
                      -->  
-                     <li><a href="{{url('/admin/transactions')}}"><i class="yellow_color">{{config('custom.baseCurrency.symbol')}}</i> <span>All Transactions</span></a></li>
+                     <li><a href="{{url('/admin/transactions')}}"><i class="yellow_color">{{config('custom.baseCurrency.symbol')}}</i> <span class="{{ request()->is('admin/transactions*') ? 'active-nav' : '' }}">All Transactions</span></a></li>
                      
                      @if($LOGINUSER["role"] == 3)
-                     <li><a href="{{url('/admin/settings')}}"><i class="fa fa-cog yellow_color"></i> <span>Settings</span></a></li>
+                     <li><a href="{{url('/admin/settings')}}"><i class="fa fa-cog yellow_color"></i> <span class="{{ request()->is('admin/settings*') ? 'active-nav' : '' }}">Settings</span></a></li>
                      @endif
                      
 

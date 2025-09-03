@@ -21,7 +21,7 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-            It seems like you have not completed your profile.
+            It seems like you have not completed your profile. <a href="{{url('/recruiter/myprofile')}}"><strong>Click here</strong></a> to complete your profile.
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
@@ -75,7 +75,7 @@ $incompleteProfile = $LOGINUSER["incompleteProfile"];
 <script>
     
 $(function(){
-    
+    <?php if(!request()->is('candidate/myprofile*')){ ?>
     var incompleteProfile = '{{ $incompleteProfile }}';
     
     incompleteProfile = parseInt(incompleteProfile);
@@ -88,6 +88,7 @@ $(function(){
         myModal.show();
 
     }
+    <?php } ?>
 
     var header_setSelectedSkills = [];
 
