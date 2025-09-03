@@ -21,8 +21,9 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-            It seems like you have not completed your profile.
+            It seems like you have not completed your profile. <a href="{{url('/candidate/myprofile')}}"><strong>Click here</strong></a> to complete your profile.
             </div>
+
             <!-- Modal footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>

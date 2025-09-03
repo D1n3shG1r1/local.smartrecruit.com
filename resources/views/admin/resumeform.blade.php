@@ -116,6 +116,12 @@
                                 </div>
                                 
                               </div>
+
+                              <div class="row mb-3">
+                                <div class="col-md-6">
+                                  <label class="form-label"><a href="{{url('admin/candidate/'.$candidateId)}}"><strong>Click here</strong></a> to update your basic information.</label>
+                                </div>
+                              </div>
                             </div>
 
                             <!-- ✅ Step 2 -->
