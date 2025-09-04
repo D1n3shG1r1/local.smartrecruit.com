@@ -19,6 +19,7 @@
                         <div class="user_info">
                         <h6>{{$LOGINUSER["fname"]}}</h6>
                            <p><span class="online_animation"></span> Online</p>
+                           <p style="color:#222;">{{$LOGINUSER["email"]}}</p>
                         </div>
                      </div>
                   </div> 

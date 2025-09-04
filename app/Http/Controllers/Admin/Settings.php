@@ -178,7 +178,10 @@ class Settings extends Controller
             $from_email = $request->input("from_email");
             $from_name = $request->input("from_name");
             $replyTo_email = $request->input("replyTo_email");
-            $replyTo_name = $request->input("replyTo_name");            
+            $replyTo_name = $request->input("replyTo_name");
+            $videoInterviewFrom_email = $request->input("videoInterviewFrom_email");
+            
+
             
             $adminId = $this->USERID;
             
@@ -206,7 +209,8 @@ class Settings extends Controller
                                             "from_email" => $from_email,
                                             "from_name" => $from_name,   
                                             "replyTo_email" => $replyTo_email,
-                                            "replyTo_name" => $replyTo_name
+                                            "replyTo_name" => $replyTo_name,
+                                            "videoInterviewFrom_email" => $videoInterviewFrom_email
                                         )
                                     );
 

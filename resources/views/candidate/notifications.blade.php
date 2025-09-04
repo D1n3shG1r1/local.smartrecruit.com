@@ -141,26 +141,8 @@
         $('#notificationsContainer').append(dummyHTML);
         
 
-
-        /*const requrl = "recruiter/notifications/loadmore";
-        const postdata = {
-            page: currentPage
-        };
-        
-        callajax(requrl, postdata, function(res){
-            $('.loadingPlaceholders').remove();
-            if ($.trim(res) === '') {
-                // No more results
-            } else {
-                $('#notificationsContainer').append(res);
-            }
-            loading = false;
-
-        });*/
-
-        
         $.ajax({
-            url: '{{ url("recruiter/notifications/loadmore") }}',
+            url: '{{ url("candidate/notifications/loadmore") }}',
             method: 'GET',
             data: {
                 page: currentPage

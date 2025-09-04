@@ -44,13 +44,14 @@ class EmailHelper
 
             case 'recruiterwelcome':
                 // Handle recruiter welcome email
+                $bladeData["verifyLink"] = $param["verifyLink"];
                 $subject = "Welcome to SMART-Recruit – Let’s Find Top Talent Together!";
                 $templateBlade = "emails.welcome_recruiter";
                 break;
 
             case 'candidatewelcome':
-                //zubbycom@gmail.com
                 // Handle candidate welcome email
+                $bladeData["verifyLink"] = $param["verifyLink"];
                 $subject = "Welcome to SMART-Recruit – Your Job Search Just Got Smarter!";
                 $templateBlade = "emails.welcom_candidate";
                 break;
@@ -87,6 +88,9 @@ class EmailHelper
             
             case 'candidatevideolink':
                 //$customerName $link $referalCode
+                //change from-email for send video-interview link
+                $smtpDetails['from_email'] = $smtpDetails['videoInterviewFrom_email'];
+                
                 $bladeData['link'] = $param["link"];
                 $bladeData['referalCode'] = $param["referalCode"];
                 $subject = "Complete Your Interview to Go Live!";

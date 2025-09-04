@@ -279,7 +279,8 @@ if($package == ''){
                                     @foreach($featuredCandidates as $index => $fC)
                                     
                                     <div class="item carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                        <div class="img-box"><img src="{{ route('private.image', ['userId' => $fC->candidateId, 'filename' => 'pp-' . $fC->candidateId . '.jpg']) }}" alt=""></div>
+                                        <div class="img-box"><img src="{{ route('private.image', ['userId' => $fC->candidateId, 'filename' => 'pp-' . $fC->candidateId . '.jpg']) }}" onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';"
+                                        alt="{{ucwords($fC->fname)}} {{ucwords($fC->lname)}}"></div>
                                         <p class="testimonial truncate">{{ Str::limit(ucwords($fC->profSummary), 90, '...') }}</p>
                                         <p class="overview">
                                             <a href="{{url('recruiter/candidate/'.$fC->candidateId)}}">    
@@ -328,7 +329,8 @@ if($package == ''){
                                         @foreach($bookmarkCandidates as $indexx => $bC)
                                             <div class="item carousel-item {{ $indexx === 0 ? 'active' : '' }}">
                                                 <div class="img-box">
-                                                    <img src="{{ route('private.image', ['userId' => $bC->candidateId, 'filename' => 'pp-' . $bC->candidateId . '.jpg']) }}" alt="">
+                                                    <img src="{{ route('private.image', ['userId' => $bC->candidateId, 'filename' => 'pp-' . $bC->candidateId . '.jpg']) }}" onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';"
+                                                    alt="{{ucwords($bC->fname)}} {{ucwords($bC->lname)}}">
                                                 </div>
                                                 <p class="testimonial truncate">
                                                     {{ Str::limit(ucwords($bC->profSummary), 90, '...') }}

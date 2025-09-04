@@ -71,6 +71,6 @@ class Notifications extends Controller
         ->orderBy('notifications.dateTime', 'desc')
         ->paginate(10, [], 'page', $page); // fixed here
         
-        return view('employer.partials.notifiations-list', compact('notifications'))->render();
+        return view('admin.partials.notifiations-list', compact('notifications'))->render();
     }
 }

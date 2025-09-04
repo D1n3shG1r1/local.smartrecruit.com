@@ -52,6 +52,8 @@ Route::get('/private-adimage/{filename}', [ImageController::class, 'showAd'])->n
 Route::post('/forgotpassword',[EmployerRegister::class, 'forgotpassword']); 
 Route::get('/changepassword',[EmployerRegister::class, 'changepassword']); 
 Route::post('/changepassword',[EmployerRegister::class, 'changepassword']); 
+//Route::get('/verifyme/{$token}',[EmployerRegister::class, 'verifyme']); 
+Route::get('/verifyme',[EmployerRegister::class, 'verifyme']); 
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/login',[AdminAdmin::class, 'login']);
@@ -68,12 +70,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/sendlinkandverify',[AdminCandidates::class, 'sendlinkandverify']);
     Route::post('/updatecandidateresume',[AdminCandidates::class, 'updateresume']);
     Route::post('/candidatesaveprofile',[AdminCandidates::class, 'saveprofile']);
+    Route::post('/candidateplanactivate',[AdminCandidates::class, 'activateFeatureProfile']);
     
     Route::get('/recruiters',[AdminRecruiters::class, 'recruiters']);  
     Route::get('/recruiter/{id}',[AdminRecruiters::class, 'recruiter']);
     Route::post('/recruitersaveprofile',[AdminRecruiters::class, 'saveprofile']);  
 
     Route::get('/notifications',[AdminNotifications::class, 'notifications']);
+    Route::get('/notifications/loadmore', [AdminNotifications::class, 'loadMore']);
     
     Route::get('/transactions',[AdminTransactions::class, 'transactions']);
 

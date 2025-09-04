@@ -16,7 +16,7 @@ trait SmtpConfigTrait {
         $sysAdmId = 1;  // Or dynamically retrieve if needed
         $sysAdm = SuperAdmin_model::where("id", $sysAdmId)->first();
         $smtp = json_decode($sysAdm["smtp"], true);
-
+        //dd($smtp);
         return [
             'host' => $smtp["host"],
             'port' => $smtp["port"],
@@ -26,10 +26,11 @@ trait SmtpConfigTrait {
             'from_email' => $smtp["from_email"],
             'from_name' => $smtp["from_name"],
             'replyTo_email' => $smtp["replyTo_email"],
-            'replyTo_name' => $smtp["replyTo_name"]
+            'replyTo_name' => $smtp["replyTo_name"],
+            'videoInterviewFrom_email' => $smtp["videoInterviewFrom_email"],
         ];
     }
-
+    
     public static function MYSMTP($smtpDetails, $recipient, $subject, $templateBlade, $data) {
         $smtpDetails['encryption'] = "";
         try {

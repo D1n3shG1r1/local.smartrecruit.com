@@ -4,7 +4,7 @@
     <div class="row column_title">
         <div class="col-md-12">
             <div class="page_title">
-                <h2>All Recruiters</h2>
+                <h2>All Notifications</h2>
             </div>
         </div>
     </div>
@@ -12,7 +12,7 @@
         <div class="col-md-12">
         <div class="white_shd full margin_bottom_30">
             <div class="full graph_head">
-                <div class="heading1 margin_0"><h2>Recruiters List</h2></div>
+                <div class="heading1 margin_0"><h2>Notifications List</h2></div>
             </div>
             <div class="table_section padding_infor_info">
                 <div class="table-responsive-sm">
@@ -30,17 +30,18 @@
                     </thead>
                     <tbody>
                     <?php
-                        if(!empty($recruiters)){
-                            foreach($recruiters as $k => $row){
+                        if(!empty($notifications)){
+                            foreach($notifications as $k => $notification){
                                 
-                                $id = $row->id;
-                                $refId = $row->referral_code;
-                                $fullName = $row->fname;
-                                $email = $row->email;
-                                $verified = $row->verified; //admin verified
-                                $active = $row->active; //visibilty
-                                $createdDateTime = $row->createdDateTime;
-                                $createDate = date("M d, Y", strtotime($createdDateTime));
+                                $refId = '';
+                                $fullName = ucwords($notification->fname ." ".$notification->lname);
+
+                                $message = $notification->message;
+                                $date = date("d F, Y", strtotime($notification->dateTime));
+
+                                $isRead = $notification->isRead;
+                                
+                                /*<i class="fa fa-bell-o notifyBell {{ $notification->isRead == 0 ? 'unreadBell' : '' }}"></i>*/
                     ?>
                                 
                         <tr>
@@ -49,10 +50,10 @@
                             <td>
                                 {{ucwords($fullName)}}
                             </td>
-                            <td>{{$email}}</td>
-                            <!--<td>{{$verified ? 'Active' : 'Inactive'}}</td>-->
-                            <td>{{$createDate}}</td>
-                            <td><a href="{{url('admin/recruiter/'.$id)}}" class="btn cur-p btn-outline-primary">View</a></td>
+                            <td>{{$message}}</td>
+                           
+                            <td>{{$date}}</td>
+                            <td><a href="#" class="btn cur-p btn-outline-primary">View</a></td>
                         </tr>
                     <?php
                         }
@@ -61,9 +62,9 @@
                     </tbody>
                 </table>
                 </div>
-                
+
                 <div class="btn-group mr-2 pagination button_section button_style2">
-                {{ $recruiters->links() }}
+                {{ $notifications->links() }}
                 </div>
 
             </div>

@@ -268,7 +268,8 @@ section,
                     <div class="row container section-title" >
   
                     <div class="col-md-4 photoSection">
-                      <img class="img-responsive" src="{{ route('private.image', ['userId' => $basicProfile->id, 'filename' => 'pp-' . $basicProfile->id . '.jpg']) }}" onerror="this.onerror=null; this.src='{{url('assets/admin/img/user.png')}}';" />
+                      <img class="img-responsive" src="{{ route('private.image', ['userId' => $basicProfile->id, 'filename' => 'pp-' . $basicProfile->id . '.jpg']) }}" onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';"
+                      alt="{{ucfirst($basicProfile->fname)}} {{ucfirst($basicProfile->lname)}}" />
                     </div>
 
                     <div class="col-md-4">

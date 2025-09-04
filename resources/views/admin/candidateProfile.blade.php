@@ -107,30 +107,45 @@ $serviceCurrencySymbol = $featureprofile["symbol"];
                                             <span class="toggle-slider"></span>
                                         </label>
 
-                                        <label class="text-danger" style="font-size: 12px;">Toggling this option will make your profile visible or hidden to recruiters.</label>
+                                        <label class="text-danger" style="font-size: 12px;">Toggling this option will make candidate's profile visible or hidden to recruiters.</label>
 
                                     </div>
 
                                     <div class="col-md-6">
-                                    <label for="activeCheckDefault" class="form-label">Feature Profile<span class="required"></span></label>
-                                    @php
-                                        $isActive = !empty($featureProfile) && $featureProfile->active == 1;
-                                        $isExpired = !empty($featureProfile) && $featureProfile->expired == 0;
-                                    @endphp
-                                    @if($isActive)
-                                        <button type="button" class="btn cur-p btn-outline-primary" disabled>
-                                            <i class="bi bi-shield-check recruit_blue_text"></i> Activated
-                                        </button>
-                                    @else
-                                        <button type="button" class="btn cur-p btn-outline-primary" disabled>
-                                            <i class="bi bi-shield-check recruit_blue_text"></i> In-Active
-                                        </button>
+                                        <label for="activeCheckDefault" class="form-label">Feature Profile<span class="required"></span></label>
 
-                                    @endif
-                                        <!--<button type="button" class="btn cur-p btn-outline-primary"><i class="bi bi-shield-check recruit_blue_text"></i>Activate</button>
+                                        @php
+                                            $isActive = !empty($featureProfile) && $featureProfile->active == 1;
+                                            $isExpired = !empty($featureProfile) && $featureProfile->expired == 0;
+                                        @endphp
 
-                                        <label class="text-danger" style="font-size: 12px;">Feature Profile: Highlight your profile at the top by activating the feature-profile option.</label>-->
-
+                                        @if($isActive)
+                                            <button type="button" class="btn cur-p btn-outline-primary" disabled>
+                                                <i class="bi bi-shield-check recruit_blue_text"></i> Activated
+                                            </button>
+                                            <label class="text-danger" style="font-size: 12px;">
+                                            Feature Profile: Highlight a candidate's profile at the top by activating the 'Feature Profile' option.
+                                            </label>
+                                        @elseif($isExpired)
+                                            <button type="button" class="btn cur-p btn-outline-primary" onclick="openPaymentPopup();">
+                                                <i class="bi bi-shield-check recruit_blue_text"></i> Activate
+                                            </button>
+                                            <label class="text-danger" style="font-size: 12px;">
+                                            Feature Profile: Highlight a candidate's profile at the top by activating the 'Feature Profile' option.
+                                            <br>
+                                            It seems the candidate's featured plan has either expired or has not been activated yet.
+                                            </label>
+                                        @else
+                                            <button type="button" class="btn cur-p btn-outline-primary" onclick="openPaymentPopup();">
+                                                <i class="bi bi-shield-check recruit_blue_text"></i> Activate
+                                            </button>
+                                            <label class="text-danger" style="font-size: 12px;">
+                                            Feature Profile: Highlight a candidate's profile at the top by activating the 'Feature Profile' option.
+                                            <br>
+                                            It seems the candidate's featured plan has either expired or has not been activated yet.
+                                            </label>
+                                        @endif
+                                            
                                     </div>
                                 </div>
                             </div>
@@ -259,7 +274,7 @@ $serviceCurrencySymbol = $featureprofile["symbol"];
     <div id="payment-popup" class="feature-profile-payment-popup-overlay">
         <div class="feature-profile-payment-popup-container">
             <div class="feature-profile-payment-popup-header mb-3">
-                <h2>Payment Details</h2>
+                <h2>Feature Profile</h2>
                 <span class="close-btn .recruit_blue" onclick="closePaymentPopup()">&times;</span>
             </div>
             <div id="payment-form">
@@ -268,8 +283,8 @@ $serviceCurrencySymbol = $featureprofile["symbol"];
                     
                     <p class="text-center recruit_blue_text" style="font-weight: 500;font-size: 20px;">{{$serviceName}}</p>
                     
-                    <p class="text-center recruit_blue_text">Boost your chances of getting hired by placing your profile at the top of recruiter searches. Stand out from other candidates and increase your visibility. Just {{$serviceCurrencySymbol}}{{$servicePrice}}/month.</p>
-                    <button class="pay-btn recruit_blue" onclick="processPayment()">Pay Now</button>
+                    <p class="text-center recruit_blue_text">Boost candidate's chances of getting hired by placing their profile at the top of recruiter searches. Stand out from other candidates and increase their visibility.</p>
+                    <button id="activateBtn" class="pay-btn recruit_blue" data-txt="Activate" data-loadingtxt="Activating..." onclick="processPayment(this)">Activate</button>
                 </div>
             </div>
         </div>
@@ -478,9 +493,80 @@ function closePaymentPopup() {
 }
 
 // Simulate the Payment Process
-function processPayment() {
-    window.location.href="{{url('candidate/planactivate/featureprofile')}}";
-    //closePaymentPopup();  // Close the popup after payment
+function processPayment(elm) {
+    
+    // Show the modal
+    var myModal = new bootstrap.Modal(document.getElementById('SAKeyModal'));
+        myModal.show();
+
+        var title = 'Update Record';
+        var message = 'Please enter your special access key to perform this action';
+        var confirmText = 'Ok';
+        var cancelText = 'Cancel';
+        
+        // Update modal content dynamically
+        document.getElementById('SAKeyModalLabel').textContent = title;
+        document.getElementById('SAKeyMessage').textContent = message;
+        document.getElementById('SAKeyConfirmBtn').textContent = confirmText;
+        document.getElementById('SAKeyCancelBtn').textContent = cancelText;
+
+        // Reset event listeners
+        const confirmButton = document.getElementById('SAKeyConfirmBtn');
+        const cancelButton = document.getElementById('SAKeyCancelBtn');
+
+        // Add event listener for confirmation action
+        confirmButton.onclick = function() {
+            // Place your confirmation action here
+            var SAKeyInput = document.getElementById('SAKeyInput').value;
+            if(!isRealValue(SAKeyInput)){
+                var err = 1;
+                var msg = "Please enter your Special Access Key.";
+                showToast(err,msg);
+                return false;
+            }else{
+
+                myModal.hide();
+                document.getElementById('SAKeyInput').value = '';
+
+                var elmId = $(elm).attr("id");
+                $(elm).attr("disabled",true);
+                var orgTxt = $(elm).attr("data-txt");
+                var loadingTxt = $(elm).attr("data-loadingtxt");
+                showLoader(elmId,loadingTxt);
+                
+
+                var userId = $("#userId").val();
+                var fname = $("#fname").val();
+                var lname = $("#lname").val();
+                var email = $("#email").val();
+                var sakey = SAKeyInput;
+
+                var requrl = "admin/candidateplanactivate";
+                var postdata = {
+                    "sakey":SAKeyInput,
+                    "userId":userId,
+                    "fname":fname,
+                    "lname":lname,
+                    "email":email
+                };
+                callajax(requrl, postdata, function(resp){
+                    $(elm).removeAttr("disabled");
+                    hideLoader(elmId,orgTxt);
+                    $(".errorMessage").html(resp.M);
+                    var err = 1;
+                    if(resp.C == 100){
+                        err = 0;
+                        
+                        closePaymentPopup();
+                    }
+                    
+                    var msg = resp.M;
+                    showToast(err,msg);
+                    
+                });
+            }
+        };
+
 }
 
 function viewResume(cid){

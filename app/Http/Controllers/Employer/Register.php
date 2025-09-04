@@ -37,21 +37,28 @@ class Register extends Controller
             $userId = $userObj["id"];
             if ($userId > 0) {
                 
-                $fname = $userObj["fname"];
-                $lname = $userObj["lname"];
-                $email = $userObj["email"];
-                $role = $userObj["role"];
-                $referral_code = $userObj["referral_code"];
-                
-                $this->setSession('fname', $fname);
-                $this->setSession('lname', $lname);
-                $this->setSession('email', $email);
-                $this->setSession('id', $userId);
-                $this->setSession('role', $role);
-                $this->setSession('referral_code', $referral_code);
-                $this->setSession('systemAdmin', 0);
+                $emailVerified = $userObj["emailVerified"];
 
-                $response = array("C" => 100, "R" => array(), "M" => "Login successful! Redirecting...");
+                if($emailVerified > 0){
+                    $fname = $userObj["fname"];
+                    $lname = $userObj["lname"];
+                    $email = $userObj["email"];
+                    $role = $userObj["role"];
+                    $referral_code = $userObj["referral_code"];
+                    
+                    $this->setSession('fname', $fname);
+                    $this->setSession('lname', $lname);
+                    $this->setSession('email', $email);
+                    $this->setSession('id', $userId);
+                    $this->setSession('role', $role);
+                    $this->setSession('referral_code', $referral_code);
+                    $this->setSession('systemAdmin', 0);
+
+                    $response = array("C" => 100, "R" => array(), "M" => "Login successful! Redirecting...");
+                }else{
+                    $response = array("C" => 101, "R" => array(), "M" => "It seems you have not verified your account yet. Please check your registered email inbox for a verification link and verify your account.");
+                }
+
             }else{
                 $response = array("C" => 101, "R" => array(), "M" => "Invalid email or password. Please try again.");
             }   
@@ -97,6 +104,10 @@ class Register extends Controller
             
             $referralCode = generateModelUniqueCode(Users_model::class, 'referral_code');
 
+            $plainStr = $email;
+            $key = env('MY_ENCRYPTION_KEY');
+            $verifyToken = $this->encrypt($plainStr, $key);
+
             $id = db_randnumber();
             $createdDateTime = date("Y-m-d H:i:s");
             $updatedDateTime = date("Y-m-d H:i:s");
@@ -118,6 +129,8 @@ class Register extends Controller
             $UserObj->zipcode = '';
             $UserObj->phone = '';
             $UserObj->profilephoto = '';
+            $UserObj->emailVerifyToken = $verifyToken;
+            $UserObj->emailVerified = 0;
             $UserObj->createdDateTime = $createdDateTime;
             $UserObj->updatedDateTime = $updatedDateTime;
             $saved = $UserObj->save();
@@ -128,12 +141,15 @@ class Register extends Controller
             $postBackData["email"] = $email;
             $postBackData["success"] = $saved ? 1 : 0;
             
+            
+
             if($saved){
                 //62y39u35x87t0k6
                 $param = [
                     "firstName" => $fname,
                     "lastName" => $lname,
                     "email" => $email,
+                    "verifyLink" => url('verifyme?t='.$verifyToken),
                     "receiver" => $id,
                     "sender" => 1,
                     "purpose" => "recruiterwelcome"
@@ -332,6 +348,45 @@ class Register extends Controller
             }
         }
         
+    }
+    
+    function verifyme(Request $request){
+        
+        
+        $token = $request->input("t");
+        
+        if($token){
+            $key = env('MY_ENCRYPTION_KEY');
+            $email = $this->decrypt($token, $key);
+            
+            $customerObj = Users_model::where('email', $email)->where('emailVerifyToken', $token)->where('emailVerified', 0)->first();
+            
+            if($customerObj){
+                
+                //verified
+                $verified = 1;
+                $updatedDateTime = date("Y-m-d H:i:s");
+                
+                $updated = Users_model::where('email', $email)->where('emailVerifyToken', $token)->update(array("emailVerified" => $verified, "updatedDateTime" => $updatedDateTime));
+
+                $data = array();
+                $data["pageTitle"] = "Thank You for Verifying!";
+                $data["role"] = $customerObj->role;
+                return View("thankyouverify",$data);
+
+            }else{
+                //invalid link
+                $data = array();
+                $data["pageTitle"] = "Page not found";
+                return View("errors.404",$data);
+            }
+        }else{
+            //invalid link
+            $data = array();
+            $data["pageTitle"] = "Page not found";
+            return View("errors.404",$data);
+        }
+
     }
 
 }

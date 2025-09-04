@@ -78,6 +78,7 @@ span.selection{
                         <h6>{{ucwords($LOGINUSER["fname"])}}</h6>
                            <p><span class="online_animation"></span> Online</p>
                            <p style="color:#222;">Ref:{{strtoupper($LOGINUSER["referralCode"])}}</p>
+                           <p style="color:#222;">{{$LOGINUSER["email"]}}</p>
                         </div>
                      </div>
                   </div> 

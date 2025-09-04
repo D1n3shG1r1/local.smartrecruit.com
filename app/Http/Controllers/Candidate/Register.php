@@ -11,9 +11,10 @@ use App\Models\CandidateResumeData_model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\Helpers\EmailHelper;
-
+use App\Traits\CryptoTrait;
 class Register extends Controller
 {
+    use CryptoTrait;
     var $USERID = 0;
     
     function __construct(){   
@@ -33,21 +34,28 @@ class Register extends Controller
             $userId = $userObj["id"];
             if ($userId > 0) {
                 
-                $fname = $userObj["fname"];
-                $lname = $userObj["lname"];
-                $email = $userObj["email"];
-                $role = $userObj["role"];
-                $referral_code =  $userObj["referral_code"];
+                $emailVerified = $userObj["emailVerified"];
 
-                $this->setSession('fname', $fname);
-                $this->setSession('lname', $lname);
-                $this->setSession('email', $email);
-                $this->setSession('id', $userId);
-                $this->setSession('role', $role);
-                $this->setSession('referral_code', $referral_code);
-                $this->setSession('systemAdmin', 0);
+                if($emailVerified > 0){
+                    $fname = $userObj["fname"];
+                    $lname = $userObj["lname"];
+                    $email = $userObj["email"];
+                    $role = $userObj["role"];
+                    $referral_code =  $userObj["referral_code"];
+
+                    $this->setSession('fname', $fname);
+                    $this->setSession('lname', $lname);
+                    $this->setSession('email', $email);
+                    $this->setSession('id', $userId);
+                    $this->setSession('role', $role);
+                    $this->setSession('referral_code', $referral_code);
+                    $this->setSession('systemAdmin', 0);
+                    
+                    $response = array("C" => 100, "R" => array(), "M" => "Login successful! Redirecting...");
+                }else{
+                    $response = array("C" => 101, "R" => array(), "M" => "It seems you have not verified your account yet. Please check your registered email inbox for a verification link and verify your account.");
+                }
                 
-                $response = array("C" => 100, "R" => array(), "M" => "Login successful! Redirecting...");
             }else{
                 $response = array("C" => 101, "R" => array(), "M" => "Invalid email or password. Please try again.");
             }   
@@ -92,6 +100,10 @@ class Register extends Controller
         }else{
             
             $referralCode = generateModelUniqueCode(Users_model::class, 'referral_code');
+            
+            $plainStr = $email;
+            $key = env('MY_ENCRYPTION_KEY');
+            $verifyToken = $this->encrypt($plainStr, $key);
 
             $id = db_randnumber();
             $createdDateTime = date("Y-m-d H:i:s");
@@ -114,10 +126,12 @@ class Register extends Controller
             $UserObj->zipcode = '';
             $UserObj->phone = '';
             $UserObj->profilephoto = '';
+            $UserObj->emailVerifyToken = $verifyToken;
+            $UserObj->emailVerified = 0;
             $UserObj->createdDateTime = $createdDateTime;
             $UserObj->updatedDateTime = $updatedDateTime;
             $saved = $UserObj->save();
-            
+
             if($saved){
                 $resumeDataObj = new CandidateResumeData_model();
                 $resumeDataObj->id = $id;
@@ -137,6 +151,7 @@ class Register extends Controller
                     "firstName" => $fname,
                     "lastName" => $lname,
                     "email" => $email,
+                    "verifyLink" => url('verifyme?t='.$verifyToken),
                     "receiver" => $id,
                     "sender" => 1,
                     "purpose" => "candidatewelcome"

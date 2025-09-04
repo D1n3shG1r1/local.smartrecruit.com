@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Users_model;
 use App\Models\CandidateResumeData_model;
 use App\Models\FeaturedCandidate_model;
+use App\Models\Packagepayments_model;
 use App\Models\SuperAdmin_model;
 
 use Carbon\Carbon;
@@ -152,7 +153,9 @@ class Candidates extends Controller
             $link = $request->input("interviewLinkInput");
             $resendLink = $request->input("resendLink");
             
-            $verified = Users_model::where("id", $candidateId)->update(["verified" => 1]);
+            $verified = Users_model::where("id", $candidateId)->update([
+                "emailVerified" => 1,
+                "verified" => 1]);
 
             if($resendLink == 1){
                 //assume verified in case of resend
@@ -175,6 +178,8 @@ class Candidates extends Controller
                     "email" => $email,
                     "link" => $link,
                     "referalCode" => $referalCode,
+                    "receiver" => $candidateId,
+                    "sender" => 1,
                     "purpose" => "candidatevideolink"
                 ];
                 
@@ -385,7 +390,8 @@ class Candidates extends Controller
         if($this->USERID > 0){
             $userId = $this->USERID; 
             
-            $sakey = strtolower($request->input("sakey"));
+            $candidateId = $request->input("userId");
+            $sakey = $request->input("sakey");
             $fname = strtolower($request->input("fname"));
             $lname = strtolower($request->input("lname"));
             $gender = strtolower($request->input("gender"));
@@ -402,40 +408,50 @@ class Candidates extends Controller
             
 
             // Validate Special Access Key
-            $settingsRow = SuperAdmin_model::select("specialAccessKey")->where("role", 3)->where("id", 1)->first();
-
-            if (!$settingsRow || $settingsRow->specialAccessKey !== $sakey) {
-                
+            $settingsRow = SuperAdmin_model::select("specialAccessKey")
+                               ->where("role", 3)
+                               ->where("id", 1)
+                               ->first();
+            
+            if (empty($settingsRow )) {
                 return response()->json([
                     "C" => 101,
                     "R" => ["success" => 0],
                     "M" => "You have entered an invalid Special Access key."
                 ]);
-
             }else{
-
-                $updateArr = array(
-                    "fname" => $fname,
-                    "lname" => $lname,
-                    "gender" => $gender,
-                    "phone" => $phone,
-                    "city" => $city,
-                    "country" => $country,
-                    "zipcode" => $zipcode,
-                    "address_1" => $address_1,
-                    "address_2" => $address_2,
-                    "active" => $active
-                );
                 
-                $custmoerObj = Users_model::where("id", $userId)->update($updateArr);
-                $postBackData = $updateArr;
-                $postBackData["success"] = 1;
-    
-                $response = array(
-                    "C" => 100,
-                    "R" => $postBackData,
-                    "M" => "Your profile is updated successfully."
-                );
+                if($settingsRow->specialAccessKey !== $sakey){
+                    return response()->json([
+                        "C" => 102,
+                        "R" => ["success" => 0],
+                        "M" => "You have entered an invalid Special Access key."
+                    ]);
+                }else{
+                    $updateArr = array(
+                        "fname" => $fname,
+                        "lname" => $lname,
+                        "gender" => $gender,
+                        "phone" => $phone,
+                        "city" => $city,
+                        "country" => $country,
+                        "zipcode" => $zipcode,
+                        "address_1" => $address_1,
+                        "address_2" => $address_2,
+                        "active" => $active
+                    );
+                    
+                    $custmoerObj = Users_model::where("id", $candidateId)->update($updateArr);
+                    $postBackData = $updateArr;
+                    $postBackData["success"] = 1;
+        
+                    $response = array(
+                        "C" => 100,
+                        "R" => $postBackData,
+                        "M" => "Candidate's profile is updated successfully."
+                    );
+                } 
+                
             }
 
         }else{
@@ -449,4 +465,176 @@ class Candidates extends Controller
 
         return response()->json($response); die;
     }
+
+    function activateFeatureProfile(Request $request){
+        if($this->USERID > 0){
+            //$userId = $this->USERID; 
+            
+            $candidateId = $request->input("userId");
+            $candidateFname = $request->input("fname");
+            $candidateLname = $request->input("lname");
+            $candidateEmail = $request->input("email");
+            $sakey = $request->input("sakey");
+            
+            // Validate Special Access Key
+            $settingsRow = SuperAdmin_model::select("specialAccessKey")
+                               ->where("role", 3)
+                               ->where("id", 1)
+                               ->first();
+            
+            if (empty($settingsRow )) {
+                return response()->json([
+                    "C" => 101,
+                    "R" => ["success" => 0],
+                    "M" => "You have entered an invalid Special Access key."
+                ]);
+            }else{
+                
+                if($settingsRow->specialAccessKey !== $sakey){
+                    return response()->json([
+                        "C" => 102,
+                        "R" => ["success" => 0],
+                        "M" => "You have entered an invalid Special Access key."
+                    ]);
+                }else{
+
+                    $createDateTime = date("Y-m-d H:i:s");
+                    $updateDateTime = date("Y-m-d H:i:s"); 
+                    //initiate transaction
+                    
+                    //get package amount from config
+                    $package = "featureprofile";
+                    $packageAmount = config('custom.pricing.'.$package.'.price');
+                    $packageAmount = 0; //free account
+
+                    $currency = "NGN";
+                    $refrence = db_randnumber();
+
+                    
+                    //payment success
+                    $gatewayTransId = 0;
+                    $referenceId = $refrence;
+                    $amount = 0;
+                    $currency = $currency;
+                    $paid_at = $createDateTime;
+                    $metadata = '';
+                    $userId = $candidateId;
+                    $transactionId = $referenceId;
+                    $package = $package;
+                    $cancel_action = '';
+                    
+                    $createDateTime = date("Y-m-d H:i:s");
+                    $updateDateTime = date("Y-m-d H:i:s");
+
+                    //save transaction
+                    $timezone = Carbon::now()->timezoneName;
+                    $paidAt = Carbon::parse($paid_at)->setTimezone($timezone)->format('Y-m-d H:i:s');
+                    
+                    $status = 'success';
+                    
+                    //save transaction
+                    $paymentObj = new Packagepayments_model();
+                    $paymentObj->id = $transactionId;
+                    $paymentObj->gatewayTransId = $gatewayTransId;
+                    $paymentObj->transactionId = $transactionId;
+                    $paymentObj->userId = $userId;
+                    $paymentObj->package = $package;
+                    $paymentObj->amount = $amount;
+                    $paymentObj->currency = $currency;
+                    $paymentObj->status = $status;
+                    $paymentObj->payment = 'y';
+                    $paymentObj->paid_at = $paidAt;
+                    $paymentObj->gatewayResponse =  json_encode(array());
+                    $paymentObj->createDateTime = $createDateTime;
+                    $paymentObj->updateDateTime = $updateDateTime;
+                    $paymentSave = $paymentObj->save();    
+                
+                    
+                    $newDateTime = Carbon::now()->addMonth();
+                    $startOn = date("Y-m-d");
+                    $expireOn = date("Y-m-d", strtotime($newDateTime));
+                    
+                    $packageName = config('custom.pricing.'.$package.'.name');
+                    $candidatelimit = 0; 
+                    $packageLimitArr = 0;
+                    $candidatePurchaseLimit = $candidatelimit;
+                    $candidatePurchased = 0;
+
+                    if($paymentSave){
+                        
+                        //update package
+                        
+                        FeaturedCandidate_model::upsert(
+                            [
+                                [
+                                    'userId' => $userId,
+                                    'active' => 1,
+                                    'starton' => $startOn,
+                                    'expireon' => $expireOn,
+                                    'expired' => 0,
+                                    'createDateTime' =>  $createDateTime,
+                                    'updateDateTime' => $updateDateTime
+                                ],
+                            ],
+                            ['userId'], // Unique column
+                            ['active','starton', 'expireon', 'expired', 'updateDateTime'] // Columns to update 
+                        );                            
+                    }
+
+
+                    // Create notifications
+                    
+
+                    //send active-package email and pricing
+                    //$userId $candidateId $refrence
+
+                    $tmpUserId = $userId;
+                    $tmpUserRole = 1;
+                    $tmpUserFName = $candidateFname;
+                    $tmpUserLName = $candidateLname;
+                    $tmpUserEmail = $candidateEmail;
+                    $currencySymbol = config('custom.baseCurrency.symbol');
+                    $price = 0; //convert from kobo to niara
+
+                    $param = [
+                        "firstName" => $tmpUserFName,
+                        "lastName" => $tmpUserLName,
+                        "email" => $tmpUserEmail,
+                        "PlanName" => $packageName,
+                        "PlanPrice" => $currencySymbol.' '.$price,
+                        "ValidityPeriod" => $expireOn,  
+                        "TransactionID" => $transactionId,
+                        "PaymentMethod" => '',
+                        "TransactionDate" => $paidAt,
+                        "receiver" => $tmpUserId,
+                        "sender" => 1,
+                        "purpose" => "candidateplan"
+                    ];
+                    
+                    EmailHelper::sendEmail($param);
+
+                    $postBackData = array();
+                    $postBackData["success"] = 1;
+        
+                    $response = array(
+                        "C" => 100,
+                        "R" => $postBackData,
+                        "M" => "The candidate's Featured Profile is activated."
+                    );
+                } 
+                
+            }
+
+        }else{
+            $postBackData = array();
+            $response = array(
+                "C" => 1004,
+                "R" => $postBackData,
+                "M" => "session expired."
+            );
+        }
+
+        return response()->json($response); die;
+    }
+
 }

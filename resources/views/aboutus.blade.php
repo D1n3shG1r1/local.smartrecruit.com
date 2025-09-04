@@ -7,7 +7,7 @@
             <div class="w-full px-5">
                 <div class="scroll-revealed mx-auto max-w-[780px] text-center">
                     <h1 class="mb-6 text-3xl font-bold leading-snug text-primary-color sm:text-4xl sm:leading-snug lg:text-5xl lg:leading-tight">
-                    Smart Recruit  Nigeria’s premier recruitment platform. 
+                    SmartRecruit  The Future of Recruitment, Streamlined for You.
                     </h1>
 
                     <p class="mx-auto mb-9 max-w-[600px] text-base text-primary-color sm:text-lg sm:leading-normal">

@@ -336,7 +336,7 @@
     width: fit-content;
     right: 10px;
     bottom: 10px;
-    z-index: 1050;
+    z-index: 1100;
 }
 
 /*Loading spinners*/

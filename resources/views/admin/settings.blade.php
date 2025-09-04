@@ -303,7 +303,16 @@
                                                             <label for="title" class="form-label">Reply To Name</label>
                                                             <input type="text" class="form-control" id="replyTo_name" name="replyTo_name" placeholder="Reply To Name" value="{{$smtp['replyTo_name']}}">
                                                         </div>
-                                                        <div class="col-md-6 align-right">
+
+                                                        <div class="col-md-6">
+                                                            <label for="title" class="form-label">Video-Interview From Email</label>
+                                                            <input type="text" class="form-control" id="interviewFrom_email" name="interviewFrom_email" placeholder="Video-Interview From Email" value="{{$smtp['videoInterviewFrom_email']}}">
+                                                        </div>
+                                                    </div> 
+
+                                                    <div class="row mb-3">    
+                                                    <div class="col-md-6"></div>    
+                                                    <div class="col-md-6 align-right">
                                                             
                                                             <button type="button" id="testSmtpBtn" class="btn cur-p btn-primary verifyEmailBtn marginTop28" onclick="testSmtp(this);" data-txt="Send Test Email" data-loadingtxt="Sending...">Send Test Email</button>
                                                         
@@ -670,6 +679,7 @@
         const password = $("#password").val();
         const encryption = $("#encryption").val();
         const from_email = $("#from_email").val();
+        const videoInterviewFrom_email = $("#interviewFrom_email").val();
         const from_name = $("#from_name").val();
         const replyTo_email = $("#replyTo_email").val();
         const replyTo_name = $("#replyTo_name").val();
@@ -730,6 +740,13 @@
             return false;
         }
 
+        if(!isRealValue(videoInterviewFrom_email)){
+            var err = 1;
+            var msg = "Please enter the 'Video-Interview from' email address.";
+            showToast(err, msg);
+            return false;
+        }
+
         // Show the modal
         var myModal = new bootstrap.Modal(document.getElementById('SAKeyModal'));
         myModal.show();
@@ -781,7 +798,8 @@
                     "from_email":from_email,
                     "from_name":from_name,
                     "replyTo_email":replyTo_email,
-                    "replyTo_name":replyTo_name
+                    "replyTo_name":replyTo_name,
+                    "videoInterviewFrom_email":videoInterviewFrom_email
                 };
                 
                 callajax(requrl, postdata, function(resp){

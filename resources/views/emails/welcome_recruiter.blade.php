@@ -46,6 +46,13 @@
               <p>Hi {{$customerName}},</p>
               <p>Welcome to <strong>SMART-Recruit</strong> – we’re excited to have you on board!</p>
               <p>Your journey to discovering top-tier candidates just got smarter. With our powerful recruiting tools and expansive talent pool, you're now equipped to find the right match faster and easier.</p>
+
+              <p>
+              To get started, please verify your account by clicking the button below:
+              </p>
+
+              <a style="background-color: #155ed2 !important; border-color: #155ed2 !important; cursor: pointer; -webkit-appearance: button; font-size: 14px; text-decoration: none !important; outline: none !important; color: #fff; display: inline-block; font-weight: 400; text-align: center; white-space: nowrap; vertical-align: middle; user-select: none; border: 1px solid transparent; padding: .375rem .75rem; line-height: 1.5; border-radius: .25rem;" href="{{$verifyLink}}">Verify My Account</a>
+
               <p>Thanks for choosing SMART-Recruit – let’s build a smarter hiring future together!</p>
             </td>
           </tr>

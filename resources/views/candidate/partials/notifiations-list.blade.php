@@ -1,9 +1,9 @@
 @foreach($notifications as $notification)
 <li style="border-left-color: #ff9800;">
     <span><img src="{{ route('private.image', ['userId' => $notification->sender, 'filename' => 'pp-' . $notification->sender . '.jpg']) }}"
-    onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user.png') }}';" class="img-responsive" /></span>
+    onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';" alt="{{ucwords($notification->fname .' '.$notification->lname)}}"class="img-responsive" /></span>
     <span>
-        <a href="{{url('recruiter/candidate/'.$notification->sender)}}">
+        <a href="javascript:void(0);">
             <span class="name_user">{{ucwords($notification->fname ." ".$notification->lname)}}</span>
         </a>
         <span class="msg_user" style="width: fit-content;">{{$notification->message}}.</span>

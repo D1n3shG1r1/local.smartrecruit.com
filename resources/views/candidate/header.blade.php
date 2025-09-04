@@ -21,6 +21,7 @@
                         <h6>{{ucwords($LOGINUSER["fname"]." ".$LOGINUSER["lname"])}}</h6>
                            <p><span class="online_animation"></span> Online</p>
                            <p style="color:#222;">Ref:{{strtoupper($LOGINUSER["referralCode"])}}</p>
+                           <p style="color:#222;">{{$LOGINUSER["email"]}}</p>
                         </div>
                      </div>
                   </div> 
@@ -30,7 +31,7 @@
                <div class="sidebar_blog_2">
                   <h4>Candidate</h4>
                   <ul class="list-unstyled components">
-                     <li><a href="{{url('/candidate/dashboard')}}"><i class="fa fa-dashboard yellow_color"></i> <span>Dashboard</span></a></li>
+                     <li><a href="{{url('/candidate/dashboard')}}"><i class="fa fa-dashboard yellow_color"></i> <span class="{{ request()->is('candidate/dashboard*') ? 'active-nav' : '' }}">Dashboard</span></a></li>
 
                      <li>
                         <a href="{{ url('/candidate/notifications') }}">

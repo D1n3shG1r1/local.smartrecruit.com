@@ -40,6 +40,12 @@
               <p>We’re thrilled to welcome you to <strong>SMART-Recruit</strong> – your new hub for smarter job searching!</p>
               <p>With our intelligent job-matching system, finding the perfect role is easier than ever.</p>
 
+              <p>
+              To get started, please verify your account by clicking the button below:
+              </p>
+
+              <a style="background-color: #155ed2 !important; border-color: #155ed2 !important; cursor: pointer; -webkit-appearance: button; font-size: 14px; text-decoration: none !important; outline: none !important; color: #fff; display: inline-block; font-weight: 400; text-align: center; white-space: nowrap; vertical-align: middle; user-select: none; border: 1px solid transparent; padding: .375rem .75rem; line-height: 1.5; border-radius: .25rem;" href="{{$verifyLink}}">Verify My Account</a>
+
               <p>To maximize your chances, please log back into your dashboard and complete your profile and resume. This will help employers see your full potential and match you with the best opportunities.</p>
 
               <p>Welcome aboard – let’s help you get hired, faster and smarter!</p>
