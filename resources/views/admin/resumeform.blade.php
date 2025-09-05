@@ -530,7 +530,7 @@
   
   const resumeDataId = '<?php echo $resumeDataId; ?>';
   const candidateId = '<?php echo $candidateId; ?>';
-  const profSummaryArr = '<?php echo $profSummaryArr; ?>';
+  const profSummaryArr = '{{$profSummaryArr}}';
   const workExperienceArr = JSON.parse('<?php echo $workExperienceArr; ?>');
   const skillsArr = JSON.parse('<?php echo $skillsArr; ?>');
   const languagesArr = JSON.parse('<?php echo $languagesArr; ?>');
