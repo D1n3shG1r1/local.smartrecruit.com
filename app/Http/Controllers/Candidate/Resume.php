@@ -234,6 +234,23 @@ class Resume extends Controller
                 $this->createNotification($notificationData);
             }
             
+            // Create notification
+            $notificationId = db_randnumber();
+            $createdDateTime = date('Y-m-d H:i:s');
+            
+            $notificationData = [
+                'id' => $notificationId,
+                'message' => "The profile of ". ucwords($fullname)." was recently updated. Please review the changes to stay informed.",
+                'receiver' => 1,
+                'sender' => $userId,
+                'dateTime' => $createdDateTime,
+                'isRead' => 0,
+                'type' => 'recruiter',
+                'reference' => 1
+            ];
+
+            $this->createNotification($notificationData);
+
             //send thankyou email
             if($sendThankEmail > 0){
                 
