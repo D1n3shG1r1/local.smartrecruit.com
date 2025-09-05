@@ -252,6 +252,7 @@ class Candidates extends Controller
                 //professional summary
                 $professionalsummary = $unserializedData["professionalsummary"];
                 $professionalsummary = htmlspecialchars($professionalsummary, ENT_QUOTES, 'UTF-8');
+                $professionalsummary = preg_replace("/\r|\n/", '', $professionalsummary);
     
                 //work experience
                 $jobtitleArr = $unserializedData["jobtitle"]; //array
@@ -270,6 +271,11 @@ class Candidates extends Controller
                     $enddate = $jobenddateArr[$wk];
                     $responsibilities = $jobresponsibilitiesArr[$wk];
                     $achievements = $jobachievementsArr[$wk];
+
+
+                    $responsibilities = preg_replace("/\r|\n/", '', $responsibilities);
+                    $achievements = preg_replace("/\r|\n/", '', $responsibilities);
+
 
                     $workExperience[] = array(
                         "jobtitle" => $jobtitle,
