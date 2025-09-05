@@ -129,7 +129,7 @@
                               <div class="row mb-3">
                                 <div class="col-md-12">    
                                   <label class="form-label">Professional Summary</label>
-                                  <textarea class="form-control" rows="3" id="professionalsummary" name="professionalsummary">{{$profSummaryArr}}</textarea>
+                                  <textarea class="form-control" rows="3" id="professionalsummary" name="professionalsummary">{{json_encode($profSummaryArr)}}</textarea>
                                 </div>
                               </div>
                               <div class="row mt-3">
@@ -530,7 +530,7 @@
   
   const resumeDataId = '<?php echo $resumeDataId; ?>';
   const candidateId = '<?php echo $candidateId; ?>';
-  const profSummaryArr = '{{$profSummaryArr}}';
+  const profSummaryArr = '<?php echo json_encode($profSummaryArr); ?>';
   const workExperienceArr = JSON.parse('<?php echo $workExperienceArr; ?>');
   const skillsArr = JSON.parse('<?php echo $skillsArr; ?>');
   const languagesArr = JSON.parse('<?php echo $languagesArr; ?>');
