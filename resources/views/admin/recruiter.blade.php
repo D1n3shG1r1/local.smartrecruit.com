@@ -16,7 +16,14 @@ $payasyougo = $pricing["payasyougo"]; //name price candidatelimit
 $basicaccess = $pricing["basicaccess"]; //name price candidatelimit
 $recruiterspackage = $pricing["recruiterspackage"]; //name price candidatelimit
 $custompackage = $pricing["custompackage"]; //name price candidatelimit
-$packageName = $pricing[$package]["name"];
+//$packageName = $pricing[$package]["name"];
+
+if($package == ''){
+    $package = '-';
+    $packageName = '-';
+}else{
+    $packageName = $pricing[$package]["name"];
+}
 
 @endphp
 
