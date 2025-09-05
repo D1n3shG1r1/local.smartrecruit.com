@@ -11,6 +11,7 @@ use App\Models\CandidateResumeData_model;
 use App\Models\Notification_model;
 use App\Models\shortlistCandidates_model;
 use App\Models\purchasedCandidates_model;
+use App\Models\SuperAdmin_model;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -262,7 +263,33 @@ class Resume extends Controller
                     "firstName" => $fname,
                     "lastName" => $lname,
                     "email" => $email,
+                    "receiver" => $userId,
+                    "sender" => 1,
                     "purpose" => "candidatecvsubmitthankyou"
+                ];
+
+                EmailHelper::sendEmail($param);
+
+
+                //--- send email to super admin
+                $sysAdmId = 1;
+                $sysAdm = SuperAdmin_model::where("id", $sysAdmId)->first();
+                
+                $fname = $this->getSession('fname');
+                $lname = $this->getSession('lname');
+                //$resume_url $adminName $candidateName $candidateEmail
+                //send thankyou email
+                $param = [
+                    "firstName" => $sysAdm["fname"],
+                    "lastName" => $sysAdm["lname"],
+                    "adminName" => $sysAdm["fname"].' '.$sysAdm["lname"],
+                    "email" => $sysAdm["email"],
+                    "resume_url" => url('admin/candidateresume/'.$userId),
+                    "candidateName" => ucwords($fname ." ". $lname),
+                    "candidateEmail" => $email,
+                    "receiver" => 1,
+                    "sender" => $userId,
+                    "purpose" => "candidatecvsubmitadmin" //candidate_cvsubmitadmin.blade.php
                 ];
 
                 EmailHelper::sendEmail($param);

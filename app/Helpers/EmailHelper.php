@@ -132,6 +132,16 @@ class EmailHelper
                 $templateBlade = "emails.contact_admin";
                 break;
                 
+            case 'candidatecvsubmitadmin':
+                $bladeData['adminName'] = $param["adminName"];
+                $bladeData['candidateName'] = $param["candidateName"];
+                $bladeData['candidateEmail'] = $param["candidateEmail"];
+                $bladeData['resume_url'] = $param["resume_url"];
+                
+                $subject = "New Resume Submission";
+                $templateBlade = "emails.candidate_cvsubmitadmin";
+                break;
+
             case 'testemail':
                 $bladeData['adminName'] = $param["adminName"];
                 $subject = "SmartRecruit SMTP Test Email!";
