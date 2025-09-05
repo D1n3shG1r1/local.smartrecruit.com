@@ -1092,10 +1092,19 @@
     }
 
     // Function to validate step 2 fields
+    function sanitizeInput(input) {
+        return input.replace(/[<>&"'/]/g, function (char) {
+            return `&#${char.charCodeAt(0)};`;
+        });
+    }
+
     function validateStep2() {
 
-      const professionalsummary = document.getElementById("professionalsummary").value;
-      
+      var professionalsummary = document.getElementById("professionalsummary").value;
+      var sanitizedInput = sanitizeInput(professionalsummary);
+      document.getElementById("professionalsummary").value = sanitizedInput;
+      professionalsummary = professionalsummary = document.getElementById("professionalsummary").value;
+
       if(!isRealValue(professionalsummary)) {
         var err = 1;
         var msg = "Professional summary is required.";

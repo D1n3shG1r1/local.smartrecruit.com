@@ -73,7 +73,7 @@ class Resume extends Controller
             
             //professional summary
             $professionalsummary = $unserializedData["professionalsummary"];
-            
+            $professionalsummary = htmlspecialchars($professionalsummary, ENT_QUOTES, 'UTF-8');
             //work experience
             $jobtitleArr = $unserializedData["jobtitle"]; //array
             $jobcompanyArr = $unserializedData["jobcompany"]; //array
