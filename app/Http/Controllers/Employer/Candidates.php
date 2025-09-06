@@ -368,7 +368,7 @@ class Candidates extends Controller
             ->where('candidateResumeData.candidateId', $id)
             ->join('customers', 'candidateResumeData.candidateId', '=', 'customers.id')
             ->first();
-
+            dd($candidate);
             /*$age = calculateAge($candidate->dob);
             $age = 0;
             $candidate->age = $age;
