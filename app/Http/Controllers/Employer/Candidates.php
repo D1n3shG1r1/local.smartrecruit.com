@@ -341,7 +341,7 @@ class Candidates extends Controller
             $userId = $this->USERID;
 
             $candidate = CandidateResumeData_model::select(
-                'ccustomers.id as profile_id',
+                'customers.id as profile_id',
                 'customers.fname',
                 'customers.lname',
                 'customers.gender',
