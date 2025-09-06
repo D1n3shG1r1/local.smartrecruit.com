@@ -567,7 +567,8 @@
         document.execCommand("copy");
 
         var err = 0;
-        var msg = "Special Access Key copied to clipboard: " + key.text;
+        //var msg = "Special Access Key copied to clipboard: " + key.text;
+        var msg = "Special Access Key is copied to clipboard";
         showToast(err,msg);
     }
 
