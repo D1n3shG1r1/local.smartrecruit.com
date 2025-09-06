@@ -11,5 +11,7 @@ class CandidateResumeData_model extends Model
     protected $table = "candidateResumeData";
     protected $primaryKey = 'id';
     public $incrementing = false;
+    protected $keyType = 'string';      // Treat BIGINT as string
     public $timestamps = false;
+
 }
