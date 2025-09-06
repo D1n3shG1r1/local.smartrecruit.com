@@ -369,8 +369,10 @@ class Candidates extends Controller
             ->join('customers', 'candidateResumeData.candidateId', '=', 'customers.id')
             ->first();
 
-            $age = calculateAge($candidate->dob);
+            /*$age = calculateAge($candidate->dob);
+            $age = 0;
             $candidate->age = $age;
+            */
 
                 
             // Check if candidate is shortlisted by the recruiter

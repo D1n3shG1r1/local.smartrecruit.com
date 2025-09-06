@@ -378,7 +378,9 @@ section,
                             <div class="col-lg-6">
                             <ul>
                                 
+                                <!--
                                 <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span>{{$candidate->age}}</span></li>
+                                -->
                                 <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span>{{$degree[0]->degree}}</span></li>
                                 @if($candidate->purchased == 1)
                                 <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong> <span>{{$candidate->phone}}</span></li>
