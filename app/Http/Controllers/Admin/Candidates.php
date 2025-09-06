@@ -365,6 +365,10 @@ class Candidates extends Controller
                     "videolink" => $videolink
                 );
                 
+                if($submitVal > 0){
+                    $updateData["submit"] = $submitVal;
+                }
+
                 CandidateResumeData_model::where("candidateId", $candidateId)
                 ->update($updateData);
 
