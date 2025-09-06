@@ -335,7 +335,7 @@ class Candidates extends Controller
         }
     }
     
-    function candidate(int $id){
+    function candidate(string $id){
 
         if ($this->USERID > 0) {
             $userId = $this->USERID;
@@ -368,7 +368,7 @@ class Candidates extends Controller
             ->where('candidateResumeData.candidateId', $id)
             ->join('customers', 'candidateResumeData.candidateId', '=', 'customers.id')
             ->first();
-            dd($candidate);
+            //dd($candidate);
             /*$age = calculateAge($candidate->dob);
             $age = 0;
             $candidate->age = $age;
