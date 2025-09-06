@@ -137,7 +137,7 @@ function formatNumber(n) {
     $("#toastMessage").show();
     setTimeout(function(){
       $("#toastMessage").hide("slow");
-    }, 5000);
+    }, 10000);
     
   
       //alert(msg);

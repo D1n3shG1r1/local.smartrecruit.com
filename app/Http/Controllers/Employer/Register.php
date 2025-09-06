@@ -161,7 +161,7 @@ class Register extends Controller
             $response = array(
                 "C" => $saved ? 100 : 101,
                 "R" => $postBackData,
-                "M" => $saved ? "Your account has been successfully registered." : "Something went wrong. Please try again."
+                "M" => $saved ? "Your account has been successfully registered. Please check your email to verify your account." : "Something went wrong. Please try again."
             );
     
             return response()->json($response); die;
