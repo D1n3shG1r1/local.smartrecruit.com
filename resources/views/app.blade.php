@@ -59,7 +59,7 @@
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="./assets/favicon/favicon-32.png"
+      href="{{url('assets/favicon/favicon-32.png')}}"
     />
     <!--
     <link

@@ -1134,17 +1134,77 @@
       }
       
      
-      
-      var requrl = "admin/updatecandidateresume";
-      var postdata = {
-        "formData" : $("#multiStepForm").serialize(),
-        "skills":setSelectedSkills
-      };
-      
-      callajax(requrl, postdata, function(resp){});  
+     // Show the modal
+     var myModal = new bootstrap.Modal(document.getElementById('SAKeyModal'));
+        myModal.show();
 
-      return true;
+        var title = 'Update Record';
+        var message = 'Please enter your special access key to perform this action';
+        var confirmText = 'Ok';
+        var cancelText = 'Cancel';
+        
+        // Update modal content dynamically
+        document.getElementById('SAKeyModalLabel').textContent = title;
+        document.getElementById('SAKeyMessage').textContent = message;
+        document.getElementById('SAKeyConfirmBtn').textContent = confirmText;
+        document.getElementById('SAKeyCancelBtn').textContent = cancelText;
 
+        // Reset event listeners
+        const confirmButton = document.getElementById('SAKeyConfirmBtn');
+        const cancelButton = document.getElementById('SAKeyCancelBtn');
+
+        // Add event listener for confirmation action
+        confirmButton.onclick = function() {
+            // Place your confirmation action here
+            var SAKeyInput = document.getElementById('SAKeyInput').value;
+            if(!isRealValue(SAKeyInput)){
+                var err = 1;
+                var msg = "Please enter your Special Access Key.";
+                showToast(err,msg);
+                return false;
+            }else{
+              
+              var elm = $("#nextBtn");
+              var elmId = $(elm).attr("id");
+              $(elm).attr("disabled",true);
+              
+              var orgTxt = $(elm).attr("data-txt");
+              var loadingTxt = $(elm).attr("data-loadingtxt");
+              
+              showLoader(elmId,loadingTxt);
+
+                myModal.hide();
+                document.getElementById('SAKeyInput').value = '';
+
+                var requrl = "admin/updatecandidateresume";
+                var postdata = {
+                  "formData" : $("#multiStepForm").serialize(),
+                  "skills":setSelectedSkills,
+                  "sakey":SAKeyInput,
+                };
+                
+                callajax(requrl, postdata, function(resp){
+
+                  $(elm).removeAttr("disabled");
+                  hideLoader(elmId,orgTxt);
+
+                  var err = 1;
+                  if(resp.C == 100){
+                      err = 0;
+                      
+                      //proceed to next
+                      currentStep++;
+                      updateStepDisplay();
+                  }
+                  
+                  var msg = resp.M;
+                  showToast(err,msg);
+
+                });  
+      
+            }
+          };
+          
     }
 
     // Function to validate step 3 fields
@@ -1251,6 +1311,65 @@
       
       showLoader(elmId,loadingTxt);
 
+      // Show the modal
+     var myModal = new bootstrap.Modal(document.getElementById('SAKeyModal'));
+        myModal.show();
+
+        var title = 'Update Record';
+        var message = 'Please enter your special access key to perform this action';
+        var confirmText = 'Ok';
+        var cancelText = 'Cancel';
+        
+        // Update modal content dynamically
+        document.getElementById('SAKeyModalLabel').textContent = title;
+        document.getElementById('SAKeyMessage').textContent = message;
+        document.getElementById('SAKeyConfirmBtn').textContent = confirmText;
+        document.getElementById('SAKeyCancelBtn').textContent = cancelText;
+
+        // Reset event listeners
+        const confirmButton = document.getElementById('SAKeyConfirmBtn');
+        const cancelButton = document.getElementById('SAKeyCancelBtn');
+
+        // Add event listener for confirmation action
+        confirmButton.onclick = function() {
+            // Place your confirmation action here
+            var SAKeyInput = document.getElementById('SAKeyInput').value;
+            if(!isRealValue(SAKeyInput)){
+                var err = 1;
+                var msg = "Please enter your Special Access Key.";
+                showToast(err,msg);
+                return false;
+            }else{
+
+                myModal.hide();
+                document.getElementById('SAKeyInput').value = '';
+
+                var requrl = "admin/updatecandidateresume";
+                var postdata = {
+                  "formData" : $("#multiStepForm").serialize(),
+                  "skills":setSelectedSkills,
+                  "sakey":SAKeyInput,
+                };
+                
+                callajax(requrl, postdata, function(resp){
+                  $(elm).removeAttr("disabled");
+                  hideLoader(elmId,orgTxt);
+                  
+                  var err = 1;
+                  if(resp.C == 100){
+                      err = 0;
+                  }
+                  
+                  var msg = resp.M;
+                  showToast(err,msg);
+                });  
+
+            }
+          };
+
+
+
+      /*
       var requrl = "admin/updatecandidateresume";
       
       var postdata = {
@@ -1270,7 +1389,8 @@
           var msg = resp.M;
           showToast(err,msg);
           
-      });   
+      });
+      */  
     }
 
   var resendLink = 0;  
