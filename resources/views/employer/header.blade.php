@@ -194,7 +194,7 @@ span.selection{
                               <ul class="user_profile_dd">
                                  <li class="recruit_blue">
                                     <a class="dropdown-toggle" data-toggle="dropdown"><img class="profilephotoimg img-responsive rounded-circle" src="{{ route('private.image', ['userId' => $LOGINUSER['userId'], 'filename' => 'pp-' . $LOGINUSER['userId'] . '.jpg']) }}"
-                                    onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user.png') }}';" alt="#" /><span class="name_user">{{ucwords($LOGINUSER["fname"])}}</span></a>
+                                    onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user.png') }}';" alt="#" /><span class="name_user">{{ucwords(substr($LOGINUSER["fname"], 0, 8))}}</span></a>
                                     <div class="dropdown-menu">
                                     
                                        <a class="dropdown-item" href="{{url('/recruiter/myprofile')}}">My Profile</a>

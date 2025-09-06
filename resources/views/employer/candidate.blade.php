@@ -369,7 +369,7 @@ section,
 
                     <div class="row gy-4 justify-content-center">
                         <div class="col-lg-3">
-                        <img src="{{ route('private.image', ['userId' => $candidate->candidateId, 'filename' => 'pp-' . $candidate->candidateId . '.jpg']) }}" onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';" class="img-fluid" alt="{{ucwords($candidate->fname.' '.$candidate->lname)}}">
+                        <img style="max-width:100px;" src="{{ route('private.image', ['userId' => $candidate->candidateId, 'filename' => 'pp-' . $candidate->candidateId . '.jpg']) }}" onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';" class="img-fluid" alt="{{ucwords($candidate->fname.' '.$candidate->lname)}}">
                         </div>
                         <div class="col-lg-9 content">
                         <h2>Basic Profile</h2>
