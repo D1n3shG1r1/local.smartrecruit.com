@@ -44,7 +44,9 @@ $serviceCurrencySymbol = $featureprofile["symbol"];
                                     <label for="lname" class="form-label">Last Name<span class="required">*</span></label>
                                     <input type="text" class="form-input" name="lname" id="lname" placeholder="Last Name" value="{{ucfirst($user->lname)}}">
                                 </div>
-                                <div class="col-md-4">
+                            </div>
+                            <div class="form-group row mb-3">
+                                <div class="col-md-6">
                                   <label for="gender" class="form-label">Gender<span class="required">*</span></label>
                                   <select id="gender" name="gender" class="form-control">
                                     <option value="0"></option>  
@@ -52,6 +54,11 @@ $serviceCurrencySymbol = $featureprofile["symbol"];
                                     <option value="2">Female</option>
                                     <option value="3">Other</option>
                                   </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="dob" class="form-label">DOB<span class="required">*</span></label>
+                                    <input type="date" id="dob" name="dob" class="form-input" value="{{$user->dob}}" max="{{ date('Y-m-d') }}"/>
                                 </div>
                             </div>
                             <div class="form-group row mb-3">
@@ -318,6 +325,7 @@ function validateForm(elm) {
     var fname = $("#fname").val();
     var lname = $("#lname").val();
     var gender = $("#gender").val();
+    var dob = $("#dob").val();
     var address_1 = $("#address_1").val();
     var address_2 = $("#address_2").val();
     var city = $("#city").val();
@@ -355,6 +363,11 @@ function validateForm(elm) {
     } else if(!isRealValue(gender) || parseInt(gender) == 0){
         var err = 1;
         var msg = "Gender is required.";
+        showToast(err,msg);
+        return false;
+    } else if(!isRealValue(dob)){
+        var err = 1;
+        var msg = "DOB is required.";
         showToast(err,msg);
         return false;
     } else if(!isRealValue(address_1)){
@@ -455,6 +468,7 @@ function validateForm(elm) {
                     "fname":fname,
                     "lname":lname,
                     "gender":gender,
+                    "dob":dob,
                     "address_1":address_1,
                     "address_2":address_2,
                     "city":city,

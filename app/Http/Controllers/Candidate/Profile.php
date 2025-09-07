@@ -35,7 +35,7 @@ class Profile extends Controller
             
             $userId = $this->USERID; 
             $userRole = $this->USERROLE; 
-            $user = Users_model::select("id", "email", "fname", "lname", "gender", "phone", "city", "state", "country", "zipcode", "address_1", "address_2", "verified", "active")
+            $user = Users_model::select("id", "email", "fname", "lname", "gender", "dob", "phone", "city", "state", "country", "zipcode", "address_1", "address_2", "verified", "active")
             ->where("id", $userId)
             ->where("role", $userRole)
             ->first();
@@ -62,6 +62,7 @@ class Profile extends Controller
             $fname = strtolower($request->input("fname"));
             $lname = strtolower($request->input("lname"));
             $gender = strtolower($request->input("gender"));
+            $dob = $request->input("dob");
             $address_1 = strtolower($request->input("address_1"));
             $address_2 = strtolower($request->input("address_2"));
             $city = strtolower($request->input("city"));
@@ -78,6 +79,7 @@ class Profile extends Controller
                 "fname" => $fname,
                 "lname" => $lname,
                 "gender" => $gender,
+                "dob" => $dob,
                 "phone" => $phone,
                 "city" => $city,
                 "country" => $country,

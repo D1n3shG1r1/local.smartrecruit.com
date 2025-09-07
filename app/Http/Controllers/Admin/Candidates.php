@@ -99,7 +99,7 @@ class Candidates extends Controller
 
             $userId = $this->USERID; 
             
-            $user = Users_model::select("id", "email", "fname", "lname", "gender", "phone", "city", "state", "country", "zipcode", "address_1", "address_2", "verified", "active")
+            $user = Users_model::select("id", "email", "fname", "lname", "gender", "dob", "phone", "city", "state", "country", "zipcode", "address_1", "address_2", "verified", "active")
             ->where("id", $id)
             ->where("role", 1)
             ->first();
@@ -110,6 +110,7 @@ class Candidates extends Controller
             $data["pageTitle"] = "Candidate Profile";
             $data["user"] = $user;
             $data["featureProfile"] = $featureProfile;
+            
             return View("admin.candidateProfile",$data);
         }else{
             //redirect to login
@@ -251,9 +252,7 @@ class Candidates extends Controller
                 
                 //professional summary
                 $professionalsummary = $unserializedData["professionalsummary"];
-                $professionalsummary = htmlspecialchars($professionalsummary, ENT_QUOTES, 'UTF-8');
-                $professionalsummary = preg_replace("/\r|\n/", '', $professionalsummary);
-    
+                
                 //work experience
                 $jobtitleArr = $unserializedData["jobtitle"]; //array
                 $jobcompanyArr = $unserializedData["jobcompany"]; //array
@@ -271,11 +270,6 @@ class Candidates extends Controller
                     $enddate = $jobenddateArr[$wk];
                     $responsibilities = $jobresponsibilitiesArr[$wk];
                     $achievements = $jobachievementsArr[$wk];
-
-
-                    $responsibilities = preg_replace("/\r|\n/", '', $responsibilities);
-                    $achievements = preg_replace("/\r|\n/", '', $responsibilities);
-
 
                     $workExperience[] = array(
                         "jobtitle" => $jobtitle,
@@ -406,6 +400,7 @@ class Candidates extends Controller
             $fname = strtolower($request->input("fname"));
             $lname = strtolower($request->input("lname"));
             $gender = strtolower($request->input("gender"));
+            $dob = $request->input("dob");
             $address_1 = strtolower($request->input("address_1"));
             $address_2 = strtolower($request->input("address_2"));
             $city = strtolower($request->input("city"));
@@ -443,6 +438,7 @@ class Candidates extends Controller
                         "fname" => $fname,
                         "lname" => $lname,
                         "gender" => $gender,
+                        "dob" => $dob,
                         "phone" => $phone,
                         "city" => $city,
                         "country" => $country,

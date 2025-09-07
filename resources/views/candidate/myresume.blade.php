@@ -248,8 +248,8 @@ section,
 }
 
 .photoSection img{
-    width: 84px;
-    border-radius: 50%;
+    /*width: 84px;
+    border-radius: 50%;*/
 }
 
 .addressSection{
@@ -267,30 +267,44 @@ section,
         <div class="row">
             <div class="col-md-12">
                 <section id="resume" class="resume section">
-                    <div class="row container section-title" >
-  
-                    <div class="col-md-4dd photoSection">
-                    <img class="img-responsive" src="{{ route('private.image', ['userId' => $basicProfile->id, 'filename' => 'pp-' . $basicProfile->id . '.jpg']) }}" onerror="this.onerror=null; this.src='{{url('assets/admin/img/user.png')}}';" />
-                    </div>
-
-                    <div class="col-md-12">
-                      <h2>Resume</h2>
-                      <p><b style="font-weight: 600 !important;">{{ucfirst($basicProfile->fname)}} {{ucfirst($basicProfile->lname)}}</b></p>
-
-                      <p>{{ucfirst($basicProfile->address_1)}} &nbsp; {{ucfirst($basicProfile->address_2)}} &nbsp; {{ucfirst($basicProfile->city)}} &nbsp; {{ucfirst($basicProfile->country)}}</p>
-                    </div>
                     
-                    <!--<div class="col-md-4 addressSection">
-                      <p>{{ucfirst($basicProfile->address_1)}}</p>
-                      <p>{{ucfirst($basicProfile->address_2)}}</p>
-                      <p>{{ucfirst($basicProfile->city)}}</p>
-                      <p>{{ucfirst($basicProfile->country)}}</p>
-                    </div>-->
-                        
+                   <div class="container" data-aos="fade-up" data-aos-delay="100">
 
+                    <div class="row gy-4 justify-content-center">
+                        <div class="col-lg-3">
+                        <img style="max-width:100px;" src="{{ route('private.image', ['userId' => $basicProfile->id, 'filename' => 'pp-' . $basicProfile->id . '.jpg']) }}" onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';" class="img-fluid" alt="{{ucwords($basicProfile->fname.' '.$basicProfile->lname)}}">
+                        </div>
+                        <div class="col-lg-9 content">
+                        <h2>Basic Profile</h2>
+                        <p class="fst-italic py-3"></p>
+                        <div class="row">
+                            <div class="col-lg-6">
+                            <ul>
+                                
+                                
+                                <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span>{{$basicProfile->age}}</span></li>
+                                <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span>{{$degreeArr[0]->degree}}</span></li>
+                                
+                            </ul>
+                            </div>
+                            <div class="col-lg-6">
+                            <ul>
+                                
+                                <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span>{{$basicProfile->city}}</span></li>
+                                <li><i class="bi bi-chevron-right"></i> <strong>Country:</strong> <span>{{$basicProfile->country}}</span></li>
+                                
+                                
+                                
+                            </ul>
+                            </div>
+                        </div>
+                        <p class="py-3">
+                        </p>
+                        </div>
+                    </div>
 
                     </div>
-                   
+
                     <div class="container">
                         <div class="row">
 

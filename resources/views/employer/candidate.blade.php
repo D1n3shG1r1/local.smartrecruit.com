@@ -378,9 +378,8 @@ section,
                             <div class="col-lg-6">
                             <ul>
                                 
-                                <!--
+                                
                                 <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span>{{$candidate->age}}</span></li>
-                                -->
                                 <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span>{{$degree[0]->degree}}</span></li>
                                 @if($candidate->purchased == 1)
                                 <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong> <span>{{$candidate->phone}}</span></li>
@@ -391,7 +390,7 @@ section,
                             <div class="col-lg-6">
                             <ul>
                                 @if($candidate->purchased == 1)  
-                                <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> <span>{{date("j F Y", strtotime($candidate->dob))}}</span></li>
+                                <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> <span>{{date("d M Y", strtotime($candidate->dob))}}</span></li>
                                 <li><i class="bi bi-chevron-right"></i> <strong>Address:</strong> <span>{{$candidate->address_1}} {{$candidate->address_2}}</span></li>
                                 @endif
                                 <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span>{{$candidate->city}}</span></li>
@@ -437,7 +436,7 @@ section,
 
                                     <div class="resume-item">
                                       <h4>{{ ucwords($tmp_degree)}}</h4>
-                                      <h5>{{date("Y", strtotime($tmp_startdate))}} - {{date("Y", strtotime($tmp_enddate))}}</h5>
+                                      <h5>{{date("M Y", strtotime($tmp_startdate))}} - {{date("M Y", strtotime($tmp_enddate))}}</h5>
                                       <p><em>{{ucwords($tmp_schoolinstitution)}}</em></p>
                                       <p>{{ucwords($tmp_fieldofstudy)}}</p>
                                     </div>
@@ -453,7 +452,7 @@ section,
                                 @endphp
                                 <div class="resume-item">
                                     <h4>{{ucwords($tmp_title)}}</h4>
-                                    <h5>{{date("Y", strtotime($tmp_date))}}</h5>
+                                    <h5>{{date("M Y", strtotime($tmp_date))}}</h5>
                                     <p><em>{{ucwords($tmp_organization)}}</em></p>
                                 </div>
                                 @php } @endphp
@@ -474,7 +473,14 @@ section,
                                 @endphp
                                 <div class="resume-item">
                                     <h4>{{ucwords($tmp_jobtitle)}}</h4>
-                                    <h5>{{date("Y", strtotime($tmp_startdate))}} - {{date("Y", strtotime($tmp_enddate))}}</h5>
+                                    <h5>{{date("M Y", strtotime($tmp_startdate))}} - 
+                                  
+                                    @if(!empty($tmp_enddate))
+                                        {{ date("M Y", strtotime($tmp_enddate)) }}
+                                    @else
+                                        Present
+                                    @endif
+                                  </h5>
                                     <p><em>{{ucwords($tmp_companyname)}}</em></p>
                                     <ul>
                                       <li>{{ucwords($tmp_responsibilities)}}</li>
@@ -678,9 +684,11 @@ section,
     }
 
     var elmId = $(elm).attr("id");
-    $(elm).attr("disabled",true);
+    var elmIdParts = elmId.split("-");
+    var candidateId = elmIdParts[1];
     var orgTxt = $(elm).attr("data-txt");
     var loadingTxt = $(elm).attr("data-loadingtxt");
+    $(elm).attr("disabled",true);
     showLoader(elmId,loadingTxt);
 
     const requrl = "recruiter/buycandidate";

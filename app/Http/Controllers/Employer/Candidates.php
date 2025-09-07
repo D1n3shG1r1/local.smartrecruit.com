@@ -368,13 +368,14 @@ class Candidates extends Controller
             ->where('candidateResumeData.candidateId', $id)
             ->join('customers', 'candidateResumeData.candidateId', '=', 'customers.id')
             ->first();
-            //dd($candidate);
-            /*$age = calculateAge($candidate->dob);
-            $age = 0;
-            $candidate->age = $age;
-            */
-
-                
+            
+            if (!empty($candidate->dob) && strtotime($candidate->dob)) {
+                $candidate->age = calculateAge($candidate->dob);
+            } else {
+                $candidate->age = 0;
+            }
+            
+            
             // Check if candidate is shortlisted by the recruiter
             $shortlist = shortlistCandidates_model::where("recruiterId", $userId)->where("candidateId", $candidate->candidateId)->count();
 
@@ -384,8 +385,7 @@ class Candidates extends Controller
             $purchased = purchasedCandidates_model::where("recruiterId", $userId)->where("candidateId", $candidate->candidateId)->count();
 
             $candidate->purchased = $purchased > 0 ? 1 : 0;    
-            $candidate->purchased = 0;
-
+            
             if($purchased <= 0){
                 $candidate->email = '';
                 $candidate->phone = '';
@@ -554,7 +554,6 @@ class Candidates extends Controller
         return response()->json($response);
     }
 
-
     function mybookmarks(Request $request){
         
         if($this->USERID > 0){
@@ -565,6 +564,8 @@ class Candidates extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
             
+            //dd($bookmarkResult);
+
             if($bookmarkResult->isNotEmpty()){
                 $candidatesIdArr = array();
                 foreach($bookmarkResult as $bookmarkRw){
@@ -594,7 +595,7 @@ class Candidates extends Controller
                 }
 
                 foreach($bookmarkResult as $k => &$bookmarkRww){
-                    $tmpCandidateId = $bookmarkRw->candidateId;
+                    $tmpCandidateId = $bookmarkRww->candidateId;
                     
                     if(array_key_exists($tmpCandidateId, $idwiseData)){
                         $tmpCandData = $idwiseData[$tmpCandidateId];
@@ -614,6 +615,8 @@ class Candidates extends Controller
                 }
 
             }
+
+            //echo '<pre>'; print_r($bookmarkResult); die;
 
             $data = array();
             $data["pageTitle"] = "My Bookmarks";
@@ -666,7 +669,7 @@ class Candidates extends Controller
             }
 
             foreach($bookmarkResult as $k => &$bookmarkRww){
-                $tmpCandidateId = $bookmarkRw->candidateId;
+                $tmpCandidateId = $bookmarkRww->candidateId;
                 
                 if(array_key_exists($tmpCandidateId, $idwiseData)){
                     $tmpCandData = $idwiseData[$tmpCandidateId];
@@ -731,7 +734,7 @@ class Candidates extends Controller
                 }
 
                 foreach($bookmarkResult as $k => &$bookmarkRww){
-                    $tmpCandidateId = $bookmarkRw->candidateId;
+                    $tmpCandidateId = $bookmarkRww->candidateId;
                     
                     if(array_key_exists($tmpCandidateId, $idwiseData)){
                         $tmpCandData = $idwiseData[$tmpCandidateId];
@@ -743,7 +746,17 @@ class Candidates extends Controller
                         $bookmarkRww->candidateId = $tmpCandData->candidateId;
                         $bookmarkRww->profSummary = $tmpCandData->profSummary;
                         $bookmarkRww->skills = $tmpCandData->skills;
-                        $bookmarkRww->shortlist = 1;
+                        
+                        // Check if candidate is shortlisted by the recruiter
+                        $shortlist = shortlistCandidates_model::where("recruiterId", $userId)->where("candidateId", $bookmarkRww->candidateId)->count();
+
+                        $bookmarkRww->shortlist = $shortlist > 0 ? 1 : 0;
+
+                        // Check if candidate is purchased by the recruiter
+                        $purchased = purchasedCandidates_model::where("recruiterId", $userId)->where("candidateId", $bookmarkRww->candidateId)->count();
+
+                        $bookmarkRww->purchased = $purchased > 0 ? 1 : 0;
+                        
                     }else{
                         unset($bookmarkResult[$k]);
                     }
@@ -813,7 +826,7 @@ class Candidates extends Controller
             }
 
             foreach($bookmarkResult as $k => &$bookmarkRww){
-                $tmpCandidateId = $bookmarkRw->candidateId;
+                $tmpCandidateId = $bookmarkRww->candidateId;
                 
                 if(array_key_exists($tmpCandidateId, $idwiseData)){
                     $tmpCandData = $idwiseData[$tmpCandidateId];

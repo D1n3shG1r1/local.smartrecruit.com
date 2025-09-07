@@ -31,7 +31,7 @@ class Resume extends Controller
             
             $userId = $this->USERID; 
             
-            $basicProfileData = Users_model::select("id", "email", "fname", "lname", "gender", "phone", "city", "state", "country", "zipcode", "address_1", "address_2")
+            $basicProfileData = Users_model::select("id", "email", "fname", "lname", "gender", "dob", "phone", "city", "state", "country", "zipcode", "address_1", "address_2")
             ->where("id", $userId)
             ->first();
 
@@ -42,7 +42,7 @@ class Resume extends Controller
             $data["pageTitle"] = "My Resume";
             $data["basicProfile"] = $basicProfileData;
             $data["cvdata"] = $cvdata;
-            
+            //echo "<pre>"; print_r($data); die;
             return View("candidate.resumeform",$data);
         }else{
             //redirect to login
@@ -63,6 +63,8 @@ class Resume extends Controller
             // Unserialize the data
             parse_str($formData,$unserializedData); //unserialize form data
             
+            //echo "<pre>"; print_r($unserializedData); die;
+
             $fullname = $unserializedData["fullname"];
             $gender = $unserializedData["gender"];
             $email = $unserializedData["email"];
@@ -74,10 +76,7 @@ class Resume extends Controller
             
             //professional summary
             $professionalsummary = $unserializedData["professionalsummary"];
-            $professionalsummary = htmlspecialchars($professionalsummary, ENT_QUOTES, 'UTF-8');
-            $professionalsummary = preg_replace("/\r|\n/", '', $professionalsummary);
             
-
             //work experience
             $jobtitleArr = $unserializedData["jobtitle"]; //array
             $jobcompanyArr = $unserializedData["jobcompany"]; //array
@@ -96,9 +95,6 @@ class Resume extends Controller
                 $responsibilities = $jobresponsibilitiesArr[$wk];
                 $achievements = $jobachievementsArr[$wk];
                 
-                $responsibilities = preg_replace("/\r|\n/", '', $responsibilities);
-                $achievements = preg_replace("/\r|\n/", '', $responsibilities);
-
                 $workExperience[] = array(
                     "jobtitle" => $jobtitle,
                     "companyname" => $companyname,
@@ -323,9 +319,15 @@ class Resume extends Controller
             //https://bootstrapmade.com/demo/Kelly/
             $userId = $this->USERID; 
 
-            $basicProfileData = Users_model::select("id", "email", "fname", "lname", "gender", "phone", "city", "state", "country", "zipcode", "address_1", "address_2")
+            $basicProfileData = Users_model::select("id", "email", "fname", "lname", "gender", "dob", "phone", "city", "state", "country", "zipcode", "address_1", "address_2")
             ->where("id", $userId)
             ->first();
+
+            if (!empty($basicProfileData->dob) && strtotime($basicProfileData->dob)) {
+                $basicProfileData->age = calculateAge($basicProfileData->dob);
+            } else {
+                $basicProfileData->age = 0;
+            }
 
             $cvdata = CandidateResumeData_model::where("candidateId", $userId)
             ->first();

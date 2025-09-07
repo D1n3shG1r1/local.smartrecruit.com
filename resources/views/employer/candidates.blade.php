@@ -244,7 +244,8 @@ span.selection{
                         <div class="info_people">
                             <a class="candidateLink" href="{{url('recruiter/candidate/'.$candidateId)}}">
                             <div class="p_info_img">
-                                <img src="{{ route('private.image', ['userId' => $candidateId, 'filename' => 'pp-' . $candidateId . '.jpg']) }}">
+                                <img src="{{ route('private.image', ['userId' => $candidateId, 'filename' => 'pp-' . $candidateId . '.jpg']) }}" onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';"
+                                alt="{{$candidateName}}">
                             </div>
                             <div class="user_info_cont">
                                 <h4>{{ $candidateName }}</h4>

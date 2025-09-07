@@ -68,11 +68,11 @@
                             <!-- ✅ Step 1 -->
                             <div class="step step-1">
                               <div class="row mb-3">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <label class="form-label">Full Name<span class="required">*</span></label>
                                   <input type="text" class="form-control" name="fullname" id="fullname" value="{{$basicProfile->fname}} {{$basicProfile->lname}}" readonly/>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <label class="form-label">Gender<span class="required">*</span></label>
                                   <select id="gender" name="gender" class="form-control" readonly>
                                     <option value="0"></option>  
@@ -80,6 +80,10 @@
                                     <option value="2">Female</option>
                                     <option value="3">Other</option>
                                   </select>
+                                </div>
+                                <div class="col-md-4">
+                                  <label for="dob" class="form-label">DOB<span class="required">*</span></label>
+                                  <input type="date" id="dob" name="dob" class="form-input" value="{{$basicProfile->dob}}" readonly/>
                                 </div>
                               </div>
 
@@ -530,12 +534,12 @@
   
   const resumeDataId = '<?php echo $resumeDataId; ?>';
   const candidateId = '<?php echo $candidateId; ?>';
-  var profSummaryArr = `<?php echo $profSummaryArr; ?>`;
-  const workExperienceArr = JSON.parse('<?php echo $workExperienceArr; ?>');
-  const skillsArr = JSON.parse('<?php echo $skillsArr; ?>');
-  const languagesArr = JSON.parse('<?php echo $languagesArr; ?>');
-  const degreeArr = JSON.parse('<?php echo $degreeArr; ?>');
-  const certificationsArr = JSON.parse('<?php echo $certificationsArr; ?>');
+  /*var profSummaryArr = <?php //echo $profSummaryArr; ?>;*/
+  const workExperienceArr = JSON.parse(<?php echo json_encode($workExperienceArr); ?>);
+  const skillsArr = JSON.parse(<?php echo json_encode($skillsArr); ?>);
+  const languagesArr = JSON.parse(<?php echo json_encode($languagesArr); ?>);
+  const degreeArr = JSON.parse(<?php echo json_encode($degreeArr); ?>);
+  const certificationsArr = JSON.parse(<?php echo json_encode($certificationsArr); ?>);
   
   let workExperienceIndex = 1;
   let educationIndex = 1;
@@ -754,11 +758,11 @@
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Start Date</label>
-            <input type="date" class="form-control" name="jobstartdate[]" value="`+dataValues.startdate+`">
+            <input type="date" class="form-control" name="jobstartdate[]" value="`+dataValues.startdate+`" max="{{ date('Y-m-d') }}">
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">End Date</label>
-            <input type="date" class="form-control" name="jobenddate[]" value="`+dataValues.enddate+`">
+            <input type="date" class="form-control" name="jobenddate[]" value="`+dataValues.enddate+`" max="{{ date('Y-m-d') }}">
           </div>
           <div class="col-6 mb-3">
             <label class="form-label">Responsibilities</label>
@@ -823,11 +827,11 @@
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Start Date</label>
-            <input type="date" class="form-control" name="edustartdate[]" value="`+dataValues.startdate+`">
+            <input type="date" class="form-control" name="edustartdate[]" value="`+dataValues.startdate+`" max="{{ date('Y-m-d') }}">
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">End Date</label>
-            <input type="date" class="form-control" name="eduenddate[]" value="`+dataValues.enddate+`">
+            <input type="date" class="form-control" name="eduenddate[]" value="`+dataValues.enddate+`" max="{{ date('Y-m-d') }}">
           </div>
           <div class="col-12 mb-3">
             <label class="form-label">Field of Study</label>
@@ -889,7 +893,7 @@
           </div>
           <div class="col-md-4 mb-3">
             <label class="form-label">Date</label>
-            <input type="date" class="form-control" name="certification-date[]" value="`+dataValues.date+`">
+            <input type="date" class="form-control" name="certification-date[]" value="`+dataValues.date+`" max="{{ date('Y-m-d') }}">
           </div>
         </div>
       </div>
@@ -1101,10 +1105,7 @@
     function validateStep2() {
 
       var professionalsummary = document.getElementById("professionalsummary").value;
-      var sanitizedInput = sanitizeInput(professionalsummary);
-      document.getElementById("professionalsummary").value = sanitizedInput;
-      professionalsummary = professionalsummary = document.getElementById("professionalsummary").value;
-
+      
       if(!isRealValue(professionalsummary)) {
         var err = 1;
         var msg = "Professional summary is required.";

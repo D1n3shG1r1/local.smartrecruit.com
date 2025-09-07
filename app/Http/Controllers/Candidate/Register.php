@@ -133,13 +133,20 @@ class Register extends Controller
             $saved = $UserObj->save();
 
             if($saved){
+                
+                $languages = [];
+                $languages[] = array(
+                    "language" => "English",
+                    "proficiency" => 1
+                );
+
                 $resumeDataObj = new CandidateResumeData_model();
                 $resumeDataObj->id = $id;
                 $resumeDataObj->candidateId = $id;
                 $resumeDataObj->profSummary = '';
                 $resumeDataObj->workExperience = json_encode(array());
                 $resumeDataObj->skills = json_encode(array());
-                $resumeDataObj->languages = json_encode(array());
+                $resumeDataObj->languages = json_encode($languages);
                 $resumeDataObj->degree = json_encode(array());
                 $resumeDataObj->certifications = json_encode(array());
                 $resumeDataObj->createdDateTime = $createdDateTime;
