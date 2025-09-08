@@ -710,6 +710,11 @@ section,
         var msg = resp.M;
         showToast(err,msg);
 
+        if(resp.C == 101 || resp.C == 102 || resp.C == 103){
+          setTimeout(function(){
+           window.location.href = "{{ url('/recruiter/mypackage') }}";
+          }, 5000);    
+        }
     });
   }
 
