@@ -75,6 +75,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/recruiters',[AdminRecruiters::class, 'recruiters']);  
     Route::get('/recruiter/{id}',[AdminRecruiters::class, 'recruiter']);
     Route::post('/recruitersaveprofile',[AdminRecruiters::class, 'saveprofile']);  
+    Route::post('/recruitersavepackage',[AdminRecruiters::class, 'savepackage']);  
 
     Route::get('/notifications',[AdminNotifications::class, 'notifications']);
     Route::get('/notifications/loadmore', [AdminNotifications::class, 'loadMore']);

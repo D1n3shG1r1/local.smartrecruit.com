@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\Users_model;
 use App\Models\Package_model;
+use App\Models\Packagepayments_model;
 use App\Models\SuperAdmin_model;
 
 
@@ -162,4 +163,124 @@ class Recruiters extends Controller
         return response()->json($response); die;
     }
 
+
+    public function savepackage(Request $request)
+    {
+        if ($this->USERID <= 0) {
+            return response()->json([
+                "C" => 1004,
+                "R" => [],
+                "M" => "Session expired."
+            ]);
+        }
+
+        $sakey = $request->input("sakey");
+        $recruiterId = $request->input("recruiterId");
+        $fname = $request->input("fname");
+        $email = $request->input("email");
+        $package = $request->input("package");
+        $startdate = $request->input("startdate");
+        $enddate = $request->input("enddate");
+        $candidatesCount = $request->input("candidatesCount");
+        $active = $request->input("active");
+
+        // Validate input
+        if (!is_numeric($candidatesCount) || $candidatesCount < 1) {
+            return response()->json(["C" => 103, "R" => ["success" => 0], "M" => "Invalid number of candidates."]);
+        }
+
+        if (Carbon::parse($startdate)->gt(Carbon::parse($enddate))) {
+            return response()->json(["C" => 104, "R" => ["success" => 0], "M" => "Start date cannot be after end date."]);
+        }
+
+        // Validate special access key
+        $settingsRow = SuperAdmin_model::select("specialAccessKey")
+            ->where("role", 3)
+            ->where("id", 1)
+            ->first();
+            
+        if (!$settingsRow || $settingsRow->specialAccessKey !== $sakey) {
+            return response()->json(["C" => 101, "R" => ["success" => 0], "M" => "Invalid Special Access Key."]);
+        }
+
+        /*DB::beginTransaction();
+        try {*/
+            $now = Carbon::now();
+            $paidAt = $now->format('Y-m-d H:i:s');
+            $referenceId = db_randnumber();
+            $amount = 0;
+            $status = 'success';
+            $currency = 'NGN';
+
+            // Save transaction
+            $payment = new Packagepayments_model();
+            $payment->id = $referenceId;
+            $payment->gatewayTransId = 0;
+            $payment->transactionId = $referenceId;
+            $payment->userId = $recruiterId;
+            $payment->package = $package;
+            $payment->amount = $amount;
+            $payment->currency = $currency;
+            $payment->status = $status;
+            $payment->payment = 'y';
+            $payment->paid_at = $paidAt;
+            $payment->gatewayResponse = json_encode([]);
+            $payment->createDateTime = $paidAt;
+            $payment->updateDateTime = $paidAt;
+            $payment->save();
+
+            // Upsert package
+            Package_model::upsert(
+                [[
+                    'userId' => $recruiterId,
+                    'package' => $package,
+                    'active' => $active,
+                    'starton' => $startdate,
+                    'expireon' => $enddate,
+                    'expired' => 0,
+                    'candidatePurchaseLimit' => $candidatesCount,
+                    'candidatePurchased' => 0,
+                    'createDateTime' => $paidAt,
+                    'updateDateTime' => $paidAt
+                ]],
+                ['userId'],
+                ['package','active','starton','expireon','expired','candidatePurchaseLimit','candidatePurchased','updateDateTime']
+            );
+
+            // Send email
+            $param = [
+                "firstName" => $fname,
+                "lastName" => "",
+                "email" => $email,
+                "PlanName" => config('custom.pricing.' . $package . '.name'),
+                "PlanPrice" => config('custom.baseCurrency.symbol') . ' 0',
+                "ValidityPeriod" => $enddate,
+                "TransactionID" => $referenceId,
+                "PaymentMethod" => '',
+                "TransactionDate" => $paidAt,
+                "receiver" => $recruiterId,
+                "sender" => 1,
+                "purpose" => "recruiterplan"
+            ];
+            EmailHelper::sendEmail($param);
+
+            
+
+            return response()->json([
+                "C" => 100,
+                "R" => ["success" => 1],
+                "M" => "The recruiter's package is updated."
+            ]);
+        /*} catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                "C" => 500,
+                "R" => ["success" => 0],
+                "M" => "An error occurred while processing the request.",
+                "E" => $e->getMessage()
+            ]);
+        }*/
+    }
+
+    
 }

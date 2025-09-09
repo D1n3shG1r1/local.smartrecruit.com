@@ -3,8 +3,8 @@
 $userId = $currentPlan->userId;
 $package = $currentPlan->package;
 $active = $currentPlan->active;
-$starton = $currentPlan->starton;
-$expireon = $currentPlan->expireon;
+$starton = $currentPlan->starton; 
+$expireon = $currentPlan->expireon; 
 $expired = $currentPlan->expired;
 $candidatePurchaseLimit = $currentPlan->candidatePurchaseLimit;
 $candidatePurchased = $currentPlan->candidatePurchased;
@@ -68,9 +68,7 @@ if($package == ''){
                                     <input type="text" class="form-input" name="fname" id="fname" placeholder="Full Name" value="{{ucfirst($user->fname)}}">
                                 </div>    
                             </div>
-
                             
-
                             <div class="form-group row mb-3">
                                 <div class="col-md-4">
                                     <label for="position" class="form-label">Position/Role<span class="required">*</span></label>
@@ -161,51 +159,72 @@ if($package == ''){
                     </div>
                 </div>
                 <div class="full price_table padding_infor_info">
-                    <div class="row">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="currentPackageRow text-dark">
+                            <span class="currentPackageSpan">
+                                Current Package: <strong>{{$packageName}}</strong>
+                            </span>
+                            <span class="currentPackageSpan">
+                                Status: <strong>@php if($expired == 1 || $active == 0){ echo "Inactive"; }else{ echo "Active"; } @endphp</strong>
+                            </span>
+                            <span class="currentPackageSpan">Expires on: <strong>{{date("M d, Y", strtotime($expireon))}}</strong></span>    
+                        </p>
+                    </div>
+                </div>    
+                
+                <div class="row">
                     
-                    <p class="currentPackageRow">
-                        <span class="currentPackageSpan">
-                            Current Package: {{$packageName}}
-                        </span>
-                        <span class="currentPackageSpan">
-                            Status: @php if($expired == 1 || $active == 0){ echo "Inactive"; }else{ echo "Active"; } @endphp
-                        </span>
-                        <span class="currentPackageSpan">Expires on: {{date("M d, Y", strtotime($expireon))}}</span>    
-                    </p>
-
-
-
-                    <div class="col-lg-12 hideMe">
+                    <div class="col-lg-12 ">
                         <div class="full dis_flex center_text">
                         <form class="profile_contant">
                             <input type="hidden" class="form-input" name="userId" id="userId" value="{{$user->id}}">
                             
 
                             <div class="form-group row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Current Package<span class="required"></span></label>
-                                    <label class="form-input">{{$packageName}}</label>
+                                <div class="col-md-4">
+                                    <label class="form-label">Package<span class="required">*</span></label>
+                                    <select id="package" name="package" class="form-control">
+                                        <option value="">Select Package</option>
+                                        <option value="payasyougo">{{$payasyougo['name']}}</option>
+                                        <option value="basicaccess">{{$basicaccess['name']}}</option>
+                                        <option value="recruiterspackage">{{$recruiterspackage['name']}}</option>
+                                        <option value="custompackage">{{$custompackage['name']}}</option>
+                                    
+                                    </select>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label class="form-label">Status<span class="required"></span></label>
-                                    <label class="form-input">@php if($expired == 1 || $active == 0){ echo "Inactive"; }else{ echo "Active"; } @endphp</label>
-                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Start Date<span class="required">*</span></label>
+                                    <input type="date" class="form-control" id="startdate" name="startdate" value="{{$starton}}">
+                                </div> 
 
-                                <div class="col-md-6">
-                                    <label class="form-label">Expires on:<span class="required"></span></label>
-                                    <label class="form-input">{{date("M d, Y", strtotime($expireon))}}</label>
+                                <div class="col-md-4">
+                                    <label class="form-label">End Date<span class="required">*</span></label>
+                                    <input type="date" class="form-control" id="enddate" name="enddate" value="{{$expireon}}">
                                 </div>
                             </div>
 
+                            <div class="form-group row mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">No of Candidates<span class="required">*</span></label>
+                                    <input type="number" id="candidatesCount" name="candidatesCount" class="form-control" min="1" max="100" value="{{$candidatePurchaseLimit}}" />
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label" style="width: 100%;">Active</label>
+                                    <label class="form-label toggle-switch">
+                                        <input type="checkbox" id="activeToggle" name="activeToggle" value="{{$active}}" {{ $active == 1 ? 'checked' : '' }}>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label" style="width: 100%;"></label>    
+                                    <button type="button" id="packageSaveBtn" class="btn cur-p btn-primary float-right" data-txt="Save" data-loadingtxt="Saving..." onclick="validatePackageForm(this);">Save</button>
+                                </div>
+                            </div>
                             
-
-                            <div class="form-group row mb-3 hideMe">
-                                <div class="col-md-12 profile-btn-box">
-                                    <button type="button" class="btn cur-p btn-outline-primary">Cancel</button>
-                                    <button type="button" id="profSaveBtn" class="btn cur-p btn-primary" data-txt="Save" data-loadingtxt="Saving..." onclick="validateForm(this);">Save</button>
-                                </div>
-                            </div>
                         </form>    
                         </div>
                     </div>
@@ -225,6 +244,13 @@ if($package == ''){
 $(function(){
     $("#industry").val("{{$user->industry}}");
     $("#companysize").val("{{$user->companysize}}");
+    $("#package").val("{{$package}}"); 
+
+    createToggle('#activeToggle', (isOn) => {
+        
+        $("#activeToggle").val(`${isOn ? 1 : 0}`);
+    });
+
 });
 
 function validateForm(elm) {
@@ -427,5 +453,126 @@ if (!isRealValue(companyname)) {
 
 }
 
+function validatePackageForm(elm){
+
+    var userId = $("#userId").val();
+    var package = $("#package").val();
+    var startdate = $("#startdate").val();
+    var enddate = $("#enddate").val();
+    var candidatesCount = $("#candidatesCount").val();
+    var active = $("#activeToggle").val();
+
+    // Package required
+    if (!isRealValue(package)) {
+        var err = 1;
+        var msg = "Package is required.";
+        showToast(err, msg);
+        return false;
+    }
+
+    // Start-date required
+    if (!isRealValue(startdate)) {
+        var err = 1;
+        var msg = "Package Start-date is required.";
+        showToast(err, msg);
+        return false;
+    }
+
+    // End-date required
+    if (!isRealValue(enddate)) {
+        var err = 1;
+        var msg = "Package End-date is required.";
+        showToast(err, msg);
+        return false;
+    }
+
+    // Date comparison
+    var start = new Date(startdate);
+    var end = new Date(enddate);
+    if (start > end) {
+        var err = 1;
+        var msg = "Start-date should not be greater than End-date.";
+        showToast(err, msg);
+        return false;
+    }
+
+    // Candidates count
+    if (!isRealValue(candidatesCount) || candidatesCount < 1) {
+        var err = 1;
+        var msg = "Add valid number of Candidates.";
+        showToast(err, msg);
+        return false;
+    }
+    
+    // Show the modal
+    var myModal = new bootstrap.Modal(document.getElementById('SAKeyModal'));
+    myModal.show();
+
+    var title = 'Update Record';
+    var message = 'Please enter your special access key to perform this action';
+    var confirmText = 'Ok';
+    var cancelText = 'Cancel';
+    
+    // Update modal content dynamically
+    document.getElementById('SAKeyModalLabel').textContent = title;
+    document.getElementById('SAKeyMessage').textContent = message;
+    document.getElementById('SAKeyConfirmBtn').textContent = confirmText;
+    document.getElementById('SAKeyCancelBtn').textContent = cancelText;
+
+    // Reset event listeners
+    const confirmButton = document.getElementById('SAKeyConfirmBtn');
+    const cancelButton = document.getElementById('SAKeyCancelBtn');
+
+    // Add event listener for confirmation action
+    confirmButton.onclick = function() {
+        // Place your confirmation action here
+        var SAKeyInput = document.getElementById('SAKeyInput').value;
+        if(!isRealValue(SAKeyInput)){
+            var err = 1;
+            var msg = "Please enter your Special Access Key.";
+            showToast(err,msg);
+            return false;
+        }else{
+
+            myModal.hide();
+            document.getElementById('SAKeyInput').value = '';
+
+            var elmId = $(elm).attr("id");
+            $(elm).attr("disabled",true);
+            var orgTxt = $(elm).attr("data-txt");
+            var loadingTxt = $(elm).attr("data-loadingtxt");
+            showLoader(elmId,loadingTxt);
+            
+            var requrl = "admin/recruitersavepackage";
+            var postdata = {
+                "sakey":SAKeyInput,
+                "recruiterId":userId,
+                "fname":"{{$user->fname}}",
+                "email":"{{$user->email}}",
+                "package":package,
+                "startdate":startdate,
+                "enddate":enddate,
+                "candidatesCount":candidatesCount,
+                "active":active
+                
+            };
+            callajax(requrl, postdata, function(resp){
+                $(elm).removeAttr("disabled");
+                hideLoader(elmId,orgTxt);
+                $(".errorMessage").html(resp.M);
+                var err = 1;
+                if(resp.C == 100){
+                    err = 0;
+                }
+                
+                var msg = resp.M;
+                showToast(err,msg);
+                
+            });
+        }
+    };
+    
+
+}
 </script>
 @endpush
