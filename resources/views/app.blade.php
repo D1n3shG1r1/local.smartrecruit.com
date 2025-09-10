@@ -47,7 +47,7 @@
     <title>Smart Recruit - Premier Recruitment Platform in Nigeria</title>
 
     <!-- Canonical -->
-    <!--<link rel="canonical" href="https://ranyeh24.github.io/inazuma-tailwind" />-->
+    <!--<link rel="canonical" href="" />-->
 
     <!-- Favicon -->
     <!--<link
@@ -115,7 +115,19 @@
     <link rel="stylesheet" href="{{ url('assets/css/custom.css'); }}" />
     @endif
 
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17527605400">
+    </script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
+      gtag('config', 'AW-17527605400');
+    </script>
+    <!-- Google tag (gtag.js) -->
+    
   </head>
   <body>
     <!-- Page loading -->
