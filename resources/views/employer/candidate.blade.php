@@ -361,7 +361,7 @@ section,
 
                     <!-- Section Title -->
                     <div class="section-title" data-aos="fade-up">
-                    <h2>{{ucwords($candidate->fname." ".$candidate->lname)}}</h2>
+                    <h2>{{ucwords($candidate->fname." ".$candidate->referral_code)}}</h2>
                     <p></p>
                     </div><!-- End Section Title -->
 
@@ -369,7 +369,7 @@ section,
 
                     <div class="row gy-4 justify-content-center">
                         <div class="col-lg-3">
-                        <img style="max-width:100px;" src="{{ route('private.image', ['userId' => $candidate->candidateId, 'filename' => 'pp-' . $candidate->candidateId . '.jpg']) }}" onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';" class="img-fluid" alt="{{ucwords($candidate->fname.' '.$candidate->lname)}}">
+                        <img style="max-width:100px;" src="{{ route('private.image', ['userId' => $candidate->candidateId, 'filename' => 'pp-' . $candidate->candidateId . '.jpg']) }}" onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';" class="img-fluid" alt="{{ucwords($candidate->fname)}}">
                         </div>
                         <div class="col-lg-9 content">
                         <h2>Basic Profile</h2>
@@ -391,7 +391,7 @@ section,
                             <ul>
                                 @if($candidate->purchased == 1)  
                                 <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> <span>{{date("d M Y", strtotime($candidate->dob))}}</span></li>
-                                <li><i class="bi bi-chevron-right"></i> <strong>Address:</strong> <span>{{$candidate->address_1}} {{$candidate->address_2}}</span></li>
+                                
                                 @endif
                                 <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span>{{$candidate->city}}</span></li>
                                 <li><i class="bi bi-chevron-right"></i> <strong>Country:</strong> <span>{{$candidate->country}}</span></li>
@@ -415,7 +415,7 @@ section,
                                 <h3 class="resume-title">Professional Summary</h3>
 
                                 <div class="resume-item pb-0">
-                                    <h4>{{ucwords($candidate->fname." ".$candidate->lname)}}</h4>
+                                    <h4>{{ucwords($candidate->fname)}}</h4>
                                     <p><em>{{$candidate->profSummary}}</em></p>
                                     <!--<ul>
                                     <li>Portland par 127,Orlando, FL</li>

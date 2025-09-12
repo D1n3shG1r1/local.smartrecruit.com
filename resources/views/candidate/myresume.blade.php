@@ -272,7 +272,7 @@ section,
 
                     <div class="row gy-4 justify-content-center">
                         <div class="col-lg-3">
-                        <img style="max-width:100px;" src="{{ route('private.image', ['userId' => $basicProfile->id, 'filename' => 'pp-' . $basicProfile->id . '.jpg']) }}" onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';" class="img-fluid" alt="{{ucwords($basicProfile->fname.' '.$basicProfile->lname)}}">
+                        <img style="max-width:100px;" src="{{ route('private.image', ['userId' => $basicProfile->id, 'filename' => 'pp-' . $basicProfile->id . '.jpg']) }}" onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';" class="img-fluid" alt="{{ucwords($basicProfile->fname)}}">
                         </div>
                         <div class="col-lg-9 content">
                         <h2>Basic Profile</h2>
@@ -312,7 +312,7 @@ section,
                                 <h3 class="resume-title">Professional Summary</h3>
 
                                 <div class="resume-item pb-0">
-                                    <h4>{{ucfirst($basicProfile->fname)}} {{ucfirst($basicProfile->lname)}}</h4>
+                                    <h4>{{ucfirst($basicProfile->fname)}}</h4>
                                     <p><em>{{$profSummaryArr}}</em></p>
                                     <!--<ul>
                                     <li>Portland par 127,Orlando, FL</li>

@@ -342,6 +342,7 @@ class Candidates extends Controller
 
             $candidate = CandidateResumeData_model::select(
                 'customers.id as profile_id',
+                'customers.referral_code',
                 'customers.fname',
                 'customers.lname',
                 'customers.gender',
