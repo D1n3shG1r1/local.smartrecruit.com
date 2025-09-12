@@ -11,6 +11,28 @@
     </div>
 </div>
 
+<div class="modal fade" id="uploadProfilePhotoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 style="font-weight:normal;" class="modal-title">Action Required: Upload Your Profile Picture</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+            It appears that you haven't uploaded your profile picture yet.
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="$('#ProfilePhotoFile').trigger('click');">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">

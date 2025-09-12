@@ -1,3 +1,14 @@
+<script>
+function imageUploadPopup(){
+    
+    setTimeout(function(){
+      var myModal = new bootstrap.Modal(document.getElementById('uploadProfilePhotoModal'));
+      // Show the modal
+      myModal.show();
+    }, 5000);
+    
+}
+</script>
 <div class="full_container">
          <div class="inner_container">
             <!-- Sidebar  -->
@@ -15,7 +26,7 @@
                         <div class="user_img">
                         <a href="javascript:void(0);" class="profilePhotoCamera" data-fileElm="ProfilePhotoFile" onclick="editProfilePhoto(this)"><i class="fa fa-camera" style="font-size: 15px;"></i><span style="font-size: 11px;line-height: 14px;">Change Profile Photo</span></a> 
                         <img class="profilephotoimg img-responsive" src="{{ route('private.image', ['userId' => $LOGINUSER['userId'], 'filename' => 'pp-' . $LOGINUSER['userId'] . '.jpg']) }}"
-                        onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user.png') }}';"/>
+                        onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user.png')}}'; imageUploadPopup();"/>
                      </div>
                         <div class="user_info">
                         <h6>{{ucwords($LOGINUSER["fname"]." ".$LOGINUSER["lname"])}}</h6>

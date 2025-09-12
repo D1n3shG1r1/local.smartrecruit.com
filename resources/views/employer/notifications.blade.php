@@ -116,22 +116,26 @@
                     </div>
                 </div>
             </div>
-            
+            @if($notifications->count() > 0)
+            <div class="col-md-12" style="text-align: center;padding-top: 10px;">
+                <button type="button" id="profSaveBtn" class="btn cur-p btn-primary" data-txt="Load More" data-loadingtxt="Loading..." onclick="loadMore(this);" style="font-size: 18px;">Load More</button>
+            </div>
+            @endif
         </div>
 @endsection
 @push("js")
 <script>
     let currentPage = 1;
     let loading = false;
-    $(function(){
+    /*$(function(){
         $(window).on('scroll', function () {
             if ($(window).scrollTop() + $(window).height() >= $(document).height() - 300) {
                 loadMore();
             }
         });
-    });
+    });*/
 
-    function loadMore() {
+    function loadMore(elm) {
         if (loading) return;
         loading = true;
         currentPage++;
@@ -170,6 +174,12 @@
                 $('.loadingPlaceholders').remove();
                 if ($.trim(res) === '') {
                     // No more results
+                    currentPage--;
+
+                    var err = 1;
+                    var msg = "No more notifications found.";
+                    showToast(err,msg);
+
                 } else {
                     $('#notificationsContainer').append(res);
                 }
