@@ -32,7 +32,7 @@
             <div class="white_shd full margin_bottom_30">
                 <div class="full graph_head">
                     <div class="heading1 margin_0">
-                    <h2>Skills & Academic Information</h2>
+                    <h2>Skills & Academic Info</h2>
                     </div>
 
                     @if($basicProfile->verified == 0)
@@ -48,7 +48,7 @@
                       @endif
 
 
-                    <button id="resumeReminderBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to send a complete resume reminder." onclick="sendResumeReminder()" data-txt='<i class="bi bi-envelope"></i> Reminder to complete CV' data-loadingtxt='<i class="bi bi-envelope"></i> Sending...'><i class="bi bi-envelope"></i> Reminder to complete CV</button>
+                    <button id="resumeReminderBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to send a complete resume reminder." onclick="sendResumeReminder()" data-txt='<i class="bi bi-envelope"></i> Complete CV' data-loadingtxt='<i class="bi bi-envelope"></i> Sending...'><i class="bi bi-envelope"></i> Complete CV</button>
 
 
                     <button id="videoThankBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Send a thank-you message for the video interview." onclick="videoCompleteThankyou()" data-txt='<i class="bi bi-envelope"></i> Complete your interview' data-loadingtxt='<i class="bi bi-envelope"></i> Sending...'><i class="bi bi-envelope"></i> Complete your interview</button>
