@@ -44,7 +44,7 @@
     <meta name="theme-color" content="#3d63dd" />
 
     <!-- Page title -->
-    <title>Smart Recruit - Premier Recruitment Platform in Nigeria</title>
+    <title>SmartRecruit- The Future of Recruitment</title>
 
     <!-- Canonical -->
     <!--<link rel="canonical" href="" />-->

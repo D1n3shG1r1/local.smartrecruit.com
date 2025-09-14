@@ -48,10 +48,10 @@
                       @endif
 
 
-                    <button id="resumeReminderBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to send a complete resume reminder." onclick="sendResumeReminder()" data-txt='<i class="bi bi-envelope"></i> Complete CV' data-loadingtxt='<i class="bi bi-envelope"></i> Sending...'><i class="bi bi-envelope"></i> Complete CV</button>
+                    <button id="resumeReminderBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to send a complete resume reminder." onclick="sendResumeReminder(this)" data-txt='<i class="bi bi-envelope"></i> Complete CV' data-loadingtxt='<i class="bi bi-envelope"></i> Sending...'><i class="bi bi-envelope"></i> Complete CV</button>
 
 
-                    <button id="videoThankBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Send a thank-you message for the video interview." onclick="videoCompleteThankyou()" data-txt='<i class="bi bi-envelope"></i> Complete your interview' data-loadingtxt='<i class="bi bi-envelope"></i> Sending...'><i class="bi bi-envelope"></i> Complete your interview</button>
+                    <button id="videoThankBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Send a thank-you message for the video interview." onclick="videoCompleteThankyou(this)" data-txt='<i class="bi bi-envelope"></i> Completed interview' data-loadingtxt='<i class="bi bi-envelope"></i> Sending...'><i class="bi bi-envelope"></i> Completed interview</button>
                     
                 </div>
                 <div class="full price_table padding_infor_info">
@@ -1520,8 +1520,6 @@
     var postdata = {
       "resumeId": resumeDataId,
       "candidateId": candidateId,
-      "interviewLinkInput": interviewLinkInput,
-      "resendLink":resendLink
     };
       
     callajax(requrl, postdata, function(resp){
@@ -1532,7 +1530,7 @@
       var err = 0;
       if(resp.C == 100){
         err = 0;
-        closeVerifyModal();
+        
       }else{
         err = 1;
       }
@@ -1560,9 +1558,7 @@
     var requrl = "admin/sendVideoThankyou";
     var postdata = {
       "resumeId": resumeDataId,
-      "candidateId": candidateId,
-      "interviewLinkInput": interviewLinkInput,
-      "resendLink":resendLink
+      "candidateId": candidateId
     };
       
     callajax(requrl, postdata, function(resp){
@@ -1573,7 +1569,7 @@
       var err = 0;
       if(resp.C == 100){
         err = 0;
-        closeVerifyModal();
+        
       }else{
         err = 1;
       }
