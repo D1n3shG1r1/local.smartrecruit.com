@@ -48,11 +48,11 @@
                       @endif
 
 
-                    <button id="resumeReminderBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to send a complete resume reminder." onclick="sendResumeReminder()" data-txt='<i class="bi bi-envelope"></i> Send Resume Reminder' data-loadingtxt='<i class="bi bi-envelope"></i> Sending...'><i class="bi bi-envelope"></i> Send Resume Reminder</button>
+                    <button id="resumeReminderBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to send a complete resume reminder." onclick="sendResumeReminder()" data-txt='<i class="bi bi-envelope"></i> Reminder to complete CV' data-loadingtxt='<i class="bi bi-envelope"></i> Sending...'><i class="bi bi-envelope"></i> Reminder to complete CV</button>
 
 
-                    <button id="videoThankBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Send a thank-you message for the video interview." onclick="videoCompleteThankyou()" data-txt='<i class="bi bi-envelope"></i> Send Thank-You Message' data-loadingtxt='<i class="bi bi-envelope"></i> Sending...'><i class="bi bi-envelope"></i> Send Thank-You Message</button>
-
+                    <button id="videoThankBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Send a thank-you message for the video interview." onclick="videoCompleteThankyou()" data-txt='<i class="bi bi-envelope"></i> Thank you for completing interview' data-loadingtxt='<i class="bi bi-envelope"></i> Sending...'><i class="bi bi-envelope"></i> Thank you for completing interview</button>
+                    
                 </div>
                 <div class="full price_table padding_infor_info">
                     <div class="row">
