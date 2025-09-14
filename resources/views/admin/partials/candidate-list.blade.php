@@ -18,7 +18,7 @@ $i = 0;
     <div class="col-md-6 col-lg-6">
         <div class="full white_shd margin_bottom_30">
             <div class="info_people">
-                <a class="candidateLink" href="{{url('recruiter/candidate/'.$candidateId)}}">
+                <a class="candidateLink" href="{{url('admin/candidate/'.$candidateId)}}">
                     <div class="p_info_img">
                         <img src="{{ route('private.image', ['userId' => $candidateId, 'filename' => 'pp-' . $candidateId . '.jpg']) }}" onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';"
                         alt="{{ $candidateName }}">
@@ -80,7 +80,7 @@ $i = 0; @endphp
     <div class="col-md-6 col-lg-6">
         <div class="full white_shd margin_bottom_30">
             <div class="info_people">
-                <a class="candidateLink" href="{{url('recruiter/candidate/'.$candidateId)}}">
+                <a class="candidateLink" href="{{url('admin/candidate/'.$candidateId)}}">
                     <div class="p_info_img">
                         <img src="{{ route('private.image', ['userId' => $candidateId, 'filename' => 'pp-' . $candidateId . '.jpg']) }}" onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';"
                         alt="{{ $candidateName }}">

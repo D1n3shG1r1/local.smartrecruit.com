@@ -172,7 +172,7 @@ class Candidates extends Controller
                 $email = $candidateRow->email;
                 $referalCode  = $candidateRow->referral_code;
                 
-                // send welcome email email
+                // send video link email
                 $param = [
                     "firstName" => $fname,
                     "lastName" => $lname,
@@ -644,4 +644,96 @@ class Candidates extends Controller
         return response()->json($response); die;
     }
 
+    
+    function sendVideoThankyou(Request $request){
+
+        if($this->USERID > 0){
+            
+            $userId = $this->USERID; 
+            
+            $candidateId = $request->input("candidateId");
+
+            $candidateRow = Users_model::select("fname", "lname", "email", "referral_code")->where("id", $candidateId)->first();
+
+            $fname = $candidateRow->fname;
+            $lname = $candidateRow->lname;
+            $email = $candidateRow->email;
+            $referalCode  = $candidateRow->referral_code;
+            
+            // send video link email
+            $param = [
+                "firstName" => $fname,
+                "lastName" => $lname,
+                "email" => $email,
+                "referalCode" => $referalCode,
+                "receiver" => $candidateId,
+                "sender" => 1,
+                "purpose" => "videoInterviewThankyou"
+            ];
+            
+            EmailHelper::sendEmail($param);
+
+            $response = array(
+                "C" => 100,
+                "R" => [],
+                "M" => "Thank-you email has been sent to candidate."
+            );
+            
+        }else{
+                
+            $response = array(
+                "C" => 1004,
+                "R" => [],
+                "M" => "session expired."
+            );
+        }
+
+        return response()->json($response); die;
+    } 
+    
+    function sendResumeReminder(Request $request){
+
+        if($this->USERID > 0){
+            
+            $userId = $this->USERID; 
+            
+            $candidateId = $request->input("candidateId");
+
+            $candidateRow = Users_model::select("fname", "lname", "email", "referral_code")->where("id", $candidateId)->first();
+
+            $fname = $candidateRow->fname;
+            $lname = $candidateRow->lname;
+            $email = $candidateRow->email;
+            $referalCode  = $candidateRow->referral_code;
+            
+            // send video link email
+            $param = [
+                "firstName" => $fname,
+                "lastName" => $lname,
+                "email" => $email,
+                "referalCode" => $referalCode,
+                "receiver" => $candidateId,
+                "sender" => 1,
+                "purpose" => "resumeReminder"
+            ];
+            
+            EmailHelper::sendEmail($param);
+
+            $response = array(
+                "C" => 100,
+                "R" => [],
+                "M" => "Complete resume reminder has been sent to candidate."
+            );
+            
+        }else{
+                
+            $response = array(
+                "C" => 1004,
+                "R" => [],
+                "M" => "session expired."
+            );
+        }
+
+        return response()->json($response); die;
+    }
 }

@@ -37,15 +37,21 @@
 
                     @if($basicProfile->verified == 0)
 
-                      <button id="viewResumeBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to verify the candidate and send them the video interview link." onclick="markVerify()">Verify Candidate</button>
+                      <button id="vrfyBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to verify the candidate and send them the video interview link." onclick="markVerify()">Verify Candidate</button>
 
                     @else
                     
-                    <button id="viewResumeBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Candidate is already verified." disabled><i class="bi bi-check2-all"></i>&nbsp; Verified</button>
+                    <button id="vrfyBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Candidate is already verified." disabled><i class="bi bi-check2-all"></i>&nbsp; Verified</button>
 
-                    <button id="viewResumeBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to resend the video interview link." onclick="resendVideoLink()">Resend Video Link</button>
+                    <button id="videoSendBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to resend the video interview link." onclick="resendVideoLink()">Resend Video Link</button>
                     
                       @endif
+
+
+                    <button id="resumeReminderBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to send a complete resume reminder." onclick="sendResumeReminder()" data-txt='<i class="bi bi-envelope"></i> Send Resume Reminder' data-loadingtxt='<i class="bi bi-envelope"></i> Sending...'><i class="bi bi-envelope"></i> Send Resume Reminder</button>
+
+
+                    <button id="videoThankBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Send a thank-you message for the video interview." onclick="videoCompleteThankyou()" data-txt='<i class="bi bi-envelope"></i> Send Thank-You Message' data-loadingtxt='<i class="bi bi-envelope"></i> Sending...'><i class="bi bi-envelope"></i> Send Thank-You Message</button>
 
                 </div>
                 <div class="full price_table padding_infor_info">
@@ -1495,6 +1501,87 @@
       console.error("No valid video ID found in the input URL");
     }
    
+  }
+
+  function sendResumeReminder(elm){
+    var resumeDataId = "{{$resumeDataId}}";
+    var candidateId = "{{$candidateId}}";
+    
+    
+    var elmId = $(elm).attr("id");
+    $(elm).attr("disabled",true);
+    
+    var orgTxt = $(elm).attr("data-txt");
+    var loadingTxt = $(elm).attr("data-loadingtxt");
+    
+    showLoader(elmId,loadingTxt);
+    
+    var requrl = "admin/sendResumeReminder";
+    var postdata = {
+      "resumeId": resumeDataId,
+      "candidateId": candidateId,
+      "interviewLinkInput": interviewLinkInput,
+      "resendLink":resendLink
+    };
+      
+    callajax(requrl, postdata, function(resp){
+      
+      $(elm).removeAttr("disabled");
+      hideLoader(elmId,orgTxt);
+
+      var err = 0;
+      if(resp.C == 100){
+        err = 0;
+        closeVerifyModal();
+      }else{
+        err = 1;
+      }
+        
+      var msg = resp.M;
+      showToast(err,msg);
+
+    });
+
+  }
+
+  function videoCompleteThankyou(elm){
+    var resumeDataId = "{{$resumeDataId}}";
+    var candidateId = "{{$candidateId}}";
+    
+    
+    var elmId = $(elm).attr("id");
+    $(elm).attr("disabled",true);
+    
+    var orgTxt = $(elm).attr("data-txt");
+    var loadingTxt = $(elm).attr("data-loadingtxt");
+    
+    showLoader(elmId,loadingTxt);
+
+    var requrl = "admin/sendVideoThankyou";
+    var postdata = {
+      "resumeId": resumeDataId,
+      "candidateId": candidateId,
+      "interviewLinkInput": interviewLinkInput,
+      "resendLink":resendLink
+    };
+      
+    callajax(requrl, postdata, function(resp){
+      
+      $(elm).removeAttr("disabled");
+      hideLoader(elmId,orgTxt);
+
+      var err = 0;
+      if(resp.C == 100){
+        err = 0;
+        closeVerifyModal();
+      }else{
+        err = 1;
+      }
+        
+      var msg = resp.M;
+      showToast(err,msg);
+
+    });
   }
 </script>
 @endpush

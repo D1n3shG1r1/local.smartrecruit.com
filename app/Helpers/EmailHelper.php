@@ -142,6 +142,18 @@ class EmailHelper
                 $templateBlade = "emails.candidate_cvsubmitadmin";
                 break;
 
+            case 'videoInterviewThankyou':
+                $bladeData['referalCode'] = $param["referalCode"];
+                $subject = "Thank you for taking the time to complete your pre-recorded interview.";
+                $templateBlade = "emails.videoInterviewThankyou";
+                break;
+            
+            case 'resumeReminder':
+                $bladeData['referalCode'] = $param["referalCode"];
+                $subject = "Thank you for creating your profile on SmartRecruit!";
+                $templateBlade = "emails.resumeReminder";
+                break;
+
             case 'testemail':
                 $bladeData['adminName'] = $param["adminName"];
                 $subject = "SmartRecruit SMTP Test Email!";

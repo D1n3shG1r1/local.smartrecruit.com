@@ -71,6 +71,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/updatecandidateresume',[AdminCandidates::class, 'updateresume']);
     Route::post('/candidatesaveprofile',[AdminCandidates::class, 'saveprofile']);
     Route::post('/candidateplanactivate',[AdminCandidates::class, 'activateFeatureProfile']);
+    Route::post('/sendVideoThankyou',[AdminCandidates::class, 'sendVideoThankyou']);
+    Route::post('/sendResumeReminder',[AdminCandidates::class, 'sendResumeReminder']);
+
     
     Route::get('/recruiters',[AdminRecruiters::class, 'recruiters']);  
     Route::get('/recruiter/{id}',[AdminRecruiters::class, 'recruiter']);

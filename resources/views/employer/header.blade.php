@@ -187,7 +187,9 @@ span.selection{
                                  </li>
                                  
                                  <li class="icon-li"><a href="javascript:void(0);" data-toggle="modal" data-target="#contactModal"><i class="fa fa-question-circle"></i></a></li>
+                                 <!--
                                  <li class="icon-li"><a href="#"><i class="fa fa-envelope-o"></i><span class="badge">3</span></a></li>
+                                 -->
                                  
                               </ul>
 

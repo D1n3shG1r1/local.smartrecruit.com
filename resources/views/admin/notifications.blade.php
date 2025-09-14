@@ -99,7 +99,7 @@
                             onerror="this.onerror=null; this.src='{{ url('assets/admin/img/user-avatar.png') }}';"
                                 alt="{{ucwords($notification->fname .' '.$notification->lname)}}" class="img-responsive"></span>
                             <span>
-                                <a href="{{url('recruiter/candidate/'.$notification->sender)}}">
+                                <a href="{{url('admin/candidate/'.$notification->sender)}}">
                                     <span class="name_user">{{ucwords($notification->fname ." ".$notification->lname)}}</span>
                                 </a>
                                 <span class="msg_user" style="width: fit-content;">{{$notification->message}}.</span>
