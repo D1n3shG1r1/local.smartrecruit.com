@@ -21,8 +21,10 @@ $custompackage = $pricing["custompackage"]; //name price candidatelimit
 if($package == ''){
     $package = '-';
     $packageName = '-';
+    $expiresOn = '-';
 }else{
     $packageName = $pricing[$package]["name"];
+    $expiresOn = date("M d, Y", strtotime($expireon));
 }
 
 @endphp
@@ -46,6 +48,9 @@ if($package == ''){
                     <div class="heading1 margin_0">
                     <h2>Basic information</h2>
                     </div>
+                    
+                    <button id="contactBtn" type="button" class="float-right  viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to contact candidate." data-toggle="modal" data-target="#contactModal" onclick="contact('{{ $user->id }}')"><i class="bi bi-envelope"></i> Contact</button>
+
                 </div>
                 <div class="full price_table padding_infor_info">
                     <div class="row">
@@ -168,7 +173,10 @@ if($package == ''){
                             <span class="currentPackageSpan">
                                 Status: <strong>@php if($expired == 1 || $active == 0){ echo "Inactive"; }else{ echo "Active"; } @endphp</strong>
                             </span>
-                            <span class="currentPackageSpan">Expires on: <strong>{{date("M d, Y", strtotime($expireon))}}</strong></span>    
+                            <span class="currentPackageSpan">Expires on: <strong>{{$expiresOn}}</strong></span> 
+                            
+                            <span class="currentPackageSpan">Candidate Limit: <strong>{{$candidatePurchased}}/{{$candidatePurchaseLimit}}</strong></span>
+                            
                         </p>
                     </div>
                 </div>    
@@ -573,6 +581,28 @@ function validatePackageForm(elm){
     };
     
 
+}
+
+function contact(cid){
+    // Show the modal
+    
+    var myModal = new bootstrap.Modal(document.getElementById('contactModal'));
+    myModal.show();
+
+    var title = 'Send Message to Recruiter';
+    var recieverId = '{{ $user->id }}';
+    var recieverEmail = '{{ $user->email }}';
+    var recieverFname = '{{ucfirst($user->fname)}}';
+    var recieverLname = '';
+    
+    // Update modal content dynamically
+    document.getElementById('contactModalLabel').textContent = title;
+    document.getElementById('recieverId').value = recieverId;
+    document.getElementById('recieverFname').value = recieverFname;
+    document.getElementById('recieverLname').value = recieverLname;
+    document.getElementById('recieverEmail').value = recieverEmail;
+    document.getElementById('subject').value = '';
+    document.getElementById('message').value = '';
 }
 </script>
 @endpush

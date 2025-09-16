@@ -290,6 +290,7 @@ class Pricing extends Controller
                             "lastName" => $tmpUserLName,
                             "email" => $tmpUserEmail,
                             "PlanName" => $packageName,
+                            "CandidateView" => $candidatelimit,
                             "PlanPrice" => $currencySymbol.' '.$price,
                             "ValidityPeriod" => $expireOn,  
                             "TransactionID" => $transactionId,

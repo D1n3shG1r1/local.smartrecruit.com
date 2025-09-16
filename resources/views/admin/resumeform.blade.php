@@ -1504,80 +1504,147 @@
   }
 
   function sendResumeReminder(elm){
+    
     var resumeDataId = "{{$resumeDataId}}";
     var candidateId = "{{$candidateId}}";
+
+    // Show the modal
+    var myModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    myModal.show();
+
+    var title = 'Are You Sure?';
+    var message = 'Are you sure you want to proceed with this action? This will send a reminder email to the candidate to complete their CV.';
+    var confirmText = 'Yes';
+    var cancelText = 'No';
     
-    
-    var elmId = $(elm).attr("id");
-    $(elm).attr("disabled",true);
-    
-    var orgTxt = $(elm).attr("data-txt");
-    var loadingTxt = $(elm).attr("data-loadingtxt");
-    
-    showLoader(elmId,loadingTxt);
-    
-    var requrl = "admin/sendResumeReminder";
-    var postdata = {
-      "resumeId": resumeDataId,
-      "candidateId": candidateId,
+    // Update modal content dynamically
+    document.getElementById('confirmModalLabel').textContent = title;
+    document.getElementById('confirmMessage').textContent = message;
+    document.getElementById('confirmBtn').textContent = confirmText;
+    document.getElementById('confirmCancelBtn').textContent = cancelText;
+
+
+    // Reset event listeners
+    const confirmButton = document.getElementById('confirmBtn');
+    const cancelButton = document.getElementById('confirmCancelBtn');
+
+    // Add event listener for confirmation action
+    confirmButton.onclick = function() {
+      // Place your confirmation action here
+      var myModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+      myModal.hide();
+
+      var elmId = $(elm).attr("id");
+      $(elm).attr("disabled",true);
+      
+      var orgTxt = $(elm).attr("data-txt");
+      var loadingTxt = $(elm).attr("data-loadingtxt");
+      
+      showLoader(elmId,loadingTxt);
+      
+      var requrl = "admin/sendResumeReminder";
+      var postdata = {
+        "resumeId": resumeDataId,
+        "candidateId": candidateId,
+      };
+        
+      callajax(requrl, postdata, function(resp){
+        
+        $(elm).removeAttr("disabled");
+        hideLoader(elmId,orgTxt);
+
+        var err = 0;
+        if(resp.C == 100){
+          err = 0;
+          
+        }else{
+          err = 1;
+        }
+          
+        var msg = resp.M;
+        showToast(err,msg);
+
+      });
     };
-      
-    callajax(requrl, postdata, function(resp){
-      
-      $(elm).removeAttr("disabled");
-      hideLoader(elmId,orgTxt);
-
-      var err = 0;
-      if(resp.C == 100){
-        err = 0;
-        
-      }else{
-        err = 1;
-      }
-        
-      var msg = resp.M;
-      showToast(err,msg);
-
-    });
+    
+    // Add event listener for cancel action
+    cancelButton.onclick = function() {
+        var myModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        myModal.hide();
+    };
 
   }
 
   function videoCompleteThankyou(elm){
+    
     var resumeDataId = "{{$resumeDataId}}";
     var candidateId = "{{$candidateId}}";
     
-    
-    var elmId = $(elm).attr("id");
-    $(elm).attr("disabled",true);
-    
-    var orgTxt = $(elm).attr("data-txt");
-    var loadingTxt = $(elm).attr("data-loadingtxt");
-    
-    showLoader(elmId,loadingTxt);
+    // Show the modal
+    var myModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    myModal.show();
 
-    var requrl = "admin/sendVideoThankyou";
-    var postdata = {
-      "resumeId": resumeDataId,
-      "candidateId": candidateId
+    var title = 'Send Thank You Email?';
+    var message = 'Are you sure you want to proceed with this action? This will send a thank you email to the candidate for completing their video interview.';
+    var confirmText = 'Yes';
+    var cancelText = 'No';
+    
+    // Update modal content dynamically
+    document.getElementById('confirmModalLabel').textContent = title;
+    document.getElementById('confirmMessage').textContent = message;
+    document.getElementById('confirmBtn').textContent = confirmText;
+    document.getElementById('confirmCancelBtn').textContent = cancelText;
+
+
+    // Reset event listeners
+    const confirmButton = document.getElementById('confirmBtn');
+    const cancelButton = document.getElementById('confirmCancelBtn');
+
+    // Add event listener for confirmation action
+    confirmButton.onclick = function() {
+      // Place your confirmation action here
+      var myModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        myModal.hide();
+
+        var elmId = $(elm).attr("id");
+      $(elm).attr("disabled",true);
+      
+      var orgTxt = $(elm).attr("data-txt");
+      var loadingTxt = $(elm).attr("data-loadingtxt");
+      
+      showLoader(elmId,loadingTxt);
+
+      var requrl = "admin/sendVideoThankyou";
+      var postdata = {
+        "resumeId": resumeDataId,
+        "candidateId": candidateId
+      };
+        
+      callajax(requrl, postdata, function(resp){
+        
+        $(elm).removeAttr("disabled");
+        hideLoader(elmId,orgTxt);
+
+        var err = 0;
+        if(resp.C == 100){
+          err = 0;
+          
+        }else{
+          err = 1;
+        }
+          
+        var msg = resp.M;
+        showToast(err,msg);
+
+      });
     };
-      
-    callajax(requrl, postdata, function(resp){
-      
-      $(elm).removeAttr("disabled");
-      hideLoader(elmId,orgTxt);
-
-      var err = 0;
-      if(resp.C == 100){
-        err = 0;
-        
-      }else{
-        err = 1;
-      }
-        
-      var msg = resp.M;
-      showToast(err,msg);
-
-    });
+    
+    // Add event listener for cancel action
+    cancelButton.onclick = function() {
+        var myModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        myModal.hide();
+    };
+    
   }
 </script>
 @endpush

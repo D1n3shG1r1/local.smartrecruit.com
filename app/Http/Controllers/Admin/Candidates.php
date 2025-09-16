@@ -34,7 +34,7 @@ class Candidates extends Controller
             $candidates = Users_model::select('id', 'referral_code', 'fname', 'lname', 'email', 'verified', 'active', 'createdDateTime')
             ->where("role", 1)
             ->orderBy('createdDateTime', 'desc')
-            ->paginate(10);
+            ->paginate(20);
 
             if ($candidates) {
                 

@@ -31,6 +31,10 @@
                   <td style="border:1px solid #ddd;"><strong>Plan Name</strong></td>
                   <td style="border:1px solid #ddd;">{{$PlanName}}</td>
                 </tr>
+                <tr style="background-color:#f5f5f5;">
+                  <td style="border:1px solid #ddd;"><strong>Candidate View</strong></td>
+                  <td style="border:1px solid #ddd;">{{$CandidateView}}</td>
+                </tr>
                 <tr>
                   <td style="border:1px solid #ddd;"><strong>Price</strong></td>
                   <td style="border:1px solid #ddd;">{{$PlanPrice}}</td>

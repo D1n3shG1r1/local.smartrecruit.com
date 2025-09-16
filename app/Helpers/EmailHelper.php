@@ -61,6 +61,7 @@ class EmailHelper
                 $subject = "Your Recruiter Plan is Now Active!";
                 $templateBlade = "emails.planactivate_recruiter";
                 $bladeData['PlanName'] = $param["PlanName"];
+                $bladeData['CandidateView'] = $param["CandidateView"];
                 $bladeData['PlanPrice'] = $param["PlanPrice"];
                 $bladeData['ValidityPeriod'] = $param["ValidityPeriod"];
                 $bladeData['TransactionID'] = $param["TransactionID"];
@@ -153,6 +154,13 @@ class EmailHelper
                 $subject = "Thank you for creating your profile on SmartRecruit!";
                 $templateBlade = "emails.resumeReminder";
                 break;
+
+            case 'custommessage':
+                $bladeData['subject'] = $param["subject"];
+                $bladeData['message'] = $param["message"];
+                $subject = $param["subject"];
+                $templateBlade = "emails.custommessage";
+                break;    
 
             case 'testemail':
                 $bladeData['adminName'] = $param["adminName"];

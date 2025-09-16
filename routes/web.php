@@ -82,6 +82,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/notifications',[AdminNotifications::class, 'notifications']);
     Route::get('/notifications/loadmore', [AdminNotifications::class, 'loadMore']);
+    Route::post('/sendmessage', [AdminNotifications::class, 'sendmessage']);
     
     Route::get('/transactions',[AdminTransactions::class, 'transactions']);
 

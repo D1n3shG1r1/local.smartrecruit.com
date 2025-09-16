@@ -34,7 +34,7 @@ class Recruiters extends Controller
             $recruiters = Users_model::select('id', 'referral_code', 'fname', 'lname', 'email', 'verified', 'active', 'createdDateTime')
             ->where("role", 2)
             ->orderBy('createdDateTime', 'desc')
-            ->paginate(10);
+            ->paginate(20);
 
             $data = array();
             $data["pageTitle"] = "All Recruiters";

@@ -22,10 +22,21 @@
     border-color:#155ed2 !important;
  }
 
+ .btn-outline-primary i{
+    color:#155ed2;
+    border-color:#155ed2 !important;
+ }
+
  .btn-outline-primary:hover {
     color: #fff;
     background-color: #155ed2;
     border-color: #155ed2;
+}
+
+.btn-outline-primary:hover i {
+    color: #fff;
+    background-color: transparent; /* optional: to prevent background color on the icon */
+    border-color: transparent; /* optional: remove any border color on the icon */
 }
 
 .icon_info span.badge {

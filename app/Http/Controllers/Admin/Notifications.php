@@ -11,6 +11,7 @@ use App\Models\Notification_model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\EmailHelper;
 
 class Notifications extends Controller
 {
@@ -73,4 +74,54 @@ class Notifications extends Controller
         
         return view('admin.partials.notifiations-list', compact('notifications'))->render();
     }
+
+
+    function sendmessage(Request $request){
+        //send message/email to recruiter and candidate
+    
+        if($this->USERID > 0){
+            //$userId = $this->USERID; 
+            
+            
+            $recieverId = $request->input("recieverId");
+            $recieverFname = $request->input("recieverFname");;
+            $recieverLname = $request->input("recieverLname");;
+            $recieverEmail = $request->input("recieverEmail");
+            $subject = $request->input("subject");
+            $message = $request->input("message");
+           
+            $param = [
+                "firstName" => $recieverFname,
+                "lastName" => $recieverLname,
+                "email" => $recieverEmail,
+                "subject" => $subject,
+                "message" => $message,
+                "receiver" => $recieverId,
+                "sender" => 1,
+                "purpose" => "custommessage"
+            ];
+            
+            EmailHelper::sendEmail($param);
+
+            $postBackData = array();
+            $postBackData["success"] = 1;
+
+            $response = array(
+                "C" => 100,
+                "R" => $postBackData,
+                "M" => "Message sent successfully."
+            );
+
+        }else{
+            $postBackData = array();
+            $response = array(
+                "C" => 1004,
+                "R" => $postBackData,
+                "M" => "session expired."
+            );
+        }
+
+        return response()->json($response); die;
+    }
+
 }

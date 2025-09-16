@@ -22,9 +22,12 @@ $custompackage = $pricing["custompackage"]; //name price candidatelimit
 if($package == ''){
     $package = '-';
     $packageName = '-';
-    $expireon = '-';
+    $expiresOn = '-';
+
 }else{
+
     $packageName = $pricing[$package]["name"];
+    $expiresOn = date("M d, Y", strtotime($expireon));
 }
 
 @endphp
@@ -248,7 +251,9 @@ ol, ul, menu {
                     <span class="currentPackageSpan">
                         Status: @php if($expired == 1 || $active == 0){ echo "Inactive"; }else{ echo "Active"; } @endphp
                     </span>
-                    <span class="currentPackageSpan">Expires on: {{date("M d, Y", strtotime($expireon))}}</span>    
+                    <span class="currentPackageSpan">Expires on: {{$expiresOn}}</span>
+                    
+                    <span class="currentPackageSpan">Candidate Limit: {{$candidatePurchased}}/{{$candidatePurchaseLimit}}</span>
                     </p>
                 </div>
             </div>

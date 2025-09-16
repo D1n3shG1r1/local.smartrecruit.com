@@ -25,7 +25,9 @@ $serviceCurrencySymbol = $featureprofile["symbol"];
                     <div class="heading1 margin_0">
                         <h2>Basic information</h2>
                     </div>
-                    <button id="viewResumeBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary" onclick="viewResume('{{ $user->id }}')">View Resume</button>
+                    <button id="contactBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to contact candidate." data-toggle="modal" data-target="#contactModal" onclick="contact('{{ $user->id }}')"><i class="bi bi-envelope"></i> Contact</button>
+
+                    <button id="viewResumeBtn" type="button" class="viewResumeBtn btn cur-p btn-outline-primary mx-2" onclick="viewResume('{{ $user->id }}')">View Resume</button>
                 </div>
                 <div class="full price_table padding_infor_info">
                     <div class="row">
@@ -95,7 +97,6 @@ $serviceCurrencySymbol = $featureprofile["symbol"];
                                     <input type="text" class="form-input" name="phone" id="phone" placeholder="Phone" value="{{$user->phone}}">
                                 </div>
                             </div>
-
 
                             <div class="row">
                                 
@@ -588,6 +589,28 @@ function viewResume(cid){
     var resumeUrl = "{{url('admin/candidateresume/'.$user->id)}}";
     
     window.location.href = resumeUrl;
+}
+
+function contact(cid){
+    // Show the modal
+    
+    var myModal = new bootstrap.Modal(document.getElementById('contactModal'));
+    myModal.show();
+
+    var title = 'Send Message to Candidate';
+    var recieverId = '{{ $user->id }}';
+    var recieverEmail = '{{ $user->email }}';
+    var recieverFname = '{{ucfirst($user->fname)}}';
+    var recieverLname = '{{ucfirst($user->lname)}}';
+    
+    // Update modal content dynamically
+    document.getElementById('contactModalLabel').textContent = title;
+    document.getElementById('recieverId').value = recieverId;
+    document.getElementById('recieverFname').value = recieverFname;
+    document.getElementById('recieverLname').value = recieverLname;
+    document.getElementById('recieverEmail').value = recieverEmail;
+    document.getElementById('subject').value = '';
+    document.getElementById('message').value = '';
 }
 </script>
 @endpush
