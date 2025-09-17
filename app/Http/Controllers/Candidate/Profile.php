@@ -191,6 +191,30 @@ class Profile extends Controller
                     $email = $this->getSession('email');
                     $currency = "NGN";
                     $refrence = db_randnumber();
+                    $transactionId = $refrence;
+                    $amount = $packageAmount * 100; //in kobo (100-kobo = 1-Naira)
+                    $status = 'initiate';
+
+                    // create entry for transaction
+                    //save transaction
+                    $paymentObj = new Packagepayments_model();
+                    $paymentObj->id = $transactionId;
+                    $paymentObj->gatewayTransId = 0;
+                    $paymentObj->transactionId = $transactionId;
+                    $paymentObj->userId = $userId;
+                    $paymentObj->package = $package;
+                    $paymentObj->amount = $amount;
+                    $paymentObj->currency = $currency;
+                    $paymentObj->status = $status;
+                    $paymentObj->payment = 'n';
+                    $paymentObj->paid_at = $createDateTime;
+                    $paymentObj->gatewayResponse =  json_encode([]);
+                    $paymentObj->createDateTime = $createDateTime;
+                    $paymentObj->updateDateTime = $updateDateTime;
+                    $paymentSave = $paymentObj->save();    
+
+                    Log::info("Feature Profile initiate for: user: {$userId} transRef:{$transactionId}");
+
                     //get admin name, email
                     $method = 'POST';
                     $bodyContent = array();
@@ -261,7 +285,8 @@ class Profile extends Controller
         $transactionRef = $this->getSession('transactionRef');
         
         if($transactionRef == $reference){
-            
+            Log::info("transactionRef is matched with input->reference for: transactionRef: {$transactionRef} reference:{$reference}");
+
             $this->removeSession('transactionRef');
             
             //$SECRET_KEY = config('custom.paystack.secretkey');
@@ -291,8 +316,12 @@ class Profile extends Controller
 
             $result = makeCurlRequest($endpoint, $method, $headers, $bodyContent, $returnAsArray);
             $verifyResult = json_decode($result, true);        
+
+            Log::info("transaction status: {$result} for reference:{$reference}");
+
             //echo "<pre>"; print_r($verifyResult); die;
-            if($verifyResult["status"] == 1){
+            if($verifyResult["status"] == true || $verifyResult["status"] == 1){
+                
                 $verifyData = $verifyResult["data"];
                 $status = $verifyData["status"]; //success
                 
@@ -319,13 +348,8 @@ class Profile extends Controller
                         ->format('Y-m-d H:i:s');
 
                     //packagepayments//
-                    $row = Packagepayments_model::where("id", $transactionId)->where("userId", $userId)->first();
-                    if($row){
-                        $row = $row->toArray();
-                        //invalid link or link is expired
-                        //payment failed
-                        return Redirect::to(url("candidate/payment/cancel"));
-                    }else{
+                   
+                        /*
                         //save transaction
                         $paymentObj = new Packagepayments_model();
                         $paymentObj->id = $transactionId;
@@ -342,7 +366,18 @@ class Profile extends Controller
                         $paymentObj->createDateTime = $createDateTime;
                         $paymentObj->updateDateTime = $updateDateTime;
                         $paymentSave = $paymentObj->save();    
-                    
+                        */
+
+                        //update transaction
+                        $transUpdateData = array(
+                            "gatewayTransId" => $gatewayTransId,
+                            "status" => $status,
+                            "payment" => 'y',
+                            "paid_at" => $paidAt,
+                            "gatewayResponse" =>  json_encode($verifyResult),
+                            "updateDateTime" => $updateDateTime
+                        );
+                        $paymentSave = Packagepayments_model::where("id", $transactionId)->update($transUpdateData);
                         
                         $newDateTime = Carbon::now()->addMonth();
                         $startOn = date("Y-m-d");
@@ -409,7 +444,7 @@ class Profile extends Controller
                         $data["pageTitle"] = "Payment Success";
                         return View("candidate.paymentsuccess",$data);
                     
-                    }
+                   
                 }else{
                     //payment abandoned or failed
                     $gatewayTransId = $verifyData["id"];
@@ -432,6 +467,7 @@ class Profile extends Controller
                         ->setTimezone($timezone)
                         ->format('Y-m-d H:i:s');
 
+                    /*
                     //save transaction
                     $paymentObj = new Packagepayments_model();
                     $paymentObj->id = $transactionId;
@@ -447,8 +483,20 @@ class Profile extends Controller
                     $paymentObj->gatewayResponse =  json_encode($verifyResult);
                     $paymentObj->createDateTime = $createDateTime;
                     $paymentObj->updateDateTime = $updateDateTime;
-                    $paymentSave = $paymentObj->save();    
+                    $paymentSave = $paymentObj->save();
+                    */    
                 
+                    //update transaction
+                    $transUpdateData = array(
+                        "gatewayTransId" => $gatewayTransId,
+                        "status" => $status,
+                        "payment" => 'n',
+                        "paid_at" => $paidAt,
+                        "gatewayResponse" =>  json_encode($verifyResult),
+                        "updateDateTime" => $updateDateTime
+                    );
+                    $paymentSave = Packagepayments_model::where("id", $transactionId)->update($transUpdateData);
+
                     return Redirect::to(url("candidate/payment/cancel"));
                 }
                 
@@ -458,6 +506,7 @@ class Profile extends Controller
             }
         }else{
             //payment failed
+            Log::info("transactionRef is not matched with input->reference for: transactionRef: {$transactionRef} reference:{$reference}");
             return Redirect::to(url("candidate/payment/cancel"));
         }
         
