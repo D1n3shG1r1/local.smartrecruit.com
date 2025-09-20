@@ -23,7 +23,7 @@
                     <div class="heading1 margin_0">
                     <h2>{{ucwords($note->title)}}</h2>
                     </div>
-                    <button id="delNoteBtn" type="button" class="float-right  viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" onclick="delete(this)" data-txt='<i class="bi bi-trash"></i> Delete' data-loadingtxt='<i class="bi bi-trash"></i> Deleting...'><i class="bi bi-trash"></i> Delete</button>
+                    <button id="delNoteBtn" type="button" class="float-right  viewResumeBtn btn cur-p btn-outline-primary mx-2" data-bs-toggle="tooltip" data-bs-placement="top" onclick="deleteNote(this)" data-txt='<i class="bi bi-trash"></i> Delete' data-loadingtxt='<i class="bi bi-trash"></i> Deleting...'><i class="bi bi-trash"></i> Delete</button>
                 </div>
                 <div class="full price_table padding_infor_info">
                     <div class="row">
