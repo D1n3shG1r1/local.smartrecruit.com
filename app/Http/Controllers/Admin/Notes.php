@@ -28,7 +28,7 @@ class Notes extends Controller
             $page = $request->input('page', 1);
             $notes = Notes_model::select('id', 'title', 'description', 'content', 'createdDateTime')
             ->orderBy('createdDateTime', 'desc')
-            ->paginate(1, ['*'], 'page', $page);
+            ->paginate(10, ['*'], 'page', $page);
 
             $data = array();
             $data["pageTitle"] = "All Notes";
@@ -48,7 +48,7 @@ class Notes extends Controller
             $page = $request->input('page', 1);
             $notes = Notes_model::select('id', 'title', 'description', 'content', 'createdDateTime')
             ->orderBy('createdDateTime', 'desc')
-            ->paginate(1, ['*'], 'page', $page);
+            ->paginate(10, ['*'], 'page', $page);
 
             // Render partial blade
             return view('admin.partials.note-list', [
