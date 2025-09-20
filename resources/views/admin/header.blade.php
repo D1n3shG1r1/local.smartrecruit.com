@@ -42,6 +42,8 @@
                      <li><a href="{{url('/admin/messages')}}"><i class="fa fa-envelope-o yellow_color"></i> <span class="{{ request()->is('admin/messages*') ? 'active-nav' : '' }}">All Messages</span></a></li>
                      -->  
                      <li><a href="{{url('/admin/transactions')}}"><i class="yellow_color">{{config('custom.baseCurrency.symbol')}}</i> <span class="{{ request()->is('admin/transactions*') ? 'active-nav' : '' }}">All Transactions</span></a></li>
+
+                     <li><a href="{{url('/admin/notes')}}"><i class="fa fa-pencil-square-o yellow_color"></i>  <span class="{{ request()->is('admin/notes*') ? 'active-nav' : '' }}">All Notes</span></a></li>
                      
                      @if($LOGINUSER["role"] == 3)
                      <li><a href="{{url('/admin/settings')}}"><i class="fa fa-cog yellow_color"></i> <span class="{{ request()->is('admin/settings*') ? 'active-nav' : '' }}">Settings</span></a></li>

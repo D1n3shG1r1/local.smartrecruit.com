@@ -190,6 +190,33 @@ span.selection{
     }
 }
 
+.info_people .user_info_cont {
+    width: 70%;
+    padding-left: 10px;
+    padding-top: 0px;
+    text-align: left;
+}
+
+@media (max-width: 430px) {
+
+    .candidateLink {
+        display: block;
+        cursor: pointer;
+    }
+
+    .info_people .p_info_img {
+        width: 100%;
+        text-align: center;
+    }
+
+    .info_people .user_info_cont {
+        width: 100%;
+        padding-left: 10px;
+        padding-top: 0px;
+        text-align: center;
+    }
+}
+
 </style>
 
 <div class="midde_cont">
@@ -359,6 +386,8 @@ span.selection{
 
 <script>
 
+let currentPage = 1;
+let loading = false;
 
 $(function(){
     
@@ -380,10 +409,11 @@ $(function(){
     });
 
     $(window).on('scroll', function () {
-    if ($(window).scrollTop() + $(window).height() >= $(document).height() - 300) {
-        loadMore();
-    }
-});
+        // Only trigger loadMore if the window has scrolled to the bottom and no request is in progress
+        if (!loading && $(window).scrollTop() + $(window).height() >= $(document).height() - 300) {
+            loadMore();
+        }
+    });
 
 
 });
@@ -426,8 +456,7 @@ $(function(){
         });
     }
 
-    let currentPage = 1;
-    let loading = false;
+    
 
     function search(){
         //setSelectedSkills
@@ -438,7 +467,7 @@ $(function(){
         currentPage = 1;
         if (loading) return;
         loading = true;
-        currentPage++;
+        //currentPage++;
 
         // Inject loading placeholders
         const dummyHTML = `@include('employer.partials.loading-cards')`;
@@ -447,6 +476,7 @@ $(function(){
         $.ajax({
             url: '{{ url("recruiter/candidates/loadmore") }}',
             method: 'GET',
+            async:false,
             data: {
                 page: currentPage,
                 skills: selectedSkills
@@ -455,8 +485,10 @@ $(function(){
                 $('.loadingPlaceholders').remove();
                 if ($.trim(res) === '') {
                     // No more results
+                    currentPage--; // Reset page if no more results
                 } else {
                     $('#candidatesContainer').append(res);
+                    currentPage++;
                     
                 }
                 loading = false;
@@ -486,6 +518,7 @@ $(function(){
         $.ajax({
             url: '{{ url("recruiter/candidates/loadmore") }}',
             method: 'GET',
+            async:false,
             data: {
                 page: currentPage,
                 skills: selectedSkills
@@ -494,6 +527,7 @@ $(function(){
                 $('.loadingPlaceholders').remove();
                 if ($.trim(res) === '') {
                     // No more results
+                    currentPage--;
                 } else {
                     $('#candidatesContainer').append(res);
                     

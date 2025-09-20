@@ -38,8 +38,7 @@
             <td bgcolor="#3d63dd" align="center" style="padding:20px;">
               <p style="font-size:14px; color:#ffffff; margin:0;">&copy; {{ date('Y') }} SMART-Recruit</p>
               <p style="font-size:14px; color:#ffffff; margin:5px 0;">
-                <a href="https://www.smart-recruit.com" style="color:#ffffff; text-decoration:underline;">www.smart-recruit.com</a> |
-                support@smart-recruit.com
+              <a href="{{url('/')}}" style="color: #ffffff; text-decoration: underline;">{{url('/')}}</a> | {{ config('custom.support_email') }}
               </p>
             </td>
           </tr>

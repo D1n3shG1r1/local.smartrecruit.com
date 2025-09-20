@@ -1,4 +1,3 @@
-<!--- featured candidates --->
 @if($page == 1 && isset($featured_candidates) && $featured_candidates->isNotEmpty())
 @php 
 $i = 0;
@@ -61,8 +60,6 @@ $i = 0;
 @endif
 
 @php 
-
-/*for rendering only candidate cards:*/
 
 $i = 0; @endphp
 @foreach($candidates as $index => $candidate)

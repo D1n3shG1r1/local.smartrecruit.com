@@ -410,6 +410,7 @@ class Pricing extends Controller
     }
 
     function cancel(Request $request){
+        
         $data = array();
         $data["pageTitle"] = "Payment Failed";
         return View("employer.paymentfail",$data);

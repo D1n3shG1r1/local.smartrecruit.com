@@ -138,6 +138,27 @@
     }
 }
 
+
+@media (max-width: 430px) {
+
+.candidateLink {
+    display: block;
+    cursor: pointer;
+}
+
+.info_people .p_info_img {
+    width: 100%;
+    text-align: center;
+}
+
+.info_people .user_info_cont {
+    width: 100%;
+    padding-left: 10px;
+    padding-top: 0px;
+    text-align: center;
+}
+}
+
 </style>
 
 <div class="midde_cont">
@@ -232,7 +253,8 @@ let loading = false;
 
 $(function(){
     $(window).on('scroll', function () {
-        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 300) {
+        // Only trigger loadMore if the window has scrolled to the bottom and no request is in progress
+        if (!loading && $(window).scrollTop() + $(window).height() >= $(document).height() - 300) {
             loadMore();
         }
     });
@@ -252,6 +274,7 @@ function loadMore() {
         $.ajax({
             url: '{{ url("recruiter/mycandidatesloadmore") }}',
             method: 'GET',
+            async:false,
             data: {
                 page: currentPage,
                 skills: selectedSkills
@@ -260,6 +283,7 @@ function loadMore() {
                 $('.loadingPlaceholders').remove();
                 if ($.trim(res) === '') {
                     // No more results
+                    currentPage--;
                 } else {
                     $('#candidatesContainer').append(res);
                     

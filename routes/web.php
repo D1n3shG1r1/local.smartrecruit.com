@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\Candidates as AdminCandidates;
 use App\Http\Controllers\Admin\Recruiters as AdminRecruiters;
 use App\Http\Controllers\Admin\Notifications as AdminNotifications;
 use App\Http\Controllers\Admin\Transactions as AdminTransactions;
+use App\Http\Controllers\Admin\Notes as AdminNotes;
 use App\Http\Controllers\Admin\Settings as AdminSettings;
 
 //candidate
@@ -36,9 +37,10 @@ use App\Http\Controllers\Employer\Notifications as EmployerNotifications;
 // routes/web.php
 
 //
-/*Route::get('/', function () {
-    return view('content');
-});*/
+Route::get('/pagenotfound', function () {
+    return view('errors.404');
+});
+
 Route::get('/',[FrontController::class, 'aboutus']);
 Route::get('/aboutus',[FrontController::class, 'aboutus']);
 Route::get('/howtouse',[FrontController::class, 'howtouse']);
@@ -85,6 +87,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/sendmessage', [AdminNotifications::class, 'sendmessage']);
     
     Route::get('/transactions',[AdminTransactions::class, 'transactions']);
+
+    Route::get('/notes',[AdminNotes::class, 'notes']);
+    Route::get('/notes/loadmore',[AdminNotes::class, 'loadmore']);
+    Route::get('/note/{id}',[AdminNotes::class, 'note']);
+    Route::post('/updatenote', [AdminNotes::class, 'updatenote']);
+    Route::get('/createnote',[AdminNotes::class, 'createnote']);
+    Route::post('/savenote', [AdminNotes::class, 'savenote']);
+    Route::post('/notedelete', [AdminNotes::class, 'notedelete']);
 
     Route::get('/settings',[AdminSettings::class, 'settings']);
     Route::post('/generateaccesskey',[AdminSettings::class, 'generateaccesskey']);

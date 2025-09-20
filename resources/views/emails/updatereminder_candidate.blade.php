@@ -60,7 +60,7 @@
       <td style="background-color: #3d63dd; color: #ffffff; text-align: center; padding: 20px;">
         <!-- Footer Section -->
         SMART-Recruit Team<br />
-        <a href="https://www.smart-recruit.com" style="color: #ffffff; text-decoration: underline;">www.smart-recruit.com</a> | <a href="mailto:support@smart-recruit.com" style="color: #ffffff; text-decoration: underline;">support@smart-recruit.com</a>
+        <a href="{{url('/')}}" style="color: #ffffff; text-decoration: underline;">{{url('/')}}</a> | {{ config('custom.support_email') }}
       </td>
     </tr>
   </table>
