@@ -66,6 +66,8 @@
                     <tbody>
                     <?php
                         if(!empty($transactions)){
+                            $pageNo = isset($_GET['page']) ? $_GET['page'] : 1;
+                            $startIndex = ($pageNo - 1) * 20;
                             foreach($transactions as $k => $row){
                                 $profile_id = $row->profile_id;
                                 $fname = $row->fname;
@@ -93,7 +95,8 @@
                         ?>
                                 
                         <tr>
-                            <td>{{$k+1}}</td>
+                            <!--{{$k+1}}-->
+                            <td>{{$startIndex + $k + 1}}</td>
                             <td>{{$transactionId}}</td>
                             <td>{{$gatewayTransId}}</td>
                             <td>
