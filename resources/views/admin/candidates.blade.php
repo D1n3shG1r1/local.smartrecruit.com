@@ -32,6 +32,8 @@
                     <tbody>
                     <?php
                         if(!empty($candidates)){
+                            $pageNo = isset($_GET['page']) ? $_GET['page'] : 1;
+                            $startIndex = ($pageNo - 1) * 20;
                             foreach($candidates as $k => $row){
                                 
                                 $id = $row->id;
@@ -46,7 +48,8 @@
                     ?>
                                 
                         <tr>
-                            <td>{{$k+1}}</td>
+                            <!--{{$k+1}}-->
+                            <td>{{$startIndex + $k + 1}}</td>
                             <td>{{strtoupper($refId)}}</td>
                             <td>
                                 @if($isFeatured > 0)
