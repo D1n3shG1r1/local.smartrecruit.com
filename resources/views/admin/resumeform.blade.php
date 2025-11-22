@@ -139,7 +139,7 @@
                               <div class="row mb-3">
                                 <div class="col-md-12">    
                                   <label class="form-label">Professional Summary</label>
-                                  <textarea class="form-control" rows="3" id="professionalsummary" name="professionalsummary">{{$profSummaryArr}}</textarea>
+                                  <textarea class="form-control" rows="3" id="professionalsummary" name="professionalsummary">{{json_encode($profSummaryArr)}}</textarea>
                                 </div>
                               </div>
                               <div class="row mt-3">
