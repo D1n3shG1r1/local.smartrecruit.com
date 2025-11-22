@@ -33,11 +33,11 @@ $i = 0;
                     </div>
                 </a>
                 
-                @if($candidate->is_featured > 0)
+                @if($fcandidate->is_featured > 0)
                 <i class="bi bi-shield-check ffa-light ffa-crown yyellow_color crown" data-bs-toggle="tooltip" data-bs-placement="top" title="Featured Candidate"></i>
                 @endif
 
-                @if($candidate->purchased > 0)
+                @if($fcandidate->purchased > 0)
                     <i class="bi bi-coin yellow_color purchasedCoin" data-bs-toggle="tooltip" data-bs-placement="top" title="Purchased Candidate"></i>
                 @else
                     <i class="bi bi-coin purchasedCoin" data-bs-toggle="tooltip" data-bs-placement="top" title="Purchased Candidate" ></i>

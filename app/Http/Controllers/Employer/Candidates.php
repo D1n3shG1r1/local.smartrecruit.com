@@ -128,11 +128,7 @@ class Candidates extends Controller
                     $candidate->purchased = $purchased ? 1 : 0;
                 }
             }
-            dd([
-                'featured_candidates' => $featuredCandidates,
-                'candidates' => $candidates,
-                'page' => $page
-            ]);
+            
             // Render partial blade with both featured and regular candidates
             return view('employer.partials.candidate-list', [
                 'featured_candidates' => $featuredCandidates,
