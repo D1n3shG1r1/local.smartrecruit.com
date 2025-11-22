@@ -43,8 +43,8 @@ $i = 0;
                     <i class="bi bi-coin purchasedCoin" data-bs-toggle="tooltip" data-bs-placement="top" title="Purchased Candidate" ></i>
                 @endif
 
-                <button id="bookmarkbtn-{{$candidateId}}" class="shortListBtn" data-id="{{$candidateId}}" data-shortlist="{{$candidate->shortlist}}" onclick="bookmark(this)">
-                    <i class="bi bi-bookmark-star @if($candidate->shortlist > 0) shortlisted @endif" data-bs-toggle="tooltip" data-bs-placement="top" title="Bookmark Candidate"></i>
+                <button id="bookmarkbtn-{{$candidateId}}" class="shortListBtn" data-id="{{$candidateId}}" data-shortlist="{{$fcandidate->shortlist}}" onclick="bookmark(this)">
+                    <i class="bi bi-bookmark-star @if($fcandidate->shortlist > 0) shortlisted @endif" data-bs-toggle="tooltip" data-bs-placement="top" title="Bookmark Candidate"></i>
                 </button>
             </div>
         </div>
