@@ -1350,12 +1350,21 @@
 
                 myModal.hide();
                 document.getElementById('SAKeyInput').value = '';
+                
+                if(currentStep === 3){
+                  var submit = 1;
+                }else{
+                  var submit = 0;
+                }
+
+                $("submitVal").val(submit);
 
                 var requrl = "admin/updatecandidateresume";
                 var postdata = {
                   "formData" : $("#multiStepForm").serialize(),
                   "skills":setSelectedSkills,
                   "sakey":SAKeyInput,
+                  "submit":submit
                 };
                 
                 callajax(requrl, postdata, function(resp){

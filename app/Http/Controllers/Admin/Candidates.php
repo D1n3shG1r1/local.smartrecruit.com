@@ -362,6 +362,8 @@ class Candidates extends Controller
                 if($submitVal > 0){
                     $updateData["submit"] = $submitVal;
                 }
+                
+               // dd($updateData);
 
                 CandidateResumeData_model::where("candidateId", $candidateId)
                 ->update($updateData);
