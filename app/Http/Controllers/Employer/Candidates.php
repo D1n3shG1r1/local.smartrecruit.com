@@ -18,6 +18,7 @@ use App\Models\Notification_model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class Candidates extends Controller
 {
@@ -880,6 +881,78 @@ class Candidates extends Controller
             $notfyObj->type = $data["type"];
             $notfyObj->reference = $data["reference"];
             $notfyObj->save();
+        }
+        
+    }
+
+    public function downloadPDF(string $id){
+        
+        if ($this->USERID > 0) {
+            $userId = $this->USERID;
+            
+            $candidate = CandidateResumeData_model::select(
+                'customers.id as profile_id',
+                'customers.referral_code',
+                'customers.fname',
+                'customers.lname',
+                'customers.gender',
+                'customers.dob',
+                'customers.address_1',
+                'customers.address_2',
+                'customers.city',
+                'customers.state',
+                'customers.country',
+                'customers.zipcode',
+                'customers.email',
+                'customers.phone',
+                'candidateResumeData.id as resume_id',
+                'candidateResumeData.candidateId',
+                'candidateResumeData.profSummary',
+                'candidateResumeData.workExperience',
+                'candidateResumeData.skills',
+                'candidateResumeData.languages',
+                'candidateResumeData.degree',
+                'candidateResumeData.certifications',
+                'candidateResumeData.videolink'
+            )
+            ->where('candidateResumeData.submit', 1)
+            ->where('candidateResumeData.candidateId', $id)
+            ->join('customers', 'candidateResumeData.candidateId', '=', 'customers.id')
+            ->first();
+            
+            if (!empty($candidate->dob) && strtotime($candidate->dob)) {
+                $candidate->age = calculateAge($candidate->dob);
+            } else {
+                $candidate->age = 0;
+            }
+            
+            
+            // Check if candidate is shortlisted by the recruiter
+            $shortlist = shortlistCandidates_model::where("recruiterId", $userId)->where("candidateId", $candidate->candidateId)->count();
+
+            $candidate->shortlist = $shortlist > 0 ? 1 : 0;
+
+            // Check if candidate is purchased by the recruiter
+            $purchased = purchasedCandidates_model::where("recruiterId", $userId)->where("candidateId", $candidate->candidateId)->count();
+
+            $candidate->purchased = $purchased > 0 ? 1 : 0;    
+            
+            if($purchased <= 0){
+                $candidate->email = '';
+                $candidate->phone = '';
+            }
+             
+            // mark notifications as read
+            Notification_model::where("sender", $candidate->candidateId)->update(array("isRead" => 1));
+
+            $pdf = Pdf::loadView('employer.partials.resume-modern-pdf', compact('candidate'))
+                      ->setPaper('a4', 'portrait');
+
+            return $pdf->download($candidate->fname.$candidate->lname.$candidate->referral_code . '_Resume.pdf');
+
+        } else {
+            // Redirect to login
+            return redirect()->to(url('/'));
         }
         
     }

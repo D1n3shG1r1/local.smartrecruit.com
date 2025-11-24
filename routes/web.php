@@ -125,6 +125,9 @@ Route::prefix('recruiter')->name('recruiter.')->group(function () {
     Route::get('/candidates/loadmore', [Candidates::class, 'loadMore']);
     Route::get('/candidate/{id}',[Candidates::class, 'candidate']);
 
+    Route::get('/candidate/{id}/resume/download', [Candidates::class, 'downloadPDF'])->name('candidate.resume.download');
+
+
     Route::post('/bookmark',[Candidates::class, 'bookmark']);
     Route::get('/mybookmarks',[Candidates::class, 'mybookmarks']);
     Route::get('/bookmarks/loadmore',[Candidates::class, 'bookmarksLoadMore']);

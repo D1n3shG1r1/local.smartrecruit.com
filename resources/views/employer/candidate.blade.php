@@ -332,15 +332,18 @@ section,
         <div class="row column_title">
             <div class="col-md-12">
                 <div class="row page_title">
-                    <div class="col-md-6">        
+                    <div class="col-md-4">        
                         <h2>Candidate</h2>
                     </div>
-                    <div class="col-md-6 text-right">        
+                    <div class="col-md-8 text-right">        
                     <button style="padding-left: 20px; padding-right: 20px;" class="btn btn-outline-primary bookmarkBtn" type="button" id="bookmarkbtn-{{$candidate->candidateId}}" data-id="{{$candidate->candidateId}}" data-shortlist="{{$candidate->shortlist}}" onclick="bookmark(this)"><i class="bi bi-bookmark-star"></i>@if($candidate->shortlist > 0) Unbookmark @else Bookmark @endif</button>
 
                     @if($candidate->purchased <= 0)
                     <button class="btn btn-outline-primary" type="button" id="buybtn-{{$candidate->candidateId}}" data-id="{{$candidate->candidateId}}" onclick="buycandidate(this)" data-txt="Purchase candidate" data-loadingtxt="Purchase candidate...">Purchase candidate</button>
                     @endif
+                    
+
+                    <button class="btn btn-outline-primary" type="button" id="dwldbtn-{{$candidate->candidateId}}" data-id="{{$candidate->candidateId}}" onclick="download(this)" data-txt='<i class="bi bi-download"></i> Download Resume' data-loadingtxt="Downloading Resume..."><i class="bi bi-download"></i> Download Resume</button>
 
                     </div>
                 </div>
@@ -351,7 +354,6 @@ section,
         <div class="row column1">
             <div class="col-md-12">
                 <!-- About Section -->
-                 
                 <!-- video button -->
                 @if(!empty($candidate->videolink))
                 <button class="btn btn-danger video-interview-btn video-popup video-interview-popup flex items-center gap-4 rounded-md bg-primary-color/[0.15] px-5 py-3 text-base font-medium text-primary-color hover:bg-primary-color hover:text-primary md:px-7 md:py-[14px]" type="button" id="buybtn-{{$candidate->candidateId}}" data-id="{{$candidate->candidateId}}" data-glightbox="type: video" onclick="watchinterview(this)" data-txt="Watch Interview" data-loadingtxt="Watch Interview..."><i class="bi bi-play-circle"></i> Watch Interview</button>
@@ -562,76 +564,12 @@ section,
 </div>
 
 <!--- videoplayer --->
-
-<!--<video
-    id="my-video"
-    class="video-js"
-    controls
-    preload="auto"
-    width="640"
-    height="264"
-    poster="poster.jpg"
-    data-setup="{}"
->
-  <source src="{{$candidate->videolink}}" type="video/mp4" />
-  <p class="vjs-no-js">
-    To view this video please enable JavaScript, and consider upgrading to a
-    web browser that
-    <a href="https://videojs.com/html5-video-support/" target="_blank">
-      supports HTML5 video
-    </a>
-  </p>
-</video>-->
-
-
-<!--<video id="cliptakes-player" src="{{$candidate->videolink}}" oncontextmenu="{return false}" disablepictureinpicture="" controls="" controlslist="nodownload" type="video/mp4"> 
-        Your browser doesn't support this video.
-      </video>-->
-
-<!--<video
-    id="my-video"
-    class="video-js"
-    controls
-    preload="auto"
-    width="640"
-    height="264"
-    data-setup="{}"
-  >
-    <source src="{{$candidate->videolink}}" type="video/mp4" />
-    
-    <p class="vjs-no-js">
-      To view this video please enable JavaScript, and consider upgrading to a
-      web browser that
-      <a href="https://videojs.com/html5-video-support/" target="_blank"
-        >supports HTML5 video</a
-      >
-    </p>
-  </video>-->
     <div id="myplayer"></div>
 @endsection
 @push("js")
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
 <script>
-  
-  $(function(){
-   /* setTimeout(function(){
-      var playerHtml = fetch("{{$candidate->videolink}}");
-
-      // Parse HTML string into a DOM
-      let parser = new DOMParser();
-      let doc = parser.parseFromString(playerHtml, 'text/html');
-
-      // Get the <video> element
-      let videoEl = doc.querySelector('video');
-
-      console.log(videoEl); // Logs the <video> element
-      console.log(videoEl.outerHTML); // Logs the full HTML of the video tag
-      console.log(videoEl.querySelector('source').src); // Logs the video source URL
-
-      //myplayer
-    }, 5000);*/
-  });  
 
   function bookmark(elm){
 
@@ -784,6 +722,22 @@ section,
         }
     });
     
+  }
+
+  function download(elm){
+    var elmId = $(elm).attr("id");
+    var elmIdParts = elmId.split("-");
+    var candidateId = elmIdParts[1];
+    var orgTxt = $(elm).attr("data-txt");
+    var loadingTxt = $(elm).attr("data-loadingtxt");
+    $(elm).attr("disabled",true);
+    
+    showLoader(elmId,loadingTxt);
+    
+    window.location.href = "{{ url('/recruiter/candidate/'.$candidate->candidateId.'/resume/download') }}";
+
+    hideLoader(elmId,orgTxt);
+
   }
 </script>
 @endpush
